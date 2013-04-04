@@ -29,10 +29,20 @@ def determine_package(path):
 
 
 def main(*argv):
-	Drivers.clearMainDriver()
-	driver = Drivers.GFXDriver()
-	driver.settings["ui_defs"] = "scripts.ui"
-	Drivers.setMainDriver(driver)
+	print "//---------------------------------------------"
+	print
+	print "Parsing startup arguments"
+	if not argv or "--dedicated" not in argv[1:]:
+		Drivers.clearMainDriver()
+		driver = Drivers.GFXDriver()
+		driver.settings["ui_defs"] = "scripts.ui"
+		Drivers.setMainDriver(driver)
+	else:
+		print "Dedicated server requested"
+		print "But no such driver exists"
+	print 
+	print "---------------------------------------------//"
+	print
 
 if __name__ == "__main__":
 	main(*sys.argv)
