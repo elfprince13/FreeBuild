@@ -21,3 +21,6 @@ lib/glfw
 *.o
 
 *.dir/Users
+
+lib/libRocket
+
