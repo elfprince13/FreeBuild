@@ -14,6 +14,12 @@ extern "C" void initDrivers();
 extern "C" void init_rocketcore();
 extern "C" void init_rocketcontrols();
 
+bool Console::Python::check_py_callable(object obj){
+	object dummy;
+	HANDLE_PY_ERR(obj.attr("__call__"), dummy);
+	return (dummy != object());
+}
+
 Console::Python::Python(int argc, char* argv[]){
 	char buf[512];
 	if(getcwd(buf,512) != NULL){

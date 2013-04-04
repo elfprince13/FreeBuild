@@ -8,6 +8,7 @@
 
 #include "DriverPyImpl.h"
 #include "GFXDriver.h"
+#include <Rocket/Core.h>
 #include <boost/python.hpp>
 
 
@@ -53,11 +54,13 @@ BOOST_PYTHON_MODULE(Drivers)
 	
 	class_<GFXDriverWrap, shared_ptr<GFXDriverWrap>, boost::noncopyable, bases<AbstractDriver> >("GFXDriver",init<>())
 	.def("mainloop", &GFX::Driver::mainloop,&GFXDriverWrap::default_mainloop)
+	.def_readwrite("uiHandle",&GFX::Driver::uiHandle)
 	;
 	
 	implicitly_convertible<shared_ptr<GFX::Driver>,shared_ptr<AbstractDriver>>();
 	register_ptr_to_python<shared_ptr<AbstractDriver>>();
 	register_ptr_to_python<shared_ptr<GFX::Driver>>();
+	register_ptr_to_python<shared_ptr<Rocket::Core::Context>>();
 	 
 	def("setMainDriver",setMainDriver);
 	def("getMainDriver",getMainDriver);

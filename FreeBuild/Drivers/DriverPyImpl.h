@@ -19,6 +19,6 @@ using namespace boost;
 
 class AbstractDriver;
 extern "C" shared_ptr<AbstractDriver> mainDriver;
-extern "C" void setMainDriver(shared_ptr<AbstractDriver> driver);
-extern "C" void clearMainDriver();
-extern "C" shared_ptr<AbstractDriver> getMainDriver();
+void setMainDriver(shared_ptr<AbstractDriver> driver);
+void clearMainDriver();
+shared_ptr<AbstractDriver> getMainDriver();
