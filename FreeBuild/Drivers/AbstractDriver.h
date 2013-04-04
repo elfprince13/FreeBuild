@@ -12,13 +12,13 @@
 #include <iostream>
 #include <stdlib.h>
 #include <boost/shared_ptr.hpp>
-
-
-using namespace boost;
+#include <boost/python.hpp>
 
 namespace Console{
 	class Python;
 };
+
+using namespace boost;
 
 class AbstractDriver{
 public:
@@ -27,6 +27,7 @@ public:
 	virtual int mainloop() = 0;
 	virtual void setConsole(shared_ptr<Console::Python> npc);
 	virtual shared_ptr<Console::Python> getConsole();
+	python::dict settings;
 protected:
 	shared_ptr<Console::Python> pcon;
 };

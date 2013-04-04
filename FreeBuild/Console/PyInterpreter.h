@@ -12,6 +12,22 @@
 #include <iostream>
 #include <boost/python.hpp>
 
+#define HANDLE_PY_ERR(PF,rv) rv = boost::python::object(); \
+try \
+{ \
+rv = PF; \
+} \
+catch(const boost::python::error_already_set &) \
+{ \
+if(PyErr_Occurred()!=NULL){\
+PyErr_Print();\
+PyErr_Clear();\
+} else{\
+std::cerr << "A mysterious exception occured while executing HANDLE_PY_ERR(" << #PF << ",";\
+std::cerr << #rv << ")" <<std::endl;\
+}\
+}
+
 using namespace boost::python;
 namespace Console{
 	class Python{

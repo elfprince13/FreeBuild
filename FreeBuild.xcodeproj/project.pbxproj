@@ -15,6 +15,20 @@
 		E99E4970170D14C300A65A30 /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E99E496F170D14C200A65A30 /* libfreetype.a */; };
 		E99E4972170D14EB00A65A30 /* libz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E99E4971170D14EB00A65A30 /* libz.a */; };
 		E99E4974170D151E00A65A30 /* libbz2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E99E4973170D151E00A65A30 /* libbz2.a */; };
+		E99E497E170D2E6100A65A30 /* AbstractDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E99E4978170D2E6100A65A30 /* AbstractDriver.cpp */; };
+		E99E497F170D2E6100A65A30 /* AbstractDriver.h in Headers */ = {isa = PBXBuildFile; fileRef = E99E4979170D2E6100A65A30 /* AbstractDriver.h */; };
+		E99E4980170D2E6100A65A30 /* DriverPyImpl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E99E497A170D2E6100A65A30 /* DriverPyImpl.cpp */; };
+		E99E4981170D2E6100A65A30 /* DriverPyImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = E99E497B170D2E6100A65A30 /* DriverPyImpl.h */; };
+		E99E4982170D2E6100A65A30 /* GFXDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E99E497C170D2E6100A65A30 /* GFXDriver.cpp */; };
+		E99E4983170D2E6100A65A30 /* GFXDriver.h in Headers */ = {isa = PBXBuildFile; fileRef = E99E497D170D2E6100A65A30 /* GFXDriver.h */; };
+		E99E4986170D2E9900A65A30 /* GFXPipeline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E99E4984170D2E9900A65A30 /* GFXPipeline.cpp */; };
+		E99E4987170D2E9900A65A30 /* GFXPipeline.h in Headers */ = {isa = PBXBuildFile; fileRef = E99E4985170D2E9900A65A30 /* GFXPipeline.h */; };
+		E99E498A170D2EB700A65A30 /* PyInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E99E4988170D2EB700A65A30 /* PyInterpreter.cpp */; };
+		E99E498B170D2EB700A65A30 /* PyInterpreter.h in Headers */ = {isa = PBXBuildFile; fileRef = E99E4989170D2EB700A65A30 /* PyInterpreter.h */; };
+		E99E4997170D337500A65A30 /* ShellFileInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E99E498C170D2FC000A65A30 /* ShellFileInterface.cpp */; };
+		E99E4998170D337500A65A30 /* ShellRenderInterfaceOpenGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E99E498F170D2FC000A65A30 /* ShellRenderInterfaceOpenGL.cpp */; };
+		E99E4999170D337500A65A30 /* ShellSystemInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E99E4991170D2FC000A65A30 /* ShellSystemInterface.cpp */; };
+		E99E499B170D3C9B00A65A30 /* scripts in CopyFiles */ = {isa = PBXBuildFile; fileRef = E99E499A170D3C9B00A65A30 /* scripts */; };
 		E9AD4CC7170A646E00296719 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E9AD4CC6170A646E00296719 /* main.cpp */; };
 		E9AD4CC9170A646E00296719 /* FreeBuild.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = E9AD4CC8170A646E00296719 /* FreeBuild.1 */; };
 		E9AD4D08170B428800296719 /* main.py in CopyFiles */ = {isa = PBXBuildFile; fileRef = E9AD4D05170B3EA800296719 /* main.py */; };
@@ -25,7 +39,6 @@
 		E9C3264C170BC3D40047251E /* libglfw.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E9AD4CF3170A8CEC00296719 /* libglfw.a */; };
 		E9C3264D170BC3D40047251E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9AD4CDA170A690D00296719 /* OpenGL.framework */; };
 		E9C32651170BC3D40047251E /* libglloadD.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E9AECDEC170A536200A7FD21 /* libglloadD.a */; };
-		E9C32670170BEA5C0047251E /* DriverPyImpl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E9F27078170B7D63003848DF /* DriverPyImpl.cpp */; };
 		E9C32673170BF9E60047251E /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9AD4CFC170A910700296719 /* AppKit.framework */; };
 		E9C32674170BF9E60047251E /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9AD4CFA170A90EA00296719 /* IOKit.framework */; };
 		E9C32675170BF9E60047251E /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9AD4CF8170A909A00296719 /* ApplicationServices.framework */; };
@@ -37,10 +50,6 @@
 		E9C32684170CAB1D0047251E /* libboost_filesystem-mt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E9C32681170CAB1C0047251E /* libboost_filesystem-mt.a */; };
 		E9C32685170CAB1D0047251E /* libboost_python-mt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E9C32682170CAB1D0047251E /* libboost_python-mt.a */; };
 		E9C32686170CAB1D0047251E /* libboost_system-mt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E9C32683170CAB1D0047251E /* libboost_system-mt.a */; };
-		E9F27096170BBE75003848DF /* AbstractDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E9F27072170B724D003848DF /* AbstractDriver.cpp */; };
-		E9F27097170BBE7B003848DF /* GFXDriver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E9F27075170B7577003848DF /* GFXDriver.cpp */; };
-		E9F27098170BBE80003848DF /* GFXPipeline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E9AD4CEC170A85EA00296719 /* GFXPipeline.cpp */; };
-		E9F27099170BBE85003848DF /* PyInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E9AD4CFE170B381400296719 /* PyInterpreter.cpp */; };
 		E9F2709C170BBEAD003848DF /* libFreeBuild.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E9F27087170BBBAB003848DF /* libFreeBuild.a */; };
 /* End PBXBuildFile section */
 
@@ -86,6 +95,7 @@
 			dstSubfolderSpec = 16;
 			files = (
 				E9AD4D08170B428800296719 /* main.py in CopyFiles */,
+				E99E499B170D3C9B00A65A30 /* scripts in CopyFiles */,
 				E9C3267D170C03A80047251E /* lib in CopyFiles */,
 				E9C32680170C04D50047251E /* include in CopyFiles */,
 			);
@@ -102,19 +112,33 @@
 		E99E496F170D14C200A65A30 /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = /opt/local/lib/libfreetype.a; sourceTree = "<absolute>"; };
 		E99E4971170D14EB00A65A30 /* libz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libz.a; path = /opt/local/lib/libz.a; sourceTree = "<absolute>"; };
 		E99E4973170D151E00A65A30 /* libbz2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libbz2.a; path = /opt/local/lib/libbz2.a; sourceTree = "<absolute>"; };
+		E99E4978170D2E6100A65A30 /* AbstractDriver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AbstractDriver.cpp; path = Drivers/AbstractDriver.cpp; sourceTree = "<group>"; };
+		E99E4979170D2E6100A65A30 /* AbstractDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AbstractDriver.h; path = Drivers/AbstractDriver.h; sourceTree = "<group>"; };
+		E99E497A170D2E6100A65A30 /* DriverPyImpl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DriverPyImpl.cpp; path = Drivers/DriverPyImpl.cpp; sourceTree = "<group>"; };
+		E99E497B170D2E6100A65A30 /* DriverPyImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DriverPyImpl.h; path = Drivers/DriverPyImpl.h; sourceTree = "<group>"; };
+		E99E497C170D2E6100A65A30 /* GFXDriver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GFXDriver.cpp; path = Drivers/GFXDriver.cpp; sourceTree = "<group>"; };
+		E99E497D170D2E6100A65A30 /* GFXDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GFXDriver.h; path = Drivers/GFXDriver.h; sourceTree = "<group>"; };
+		E99E4984170D2E9900A65A30 /* GFXPipeline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GFXPipeline.cpp; path = GFX/GFXPipeline.cpp; sourceTree = "<group>"; };
+		E99E4985170D2E9900A65A30 /* GFXPipeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GFXPipeline.h; path = GFX/GFXPipeline.h; sourceTree = "<group>"; };
+		E99E4988170D2EB700A65A30 /* PyInterpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PyInterpreter.cpp; path = Console/PyInterpreter.cpp; sourceTree = "<group>"; };
+		E99E4989170D2EB700A65A30 /* PyInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PyInterpreter.h; path = Console/PyInterpreter.h; sourceTree = "<group>"; };
+		E99E498C170D2FC000A65A30 /* ShellFileInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ShellFileInterface.cpp; path = UI/ShellFileInterface.cpp; sourceTree = "<group>"; };
+		E99E498D170D2FC000A65A30 /* ShellFileInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShellFileInterface.h; path = UI/ShellFileInterface.h; sourceTree = "<group>"; };
+		E99E498E170D2FC000A65A30 /* ShellOpenGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShellOpenGL.h; path = UI/ShellOpenGL.h; sourceTree = "<group>"; };
+		E99E498F170D2FC000A65A30 /* ShellRenderInterfaceOpenGL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ShellRenderInterfaceOpenGL.cpp; path = UI/ShellRenderInterfaceOpenGL.cpp; sourceTree = "<group>"; };
+		E99E4990170D2FC000A65A30 /* ShellRenderInterfaceOpenGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShellRenderInterfaceOpenGL.h; path = UI/ShellRenderInterfaceOpenGL.h; sourceTree = "<group>"; };
+		E99E4991170D2FC000A65A30 /* ShellSystemInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ShellSystemInterface.cpp; path = UI/ShellSystemInterface.cpp; sourceTree = "<group>"; };
+		E99E4992170D2FC000A65A30 /* ShellSystemInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ShellSystemInterface.h; path = UI/ShellSystemInterface.h; sourceTree = "<group>"; };
+		E99E499A170D3C9B00A65A30 /* scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = scripts; path = FreeBuild/scripts; sourceTree = "<group>"; };
 		E9AD4CC3170A646E00296719 /* FreeBuild */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FreeBuild; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9AD4CC6170A646E00296719 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		E9AD4CC8170A646E00296719 /* FreeBuild.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = FreeBuild.1; sourceTree = "<group>"; };
 		E9AD4CDA170A690D00296719 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/OpenGL.framework; sourceTree = DEVELOPER_DIR; };
-		E9AD4CEC170A85EA00296719 /* GFXPipeline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GFXPipeline.cpp; sourceTree = "<group>"; };
-		E9AD4CED170A85EA00296719 /* GFXPipeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GFXPipeline.h; sourceTree = "<group>"; };
 		E9AD4CF3170A8CEC00296719 /* libglfw.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libglfw.a; path = lib/glfw/lib/cocoa/libglfw.a; sourceTree = "<group>"; };
 		E9AD4CF6170A907500296719 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/CoreFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		E9AD4CF8170A909A00296719 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/ApplicationServices.framework; sourceTree = DEVELOPER_DIR; };
 		E9AD4CFA170A90EA00296719 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/IOKit.framework; sourceTree = DEVELOPER_DIR; };
 		E9AD4CFC170A910700296719 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/AppKit.framework; sourceTree = DEVELOPER_DIR; };
-		E9AD4CFE170B381400296719 /* PyInterpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PyInterpreter.cpp; sourceTree = "<group>"; };
-		E9AD4CFF170B381400296719 /* PyInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PyInterpreter.h; sourceTree = "<group>"; };
 		E9AD4D05170B3EA800296719 /* main.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = main.py; sourceTree = "<group>"; };
 		E9AECDE7170A536200A7FD21 /* glload.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = glload.xcodeproj; path = lib/glload/glload.xcodeproj; sourceTree = "<group>"; };
 		E9C3267A170C033A0047251E /* libpython2.7.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpython2.7.a; path = lib/Python27/installed/lib/libpython2.7.a; sourceTree = "<group>"; };
@@ -123,12 +147,6 @@
 		E9C32681170CAB1C0047251E /* libboost_filesystem-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_filesystem-mt.a"; path = "/opt/local/lib/libboost_filesystem-mt.a"; sourceTree = "<absolute>"; };
 		E9C32682170CAB1D0047251E /* libboost_python-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_python-mt.a"; path = "/opt/local/lib/libboost_python-mt.a"; sourceTree = "<absolute>"; };
 		E9C32683170CAB1D0047251E /* libboost_system-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_system-mt.a"; path = "/opt/local/lib/libboost_system-mt.a"; sourceTree = "<absolute>"; };
-		E9F27072170B724D003848DF /* AbstractDriver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AbstractDriver.cpp; sourceTree = "<group>"; };
-		E9F27073170B724D003848DF /* AbstractDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractDriver.h; sourceTree = "<group>"; };
-		E9F27075170B7577003848DF /* GFXDriver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GFXDriver.cpp; sourceTree = "<group>"; };
-		E9F27076170B7577003848DF /* GFXDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GFXDriver.h; sourceTree = "<group>"; };
-		E9F27078170B7D63003848DF /* DriverPyImpl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DriverPyImpl.cpp; sourceTree = "<group>"; };
-		E9F27079170B7D63003848DF /* DriverPyImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DriverPyImpl.h; sourceTree = "<group>"; };
 		E9F27087170BBBAB003848DF /* libFreeBuild.a */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libFreeBuild.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -207,6 +225,20 @@
 			name = frameworks;
 			sourceTree = "<group>";
 		};
+		E99E4977170D2D3600A65A30 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				E99E498C170D2FC000A65A30 /* ShellFileInterface.cpp */,
+				E99E498D170D2FC000A65A30 /* ShellFileInterface.h */,
+				E99E498E170D2FC000A65A30 /* ShellOpenGL.h */,
+				E99E498F170D2FC000A65A30 /* ShellRenderInterfaceOpenGL.cpp */,
+				E99E4990170D2FC000A65A30 /* ShellRenderInterfaceOpenGL.h */,
+				E99E4991170D2FC000A65A30 /* ShellSystemInterface.cpp */,
+				E99E4992170D2FC000A65A30 /* ShellSystemInterface.h */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
 		E9AD4CC4170A646E00296719 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -219,6 +251,7 @@
 		E9AD4CC5170A646E00296719 /* FreeBuild */ = {
 			isa = PBXGroup;
 			children = (
+				E99E4977170D2D3600A65A30 /* UI */,
 				E9F27071170B71DB003848DF /* Drivers */,
 				E9F27070170B71C9003848DF /* GFX */,
 				E9F2706B170B71B7003848DF /* Console */,
@@ -232,6 +265,7 @@
 		E9AECDCE170A4B5C00A7FD21 = {
 			isa = PBXGroup;
 			children = (
+				E99E499A170D3C9B00A65A30 /* scripts */,
 				E99E4976170D15E600A65A30 /* frameworks */,
 				E99E4975170D15CC00A65A30 /* libs */,
 				E9C3267F170C04C10047251E /* pythonhome */,
@@ -269,8 +303,8 @@
 		E9F2706B170B71B7003848DF /* Console */ = {
 			isa = PBXGroup;
 			children = (
-				E9AD4CFE170B381400296719 /* PyInterpreter.cpp */,
-				E9AD4CFF170B381400296719 /* PyInterpreter.h */,
+				E99E4988170D2EB700A65A30 /* PyInterpreter.cpp */,
+				E99E4989170D2EB700A65A30 /* PyInterpreter.h */,
 			);
 			name = Console;
 			sourceTree = "<group>";
@@ -278,8 +312,8 @@
 		E9F27070170B71C9003848DF /* GFX */ = {
 			isa = PBXGroup;
 			children = (
-				E9AD4CEC170A85EA00296719 /* GFXPipeline.cpp */,
-				E9AD4CED170A85EA00296719 /* GFXPipeline.h */,
+				E99E4984170D2E9900A65A30 /* GFXPipeline.cpp */,
+				E99E4985170D2E9900A65A30 /* GFXPipeline.h */,
 			);
 			name = GFX;
 			sourceTree = "<group>";
@@ -287,12 +321,12 @@
 		E9F27071170B71DB003848DF /* Drivers */ = {
 			isa = PBXGroup;
 			children = (
-				E9F27072170B724D003848DF /* AbstractDriver.cpp */,
-				E9F27073170B724D003848DF /* AbstractDriver.h */,
-				E9F27075170B7577003848DF /* GFXDriver.cpp */,
-				E9F27076170B7577003848DF /* GFXDriver.h */,
-				E9F27078170B7D63003848DF /* DriverPyImpl.cpp */,
-				E9F27079170B7D63003848DF /* DriverPyImpl.h */,
+				E99E4978170D2E6100A65A30 /* AbstractDriver.cpp */,
+				E99E4979170D2E6100A65A30 /* AbstractDriver.h */,
+				E99E497A170D2E6100A65A30 /* DriverPyImpl.cpp */,
+				E99E497B170D2E6100A65A30 /* DriverPyImpl.h */,
+				E99E497C170D2E6100A65A30 /* GFXDriver.cpp */,
+				E99E497D170D2E6100A65A30 /* GFXDriver.h */,
 			);
 			name = Drivers;
 			sourceTree = "<group>";
@@ -304,6 +338,11 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E99E497F170D2E6100A65A30 /* AbstractDriver.h in Headers */,
+				E99E4981170D2E6100A65A30 /* DriverPyImpl.h in Headers */,
+				E99E4983170D2E6100A65A30 /* GFXDriver.h in Headers */,
+				E99E4987170D2E9900A65A30 /* GFXPipeline.h in Headers */,
+				E99E498B170D2EB700A65A30 /* PyInterpreter.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,11 +441,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E9F27096170BBE75003848DF /* AbstractDriver.cpp in Sources */,
-				E9F27097170BBE7B003848DF /* GFXDriver.cpp in Sources */,
-				E9F27098170BBE80003848DF /* GFXPipeline.cpp in Sources */,
-				E9F27099170BBE85003848DF /* PyInterpreter.cpp in Sources */,
-				E9C32670170BEA5C0047251E /* DriverPyImpl.cpp in Sources */,
+				E99E497E170D2E6100A65A30 /* AbstractDriver.cpp in Sources */,
+				E99E4980170D2E6100A65A30 /* DriverPyImpl.cpp in Sources */,
+				E99E4982170D2E6100A65A30 /* GFXDriver.cpp in Sources */,
+				E99E4986170D2E9900A65A30 /* GFXPipeline.cpp in Sources */,
+				E99E498A170D2EB700A65A30 /* PyInterpreter.cpp in Sources */,
+				E99E4997170D337500A65A30 /* ShellFileInterface.cpp in Sources */,
+				E99E4998170D337500A65A30 /* ShellRenderInterfaceOpenGL.cpp in Sources */,
+				E99E4999170D337500A65A30 /* ShellSystemInterface.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

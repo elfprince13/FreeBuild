@@ -10,7 +10,7 @@
 #include "PyInterpreter.h"
 
 
-AbstractDriver::AbstractDriver() : pcon(NULL){;}
+AbstractDriver::AbstractDriver() : pcon(NULL) , settings(){;}
 AbstractDriver::~AbstractDriver(){;}
 
 

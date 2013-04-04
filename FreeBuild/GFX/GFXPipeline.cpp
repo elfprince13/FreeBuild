@@ -8,26 +8,9 @@
 
 #include "GFXPipeline.h"
 
-
-
-/*
- #include <OpenGL/gl.h>
- #include <OpenGL/glext.h>
- //*/
-
-/*
-#define ALLEGRO_MACOSX
-#include <allegro5/allegro_opengl.h>
-//*/
- 
-//*
-// These must appear after Allegro
-// Or bad things happen!
 #include <glload/gl_all.hpp>
 #include <glload/gll.hpp>
 #include <GL/glfw.h>
-
-//*/
 
 void GFX::Context::swapBuffers(){	glfwSwapBuffers();	}
 bool GFX::Context::open(){	return glfwGetWindowParam(GLFW_OPENED);	}
@@ -67,17 +50,6 @@ shared_ptr<GFX::Context> GFX::init(){
 		}
 		
 	}
-	//*/
-	/*
-	 ALLEGRO_OGL_EXT_LIST *aoel = al_get_opengl_extension_list();
-	 if(!aoel->ALLEGRO_GL_ARB_draw_instanced)){
-	 retcode = -1;
-	 std::cerr << "No support for draw instanced";
-	 }
-	 if(!aoel->ALLEGRO_GL_ARB_instanced_arrays){
-	 retcode = -1;
-	 std::cerr << "No support for instanced vertex attributes";
-	 }
-	 //*/
+
 	return (!retcode)? shared_ptr<Context>(new Context()) : shared_ptr<Context>();
 }

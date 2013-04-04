@@ -13,11 +13,11 @@
 
 shared_ptr<AbstractDriver> mainDriver;
 void setMainDriver(shared_ptr<AbstractDriver> driver){
-	mainDriver = driver;//shared_ptr<AbstractDriver>(driver.release());
+	mainDriver = driver;
 }
 
 shared_ptr<AbstractDriver> getMainDriver(){
-	return mainDriver;//shared_ptr<AbstractDriver>(mainDriver.release());
+	return mainDriver;
 }
 
 void clearMainDriver(){	mainDriver.reset(); }
@@ -48,6 +48,7 @@ BOOST_PYTHON_MODULE(Drivers)
 	using namespace boost::python;
     class_<AbstractDriverWrap, shared_ptr<AbstractDriverWrap>, boost::noncopyable>("AbstractDriver", no_init)
 	.def("mainloop", pure_virtual(&AbstractDriver::mainloop))
+	.def_readwrite("settings",&AbstractDriver::settings)
     ;
 	
 	class_<GFXDriverWrap, shared_ptr<GFXDriverWrap>, boost::noncopyable, bases<AbstractDriver> >("GFXDriver",init<>())

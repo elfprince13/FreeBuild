@@ -2,14 +2,9 @@ import sys
 import Drivers
 def main(*argv):
 	Drivers.clearMainDriver()
-	print Drivers.getMainDriver()
-	print ""
-	drive = Drivers.GFXDriver()
-	Drivers.setMainDriver(drive)
-	import _rocketcore
-	import _rocketcontrols
-	print dir(_rocketcontrols)
-	print dir(_rocketcore)
+	driver = Drivers.GFXDriver()
+	driver.settings["ui_defs"] = "scripts.ui.main_menu"
+	Drivers.setMainDriver(driver)
 
 if __name__ == "__main__":
 	main(*sys.argv)
