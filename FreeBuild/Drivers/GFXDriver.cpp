@@ -13,7 +13,10 @@
 namespace bp = boost::python;
 
 GFX::Driver::Driver(): AbstractDriver(), gfxCtx(NULL){
+	std::cout << "Initializing graphics drivers... ";
 	gfxCtx = GFX::init();
+	if(gfxCtx.get()){ std::cout << "Success!" << std::endl; }
+	else{ std::cerr << "Initialization failed." << std::endl; }
 }
 
 GFX::Driver::~Driver(){
@@ -23,7 +26,7 @@ GFX::Driver::~Driver(){
 int GFX::Driver::mainloop()
 {
 	int ret = 0;
-	
+	std::cout << "Attempting to initiate mainloop." << std::endl;
 	bp::object ui_defs_val;
 	bp::object main_menu_module;
 	HANDLE_PY_ERR(settings["ui_defs"],ui_defs_val);
@@ -42,7 +45,7 @@ int GFX::Driver::mainloop()
 	}
 	
 	if(!ret){
-		std::cout << "Importing '" << ui_defs_sval << "' to begin UI definition!" << std::endl;
+		std::cout << "Successfully imported '" << ui_defs_sval << "' to begin UI definition." << std::endl;
 		if(gfxCtx.get())
 		{
 			while (gfxCtx->open())
