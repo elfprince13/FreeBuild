@@ -107,7 +107,6 @@
 
 /* Begin PBXFileReference section */
 		E94E2197170E28CB009BA082 /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; name = data; path = FreeBuild/data; sourceTree = "<group>"; };
-		E94E2198170E28FB009BA082 /* main_menu.rml */ = {isa = PBXFileReference; lastKnownFileType = text; name = main_menu.rml; path = FreeBuild/data/ui/main_menu.rml; sourceTree = "<group>"; };
 		E99E4965170D141600A65A30 /* _rocketcontrols.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = _rocketcontrols.a; path = lib/libRocket/lib/_rocketcontrols.a; sourceTree = "<group>"; };
 		E99E4966170D141600A65A30 /* _rocketcore.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = _rocketcore.a; path = lib/libRocket/lib/_rocketcore.a; sourceTree = "<group>"; };
 		E99E4967170D141600A65A30 /* libRocketControls.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRocketControls.a; path = lib/libRocket/lib/libRocketControls.a; sourceTree = "<group>"; };
@@ -269,7 +268,6 @@
 		E9AECDCE170A4B5C00A7FD21 = {
 			isa = PBXGroup;
 			children = (
-				E94E2198170E28FB009BA082 /* main_menu.rml */,
 				E94E2197170E28CB009BA082 /* data */,
 				E99E499A170D3C9B00A65A30 /* scripts */,
 				E99E4976170D15E600A65A30 /* frameworks */,
