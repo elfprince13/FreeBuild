@@ -32,9 +32,14 @@
 #include <iostream.h>
 
 typedef void (*glfwToggleFunc)(int);
-typedef bool (Rocket::Core::Context::*glfwUpDownFunc)(Rocket::Core::Input::KeyIdentifier,int);
+typedef bool (Rocket::Core::Context::*KeyUpDownFunc)(Rocket::Core::Input::KeyIdentifier,int);
+typedef void (Rocket::Core::Context::*MouseUpDownFunc)(int,int);
+
 static glfwToggleFunc glfwToggle[2] = {&glfwDisable, &glfwEnable};
-static glfwUpDownFunc keyResponse[2] = {&Rocket::Core::Context::ProcessKeyDown,&Rocket::Core::Context::ProcessKeyUp};
+
+static KeyUpDownFunc keyResponse[2] = {&Rocket::Core::Context::ProcessKeyUp,&Rocket::Core::Context::ProcessKeyDown};
+
+static MouseUpDownFunc mouseResponse[2] = {&Rocket::Core::Context::ProcessMouseButtonUp,&Rocket::Core::Context::ProcessMouseButtonDown};
 
 ShellSystemInterface::KeyboardMode ShellSystemInterface::keyboard_mode = Text_And_Keys;
 int ShellSystemInterface::wheel_pos = 0;
@@ -112,29 +117,52 @@ void ShellSystemInterface::ToggleSoftMouse(bool on){
 	}
 }
 
+int ShellSystemInterface::getActiveModifiers(){
+	return (glfwGetKey(GLFW_KEY_LCTRL) | glfwGetKey(GLFW_KEY_RCTRL)) * Rocket::Core::Input::KM_CTRL |
+	(glfwGetKey(GLFW_KEY_LSHIFT) | glfwGetKey(GLFW_KEY_RSHIFT)) * Rocket::Core::Input::KM_SHIFT |
+	(glfwGetKey(GLFW_KEY_LALT) | glfwGetKey(GLFW_KEY_RALT)) * Rocket::Core::Input::KM_ALT |
+	(glfwGetKey(GLFW_KEY_LSUPER) | glfwGetKey(GLFW_KEY_RSUPER)) * Rocket::Core::Input::KM_META |
+	(glfwGetKey(GLFW_KEY_CAPS_LOCK)) * Rocket::Core::Input::KM_CAPSLOCK |
+	(glfwGetKey(GLFW_KEY_KP_NUM_LOCK)) * Rocket::Core::Input::KM_NUMLOCK |
+	(glfwGetKey(GLFW_KEY_SCROLL_LOCK)) * Rocket::Core::Input::KM_SCROLLLOCK;
+}
+
 void ShellSystemInterface::HandleKeyToggle(int k, int s){
 	// This seems like a recipe for badness
-	//glfwUpDownFunc todo = keyResponse[s];
-	//uiHandle.get()->*todo((Rocket::Core::Input::KeyIdentifier)(keybindings[k]),0);
+	// How does Rocket handle KeyIdentifiers with potentially invalid values?
+	//std::cout << "Pressing key " << k << " (" << s << "," << getActiveModifiers() << ")"<< std::endl;
+	(uiHandle.get()->*keyResponse[s])((Rocket::Core::Input::KeyIdentifier)(keybindings[k]),getActiveModifiers());
 }
 
 void ShellSystemInterface::HandleCharToggle(int cp, int s){
-	
+	//std::cout << "Receiving character " << (wchar_t)cp << " (" << s << ")" << std::endl;
+	if(s){
+		unsigned short ucs2v = (unsigned short)(unsigned int)cp;
+		if(ucs2v != (unsigned int)cp){
+			std::cerr << "Warning: truncating UTF-32 value into the ";
+			std::cerr << "Basic Multilingual Plane for UCS-2 conversion" << std::endl;
+		}
+		uiHandle->ProcessTextInput(ucs2v);
+	}
 }
 
 void ShellSystemInterface::HandleMousePosition(int x, int y){
-	
+	//std::cout << "Moving mouse (" << x <<","<<y<<")" << " (" << getActiveModifiers() << ")"<< std::endl;
+	uiHandle->ProcessMouseMove(x, y, getActiveModifiers());
 }
 
 void ShellSystemInterface::HandleMouseToggle(int b, int s){
-	
+	//std::cout << "Clicking mouse " << b << " (" << s << "," << getActiveModifiers() << ")"<< std::endl;
+	(uiHandle.get()->*mouseResponse[s])(b,getActiveModifiers());
 }
 
 void ShellSystemInterface::HandleScrollWheel(int np){
-	
+	int delta = wheel_pos - np; // made need a - here depending on conventions
+	//std::cout << "Scrolling mouse " << np << "(" << delta << "," << getActiveModifiers() << ")"<< std::endl;
+	wheel_pos = np;
+	uiHandle->ProcessMouseWheel(delta, getActiveModifiers());
 }
 
-void ShellSystemInterface::setActiveUIHandle(boost::shared_ptr<Rocket::Core::Context> nhandle){
-	uiHandle = nhandle;
-}
+void ShellSystemInterface::setActiveUIHandle(boost::shared_ptr<Rocket::Core::Context> nhandle){	uiHandle = nhandle;	}
+void ShellSystemInterface::clearActiveUIHandle(){	uiHandle = boost::shared_ptr<Rocket::Core::Context>();	}
 boost::shared_ptr<Rocket::Core::Context> ShellSystemInterface::getActiveUIHandle(){ return uiHandle; }

@@ -70,6 +70,8 @@ public:
 	static void ToggleSystemMouse(bool on);
 	static void ToggleSoftMouse(bool on);
 	
+	static int getActiveModifiers();
+	
 	static void HandleKeyToggle(int k, int s);
 	static void HandleCharToggle(int cp, int s);
 	
@@ -79,6 +81,7 @@ public:
 	
 	static void setActiveUIHandle(boost::shared_ptr<Rocket::Core::Context> nhandle);
 	static boost::shared_ptr<Rocket::Core::Context> getActiveUIHandle();
+	static void clearActiveUIHandle();
 	
 	
 	static inline void clearOwner(){	owner = NULL;	}

@@ -101,6 +101,8 @@ int GFX::Driver::mainloop()
 		
 		if(gfxCtx.get())
 		{
+			ShellSystemInterface::setActiveUIHandle(uiHandle);
+			ShellSystemInterface::RegisterInputDevices();
 			// Set up the GL state.
 			gl::ClearColor(0, 0, 0, 1);
 			gl::EnableClientState(gl::GL_VERTEX_ARRAY);
@@ -126,6 +128,8 @@ int GFX::Driver::mainloop()
 				/* Swap front and back buffers and process events */
 				gfxCtx->swapBuffers();
 			}
+			ShellSystemInterface::UnRegisterInputDevices();
+			ShellSystemInterface::clearActiveUIHandle();
 		} else{
 			std::cerr << "Entering GFX::Driver::mainloop() but no context exists" << std::endl;
 			ret = -1;
