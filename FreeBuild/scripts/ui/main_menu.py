@@ -1,4 +1,7 @@
 import _rocketcore
 import _rocketcontrols
 
-print "This is the main menu!"
+def init(context):
+	logo_doc = context.LoadDocument("/data/ui/logo.rml")
+	logo_doc.Show()
+	context.Update()

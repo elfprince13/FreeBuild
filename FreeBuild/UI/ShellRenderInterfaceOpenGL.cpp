@@ -76,6 +76,7 @@ Rocket::Core::CompiledGeometryHandle ShellRenderInterfaceOpenGL::CompileGeometry
 // Called by Rocket when it wants to render application-compiled geometry.		
 void ShellRenderInterfaceOpenGL::RenderCompiledGeometry(Rocket::Core::CompiledGeometryHandle ROCKET_UNUSED(geometry), const Rocket::Core::Vector2f& ROCKET_UNUSED(translation))
 {
+	;
 }
 
 // Called by Rocket when it wants to release application-compiled geometry.		

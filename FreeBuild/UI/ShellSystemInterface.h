@@ -28,23 +28,79 @@
 #ifndef ROCKETSHELLSYSTEMINTERFACE_H
 #define ROCKETSHELLSYSTEMINTERFACE_H
 
+#include <boost/shared_ptr.hpp>
+#include <boost/unordered_map.hpp>
 #include <Rocket/Core/SystemInterface.h>
 
 /**
 	A custom system interface for Rocket. This provides timing information.
 	@author Lloyd Weehuizen
  */
+namespace GFX{
+	class Driver;
+};
+namespace Rocket{
+	namespace Core{
+		class Context;
+	};
+};
+
 
 class ShellSystemInterface : public Rocket::Core::SystemInterface
 {
 public:
 	/// Get the number of seconds elapsed since the start of the application
 	/// @returns Seconds elapsed
-	
+	enum KeyboardMode {
+		Text,
+		Keys,
+		Text_And_Keys
+	};
+	ShellSystemInterface(GFX::Driver *o);
 	virtual float GetElapsedTime();
-	virtual void InitShellTime();
+	
+	static void RegisterInputDevices();
+	static void registerKeyboardInput();
+	static void UnRegisterInputDevices();
+	
+	static void ToggleSystemKeys(bool on);
+	static void ToggleKeyboardMode(KeyboardMode nmode=Text_And_Keys);
+	static void ToggleKeyRepeat(bool on);
+	
+	static void ToggleSystemMouse(bool on);
+	static void ToggleSoftMouse(bool on);
+	
+	static void HandleKeyToggle(int k, int s);
+	static void HandleCharToggle(int cp, int s);
+	
+	static void HandleMousePosition(int x, int y);
+	static void HandleMouseToggle(int b, int s);
+	static void HandleScrollWheel(int np);
+	
+	static void setActiveUIHandle(boost::shared_ptr<Rocket::Core::Context> nhandle);
+	static boost::shared_ptr<Rocket::Core::Context> getActiveUIHandle();
+	
+	
+	static inline void clearOwner(){	owner = NULL;	}
+	static inline GFX::Driver * getOwner(){ return owner;	}
+	static inline void setOwner(GFX::Driver *o){
+		if(owner != NULL){
+			std::cerr << "Warning: A ShellSystemInterface probably already exists, ";
+			std::cerr << "because the class is already owned by a GFX::Driver" << std::endl;
+			std::cerr << "Expect some problems." << std::endl;
+		}
+		owner = o;
+	}
+	
 protected:
-	struct timeval start_time;
+	static KeyboardMode keyboard_mode;// = Text_And_Keys;
+	static int wheel_pos;// = 0;
+	static boost::shared_ptr<Rocket::Core::Context> uiHandle;
+	static GFX::Driver * owner;// = NULL;
+	static bool inputRegistered;// = false;
 };
+
+
+extern "C" boost::unordered_map<int,int> keybindings;
 
 #endif

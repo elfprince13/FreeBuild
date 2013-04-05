@@ -9,10 +9,20 @@
 #include "DriverPyImpl.h"
 #include "GFXDriver.h"
 #include <Rocket/Core.h>
+#include <Rocket/Core/Input.h>
 #include <boost/python.hpp>
 
-
 shared_ptr<AbstractDriver> mainDriver;
+unordered_map<int,int> keybindings;
+
+void clearKeyBindings(){
+	keybindings.clear();
+}
+
+void addKeyBinding(int glfwk, int rocketk){
+	keybindings[glfwk] = rocketk;
+}
+
 void setMainDriver(shared_ptr<AbstractDriver> driver){
 	mainDriver = driver;
 }
@@ -65,4 +75,7 @@ BOOST_PYTHON_MODULE(Drivers)
 	def("setMainDriver",setMainDriver);
 	def("getMainDriver",getMainDriver);
 	def("clearMainDriver",clearMainDriver);
+	
+	def("clearKeyBindings",clearKeyBindings);
+	def("addKeyBinding",addKeyBinding);
 }

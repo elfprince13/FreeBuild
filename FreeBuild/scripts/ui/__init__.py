@@ -6,6 +6,7 @@ dir_path = os.path.dirname(path)
 __all__=determine_package(dir_path)
 
 def configure_ui(width,height):
+	print "Executing configure_ui(%d,%d)" % (width,height)
 	from _rocketcore import CreateContext, Vector2i
 	import Drivers
 	driver = Drivers.getMainDriver()
@@ -13,6 +14,14 @@ def configure_ui(width,height):
 		ret = False
 	else:
 		driver.uiHandle = CreateContext("primary_ui_context",Vector2i(width,height))
+		import main_menu
+		main_menu.init(driver.uiHandle)
+		print " Importing standard key bindings...",
+		from keybindings import standardKeyMap
+		Drivers.clearKeyBindings()
+		for g,r in standardKeyMap().iteritems():
+			Drivers.addKeyBinding(g,r)
+		print "Done"
 		ret = True
 	return ret
 

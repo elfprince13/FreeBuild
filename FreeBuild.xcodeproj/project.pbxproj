@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E94E2199170E321E009BA082 /* data in CopyFiles */ = {isa = PBXBuildFile; fileRef = E94E2197170E28CB009BA082 /* data */; };
 		E99E496A170D141600A65A30 /* _rocketcontrols.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E99E4965170D141600A65A30 /* _rocketcontrols.a */; };
 		E99E496B170D141600A65A30 /* _rocketcore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E99E4966170D141600A65A30 /* _rocketcore.a */; };
 		E99E496C170D141600A65A30 /* libRocketControls.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E99E4967170D141600A65A30 /* libRocketControls.a */; };
@@ -95,6 +96,7 @@
 			dstSubfolderSpec = 16;
 			files = (
 				E9AD4D08170B428800296719 /* main.py in CopyFiles */,
+				E94E2199170E321E009BA082 /* data in CopyFiles */,
 				E99E499B170D3C9B00A65A30 /* scripts in CopyFiles */,
 				E9C3267D170C03A80047251E /* lib in CopyFiles */,
 				E9C32680170C04D50047251E /* include in CopyFiles */,
@@ -104,6 +106,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		E94E2197170E28CB009BA082 /* data */ = {isa = PBXFileReference; lastKnownFileType = folder; name = data; path = FreeBuild/data; sourceTree = "<group>"; };
+		E94E2198170E28FB009BA082 /* main_menu.rml */ = {isa = PBXFileReference; lastKnownFileType = text; name = main_menu.rml; path = FreeBuild/data/ui/main_menu.rml; sourceTree = "<group>"; };
 		E99E4965170D141600A65A30 /* _rocketcontrols.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = _rocketcontrols.a; path = lib/libRocket/lib/_rocketcontrols.a; sourceTree = "<group>"; };
 		E99E4966170D141600A65A30 /* _rocketcore.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = _rocketcore.a; path = lib/libRocket/lib/_rocketcore.a; sourceTree = "<group>"; };
 		E99E4967170D141600A65A30 /* libRocketControls.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRocketControls.a; path = lib/libRocket/lib/libRocketControls.a; sourceTree = "<group>"; };
@@ -265,6 +269,8 @@
 		E9AECDCE170A4B5C00A7FD21 = {
 			isa = PBXGroup;
 			children = (
+				E94E2198170E28FB009BA082 /* main_menu.rml */,
+				E94E2197170E28CB009BA082 /* data */,
 				E99E499A170D3C9B00A65A30 /* scripts */,
 				E99E4976170D15E600A65A30 /* frameworks */,
 				E99E4975170D15CC00A65A30 /* libs */,

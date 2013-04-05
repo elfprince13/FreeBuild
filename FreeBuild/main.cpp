@@ -12,8 +12,6 @@
 #include "Console/PyInterpreter.h"
 #include "Drivers/AbstractDriver.h"
 #include <boost/shared_ptr.hpp>
-
-//#include <dlfcn.h>
 #include "DriverPyImpl.h"
 
 using namespace std;

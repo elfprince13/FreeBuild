@@ -13,27 +13,40 @@
 #include "../UI/ShellSystemInterface.h"
 #include "../UI/ShellRenderInterfaceOpenGL.h"
 #include "../UI/ShellFileInterface.h"
-
+#include <unistd.h>
 namespace bp = boost::python;
 
 GFX::Driver::Driver() : AbstractDriver(),
 gfxCtx(NULL),
 uiHandle(),
 renderInterface(new ShellRenderInterfaceOpenGL()),
-fileInterface(new ShellFileInterface("./")),
-systemInterface(new ShellSystemInterface()){
+systemInterface(new ShellSystemInterface(this)){
+	char buf[512];
+	
+	
+	std::cout << "GFX::Driver claiming ownership of ShellSystemInterface" << std::endl;
 	std::cout << "Initializing graphics drivers... ";
 	gfxCtx = GFX::init();
-	Rocket::Core::SetSystemInterface(systemInterface.get());
-	Rocket::Core::SetRenderInterface(renderInterface.get());
-	Rocket::Core::SetFileInterface(fileInterface.get());
-	if(gfxCtx.get() &&
-	   (rocketOnline = Rocket::Core::Initialise())){
-		std::cout << "Success!" << std::endl;
-	} else{ std::cerr << "Initialization failed." << std::endl; }
+	if(getcwd(buf,512)!=NULL){
+		fileInterface = shared_ptr<ShellFileInterface>(new ShellFileInterface(buf));
+		Rocket::Core::SetSystemInterface(systemInterface.get());
+		Rocket::Core::SetRenderInterface(renderInterface.get());
+		Rocket::Core::SetFileInterface(fileInterface.get());
+		if(gfxCtx.get() &&
+		   (rocketOnline = Rocket::Core::Initialise())){
+			std::cout << "Success!" << std::endl;
+		} else{ std::cerr << "Initialization failed." << std::endl; }
+	} else{
+		std::cerr << "Initialization failed." << std::endl;
+	}
+	
 }
 
 GFX::Driver::~Driver(){
+	if(systemInterface.get() && systemInterface->getOwner() == this){
+		std::cout << "GFX::Driver releasing ownership of ShellSystemInterface" << std::endl;
+		systemInterface->clearOwner();
+	}
 	if(rocketOnline){
 		this->uiHandle.reset();// = bp::object();
 		Rocket::Core::Shutdown();
@@ -85,12 +98,30 @@ int GFX::Driver::mainloop()
 		}
 	}
 	if(!ret){
+		
 		if(gfxCtx.get())
 		{
+			// Set up the GL state.
+			gl::ClearColor(0, 0, 0, 1);
+			gl::EnableClientState(gl::GL_VERTEX_ARRAY);
+			gl::EnableClientState(gl::GL_COLOR_ARRAY);
+			
+			gl::Enable(gl::GL_BLEND);
+			gl::BlendFunc(gl::GL_SRC_ALPHA, gl::GL_ONE_MINUS_SRC_ALPHA);
+			
+			gl::MatrixMode(gl::GL_PROJECTION);
+			gl::LoadIdentity();
+			gl::Ortho(0, 800, 600, 0, -1, 1);
+			
+			gl::MatrixMode(gl::GL_MODELVIEW);
+			gl::LoadIdentity();
+
 			while (gfxCtx->open())
 			{
+				gl::Clear(gl::GL_COLOR_BUFFER_BIT);
 				/* Render here */
 				//HANDLE_PY_ERR_NO_RET(renderUI());
+				uiHandle->Update();
 				uiHandle->Render();
 				/* Swap front and back buffers and process events */
 				gfxCtx->swapBuffers();

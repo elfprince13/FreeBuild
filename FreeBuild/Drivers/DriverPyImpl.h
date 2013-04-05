@@ -12,13 +12,19 @@
 #include <iostream>
 #include <stdlib.h>
 #include <boost/shared_ptr.hpp>
+#include <boost/unordered_map.hpp>
 
 #endif /* defined(__FreeBuild__DriverPyImpl__) */
+
 
 using namespace boost;
 
 class AbstractDriver;
 extern "C" shared_ptr<AbstractDriver> mainDriver;
+extern "C" unordered_map<int,int> keybindings;
 void setMainDriver(shared_ptr<AbstractDriver> driver);
 void clearMainDriver();
 shared_ptr<AbstractDriver> getMainDriver();
+
+void clearKeyBindings();
+void addKeyBinding(int glfwk, int rocketk);
