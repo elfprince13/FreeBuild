@@ -3,138 +3,19 @@
 # Or if one of those two components is replaced in the engine
 
 def getKeyMap():
-	return {
-		-1 : 0,
-		32 : 1,
-		257 : 81,
-		258 : 107,
-		259 : 108,
-		260 : 109,
-		261 : 110,
-		262 : 111,
-		263 : 112,
-		264 : 113,
-		265 : 114,
-		266 : 115,
-		267 : 116,
-		268 : 117,
-		269 : 118,
-		270 : 119,
-		271 : 120,
-		272 : 121,
-		273 : 122,
-		274 : 123,
-		275 : 124,
-		276 : 125,
-		277 : 126,
-		278 : 127,
-		279 : 128,
-		280 : 129,
-		281 : 130,
-		283 : 91,
-		284 : 93,
-		285 : 90,
-		286 : 92,
-		287 : 138,
-		288 : 139,
-		289 : 140,
-		290 : 141,
-		291 : 175,
-		292 : 176,
-		293 : 70,
-		294 : 72,
-		295 : 69,
-		296 : 98,
-		297 : 99,
-		298 : 86,
-		299 : 87,
-		300 : 89,
-		301 : 88,
-		302 : 51,
-		303 : 52,
-		304 : 53,
-		305 : 54,
-		306 : 55,
-		307 : 56,
-		308 : 57,
-		309 : 58,
-		310 : 59,
-		311 : 60,
-		312 : 67,
-		313 : 62,
-		314 : 65,
-		315 : 63,
-		316 : 66,
-		317 : 68,
-		318 : 61,
-		319 : 131,
-		320 : 74,
-		321 : 132,
-		322 : 73,
-		323 : 101,
-		324 : 102,
-		325 : 142,
-		48 : 2,
-		49 : 3,
-		50 : 4,
-		51 : 5,
-		52 : 6,
-		53 : 7,
-		54 : 8,
-		55 : 9,
-		56 : 10,
-		57 : 11,
-		65 : 12,
-		66 : 13,
-		67 : 14,
-		68 : 15,
-		69 : 16,
-		70 : 17,
-		71 : 18,
-		72 : 19,
-		73 : 20,
-		74 : 21,
-		75 : 22,
-		76 : 23,
-		77 : 24,
-		78 : 25,
-		79 : 26,
-		80 : 27,
-		81 : 28,
-		82 : 29,
-		83 : 30,
-		84 : 31,
-		85 : 32,
-		86 : 33,
-		87 : 34,
-		88 : 35,
-		89 : 36,
-		90 : 37,
-		58 : 38,
-		59 : 38,
-		43 : 39,
-		61 : 39,
-		44 : 40,
-		60 : 40,
-		45 : 41,
-		95 : 41,
-		46 : 42,
-		62 : 42,
-		47 : 43,
-		63 : 43,
-		96 : 44,
-		126 : 44,
-		91 : 45,
-		123 : 45,
-		92 : 46,
-		124 : 46,
-		93 : 47,
-		125 : 47,
-		39 : 48,
-		34 : 48
-}
+	return keymap
 
+def getEffectiveKeyNames():
+	return rocket_by_name
 
+def getEffectiveKeyIndices():
+	return rocket_by_index
+
+def getBackendKeyNames():
+	return glfw_by_name
+
+def getBackendKeyIndices():
+	return glfw_by_index
 
 def getModifiersByName():
 	return modifiers_by_name
@@ -414,13 +295,6 @@ rocket_by_name = {
 rocket_by_index = {v : k for k,v in rocket_by_name.iteritems()}
 
 two_to_one_src = [k for k in glfw_by_name.keys() if k not in rocket_by_name]
-print rocket_by_name.keys()
 two_to_one_map = {k : ((k+k2) if (k+k2) in rocket_by_name else (k2+k)) for k2 in two_to_one_src for k in two_to_one_src if ((k+k2) in rocket_by_name) or ((k2+k) in rocket_by_name)}
-print two_to_one_map
 
 keymap = { k : rocket_by_name[v if v in rocket_by_name else two_to_one_map[v]] for k,v in glfw_by_index.iteritems()}
-
-print "Testing"
-print sorted(keymap.keys())==sorted(getKeyMap().keys()),sorted(keymap.values())==sorted(getKeyMap().values())
-print [keymap[k] for k in sorted(getKeyMap().keys())] == [getKeyMap()[k] for k in sorted(keymap.keys())]
-
