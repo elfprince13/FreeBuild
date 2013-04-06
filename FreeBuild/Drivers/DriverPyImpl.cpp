@@ -13,14 +13,14 @@
 #include <boost/python.hpp>
 
 shared_ptr<AbstractDriver> mainDriver;
-unordered_map<int,int> keybindings;
+unordered_map<int,int> keymap;
 
-void clearKeyBindings(){
-	keybindings.clear();
+void clearKeyMap(){
+	keymap.clear();
 }
 
-void addKeyBinding(int glfwk, int rocketk){
-	keybindings[glfwk] = rocketk;
+void mapKey(int glfwk, int rocketk){
+	keymap[glfwk] = rocketk;
 }
 
 void setMainDriver(shared_ptr<AbstractDriver> driver){
@@ -76,6 +76,6 @@ BOOST_PYTHON_MODULE(Drivers)
 	def("getMainDriver",getMainDriver);
 	def("clearMainDriver",clearMainDriver);
 	
-	def("clearKeyBindings",clearKeyBindings);
-	def("addKeyBinding",addKeyBinding);
+	def("clearKeyMap",clearKeyMap);
+	def("mapKey",mapKey);
 }

@@ -130,12 +130,10 @@ int ShellSystemInterface::getActiveModifiers(){
 void ShellSystemInterface::HandleKeyToggle(int k, int s){
 	// This seems like a recipe for badness
 	// How does Rocket handle KeyIdentifiers with potentially invalid values?
-	//std::cout << "Pressing key " << k << " (" << s << "," << getActiveModifiers() << ")"<< std::endl;
-	(uiHandle.get()->*keyResponse[s])((Rocket::Core::Input::KeyIdentifier)(keybindings[k]),getActiveModifiers());
+	(uiHandle.get()->*keyResponse[s])((Rocket::Core::Input::KeyIdentifier)(keymap[k]),getActiveModifiers());
 }
 
 void ShellSystemInterface::HandleCharToggle(int cp, int s){
-	//std::cout << "Receiving character " << (wchar_t)cp << " (" << s << ")" << std::endl;
 	if(s){
 		unsigned short ucs2v = (unsigned short)(unsigned int)cp;
 		if(ucs2v != (unsigned int)cp){
@@ -147,18 +145,15 @@ void ShellSystemInterface::HandleCharToggle(int cp, int s){
 }
 
 void ShellSystemInterface::HandleMousePosition(int x, int y){
-	//std::cout << "Moving mouse (" << x <<","<<y<<")" << " (" << getActiveModifiers() << ")"<< std::endl;
 	uiHandle->ProcessMouseMove(x, y, getActiveModifiers());
 }
 
 void ShellSystemInterface::HandleMouseToggle(int b, int s){
-	//std::cout << "Clicking mouse " << b << " (" << s << "," << getActiveModifiers() << ")"<< std::endl;
 	(uiHandle.get()->*mouseResponse[s])(b,getActiveModifiers());
 }
 
 void ShellSystemInterface::HandleScrollWheel(int np){
-	int delta = wheel_pos - np; // made need a - here depending on conventions
-	//std::cout << "Scrolling mouse " << np << "(" << delta << "," << getActiveModifiers() << ")"<< std::endl;
+	int delta = (wheel_pos - np); // may need a - here for Apple "natural scrolling"
 	wheel_pos = np;
 	uiHandle->ProcessMouseWheel(delta, getActiveModifiers());
 }

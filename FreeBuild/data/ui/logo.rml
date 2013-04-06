@@ -1,5 +1,16 @@
 <rml>
 	<head>
+		<script>
+logos = ["logo.tga","Curves_(Legofied).tga"]
+def switch_img(self):
+	src = self.GetAttribute("src")
+	if src in logos:
+		self.SetAttribute("src",logos[not logos.index(src)])
+	else:
+		print "O_o"
+def print_something(event):
+	print event.parameters["data"]
+		</script>
 		<style>
 			body
 			{
@@ -16,7 +27,8 @@
 			}
 		</style>
 	</head>
-	<body id="logo">
-		<img id="rifm_logo" src="logo.tga" />
+	<body id="logo" ontextinput="print_something(event)">
+		<img id="rifm_logo" src="logo.tga" onclick="switch_img(self)" />
+		<input type="text" />
 	</body>
 </rml>

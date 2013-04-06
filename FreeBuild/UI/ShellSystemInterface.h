@@ -104,6 +104,6 @@ protected:
 };
 
 
-extern "C" boost::unordered_map<int,int> keybindings;
+extern "C" boost::unordered_map<int,int> keymap;
 
 #endif

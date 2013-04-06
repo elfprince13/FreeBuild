@@ -21,10 +21,10 @@ using namespace boost;
 
 class AbstractDriver;
 extern "C" shared_ptr<AbstractDriver> mainDriver;
-extern "C" unordered_map<int,int> keybindings;
+extern "C" unordered_map<int,int> keymap;
 void setMainDriver(shared_ptr<AbstractDriver> driver);
 void clearMainDriver();
 shared_ptr<AbstractDriver> getMainDriver();
 
-void clearKeyBindings();
-void addKeyBinding(int glfwk, int rocketk);
+void clearKeyMap();
+void mapKey(int glfwk, int rocketk);

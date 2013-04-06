@@ -1,131 +1,26 @@
-def standardKeyMap():
-	return {
-		-1 : 0,
-		32 : 1,
-		257 : 81,
-		258 : 107,
-		259 : 108,
-		260 : 109,
-		261 : 110,
-		262 : 111,
-		263 : 112,
-		264 : 113,
-		265 : 114,
-		266 : 115,
-		267 : 116,
-		268 : 117,
-		269 : 118,
-		270 : 119,
-		271 : 120,
-		272 : 121,
-		273 : 122,
-		274 : 123,
-		275 : 124,
-		276 : 125,
-		277 : 126,
-		278 : 127,
-		279 : 128,
-		280 : 129,
-		281 : 130,
-		283 : 91,
-		284 : 93,
-		285 : 90,
-		286 : 92,
-		287 : 138,
-		288 : 139,
-		289 : 140,
-		290 : 141,
-		291 : 175,
-		292 : 176,
-		293 : 70,
-		294 : 72,
-		295 : 69,
-		296 : 98,
-		297 : 99,
-		298 : 86,
-		299 : 87,
-		300 : 89,
-		301 : 88,
-		302 : 51,
-		303 : 52,
-		304 : 53,
-		305 : 54,
-		306 : 55,
-		307 : 56,
-		308 : 57,
-		309 : 58,
-		310 : 59,
-		311 : 60,
-		312 : 67,
-		313 : 62,
-		314 : 65,
-		315 : 63,
-		316 : 66,
-		317 : 68,
-		318 : 61,
-		319 : 131,
-		320 : 74,
-		321 : 132,
-		322 : 73,
-		323 : 101,
-		324 : 102,
-		325 : 142,
-		48 : 2,
-		49 : 3,
-		50 : 4,
-		51 : 5,
-		52 : 6,
-		53 : 7,
-		54 : 8,
-		55 : 9,
-		56 : 10,
-		57 : 11,
-		65 : 12,
-		66 : 13,
-		67 : 14,
-		68 : 15,
-		69 : 16,
-		70 : 17,
-		71 : 18,
-		72 : 19,
-		73 : 20,
-		74 : 21,
-		75 : 22,
-		76 : 23,
-		77 : 24,
-		78 : 25,
-		79 : 26,
-		80 : 27,
-		81 : 28,
-		82 : 29,
-		83 : 30,
-		84 : 31,
-		85 : 32,
-		86 : 33,
-		87 : 34,
-		88 : 35,
-		89 : 36,
-		90 : 37,
-		58 : 38,
-		59 : 38,
-		43 : 39,
-		61 : 39,
-		44 : 40,
-		60 : 40,
-		45 : 41,
-		95 : 41,
-		46 : 42,
-		62 : 42,
-		47 : 43,
-		63 : 43,
-		96 : 44,
-		126 : 44,
-		91 : 45,
-		123 : 45,
-		92 : 46,
-		124 : 46,
-		93 : 47,
-		125 : 47,
-		39 : 48,
-		34 : 48
-	}
+
+# Constants for permissioning/binding precedence down the road.
+
+DEFAULT = 0
+USER = 1
+MOD = 2
+
+bindingRegistry = {}
+
+class BoundKey(object):
+	def __init__(self,)
+
+class BindingSet(object):
+	def __init__(self,anywhere={},byDocument={},byElement={}):
+		self.anywhere = anywhere
+		self.byDocument = byDocument
+		self.byElement = byElement
+
+	def __repr__(self):
+		return "BindingSet(anywhere=%s,byDocument=%s,byElement=%s" % (repr(self.anywhere),repr(self.byDocument),repr(self.byElement))
+
+	def __str__(self):
+		return """BindingSet:\n\tAnywhere: %s\n\tBy document: %s\n\tBy Element: %s""" % (str(self.anywhere),str(self.byDocument), str(self.byElement))
+
+def globalKeyHandler():
+	global event,element,self

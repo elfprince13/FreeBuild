@@ -17,10 +17,10 @@ def configure_ui(width,height):
 		import main_menu
 		main_menu.init(driver.uiHandle)
 		print " Importing standard key bindings...",
-		from keybindings import standardKeyMap
-		Drivers.clearKeyBindings()
-		for g,r in standardKeyMap().iteritems():
-			Drivers.addKeyBinding(g,r)
+		from scripts.prefs.keymaps.default import getKeyMap
+		Drivers.clearKeyMap()
+		for g,r in getKeyMap().iteritems():
+			Drivers.mapKey(g,r)
 		print "Done"
 		ret = True
 	return ret
