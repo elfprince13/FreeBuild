@@ -30,9 +30,9 @@ modifiers_by_name = {
 	'shift' : 1 << 1,
 	'alt' : 1 << 2,
 	'meta' : 1 << 3,
-	'capslock' : 1 << 4,
-	'numlock' : 1 << 5,
-	'scrolllock' : 1 << 6
+	'caps_lock' : 1 << 4,
+	'num_lock' : 1 << 5,
+	'scroll_lock' : 1 << 6
 }
 
 modifiers_by_index = { v : k for k,v in modifiers_by_name.iteritems()}

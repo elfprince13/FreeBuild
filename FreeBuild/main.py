@@ -27,6 +27,12 @@ def determine_package(path):
 	else:
 		raise ValueError("'%s' is not a valid directory" % (path))
 
+# Note the differing default semantics as compared to __import__
+def export_symbols(module_name,globals,locals,fromlist,level=0):
+	temp_module = __import__(module_name,globals,locals,fromlist,level)
+	for symbol in fromlist:
+		globals[symbol] = temp_module.__dict__[symbol]
+
 
 def main(*argv):
 	print "//---------------------------------------------"
@@ -35,7 +41,10 @@ def main(*argv):
 	if not argv or "--dedicated" not in argv[1:]:
 		Drivers.clearMainDriver()
 		driver = Drivers.GFXDriver()
+		
+		# Here we should expliclty load a settings file
 		driver.settings["ui_defs"] = "scripts.ui"
+		#driver.settings["keymap_name"] = "default"
 		Drivers.setMainDriver(driver)
 	else:
 		print "Dedicated server requested"
