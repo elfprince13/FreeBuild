@@ -14,13 +14,13 @@ def configure_ui(width,height):
 		ret = False
 	else:
 		driver.uiHandle = CreateContext("primary_ui_context",Vector2i(width,height))
-		import main_menu
-		main_menu.init(driver.uiHandle)
 		print " Importing standard keymap...",
 		from scripts.prefs.keymaps import getKeyMap
 		Drivers.clearKeyMap()
 		for g,r in getKeyMap().iteritems():
 			Drivers.mapKey(g,r)
+		import main_menu
+		main_menu.init(driver.uiHandle)
 		print "Done"
 		ret = True
 	return ret

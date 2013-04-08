@@ -36,7 +36,12 @@ class BoundKey(object):
 				(repr(self.callback), repr(self.key_index), repr(self.required), repr(self.forbidden))
 
 	def __str__(self):
-		return ("%s %s %s" % ("-[]","[-.-.-.-]",self.name)).strip()
+		return ("%s %s %s" % (
+							  ("-[%s]" % " ".join([indexed_modifiers[m] for m in self.forbidden]))
+							  if self.forbidden else "",
+							  ("[%s]" % " ".join([indexed_modifiers[m] for m in self.required]))
+							  if self.required else ""
+							  ,indexed_keys[self.key_index])).strip()
 			
 
 	def __call__(self,key,modifiers,state,*args,**kwargs):
