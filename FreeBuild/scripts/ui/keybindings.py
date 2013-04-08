@@ -29,7 +29,7 @@ class BoundKey(object):
 		self.forbidden_mask = sum(self.forbidden)
 
 	def test(self,key,masks,state):
-		return (self.key_index == key) and (masks & self.required_mask) and (not (masks & self.forbidden_mask)) and (state in self.action_states)
+		return (self.key_index == key) and ((masks & self.required_mask) or not self.required_mask) and (not (masks & self.forbidden_mask)) and (state in self.action_states)
 
 	def __repr__(self):
 		return "BoundKey(%s,%s,required_modifiers=%s,forbidden_modifiers=%s)" % \
@@ -76,12 +76,25 @@ def globalKeyHandler():
 	key =  event.parameters['key_identifier']
 	modifiers = [value for value,name in sorted(indexed_modifiers.iteritems()) if event.parameters['%s_key' % (name)]]
 	mask = sum(modifiers)
-	#print key,event.type,modifiers
 	for bound_level,bound_set in sorted(bindingRegistry.iteritems(),reverse=True):
-		# Ignore by document/by element for now:
+		# Hoping for now this is the correct way to compare element/document references:
 		for bound_key in bound_set.anywhere:
 			if bound_key(key,mask,state_map[event.type]):
+				event.StopPropagation()
 				break
 		else:
-			continue
+			for bound_key in bound_set.byDocument.get(self,[]):
+				if bound_key(key,mask,state_map[event.type]):
+					event.StopPropagation()
+					break
+			else:
+				if "element" not in globals():
+					continue
+				else:
+					for bound_key in bound_set.byElement.get(element,[]):
+						if bound_key(key,mask,state_map[event.type]):
+							event.StopPropagation()
+							break
+					else:
+						continue
 		break

@@ -27,7 +27,7 @@ def print_something(event):
 			}
 		</style>
 	</head>
-	<body id="logo">
+	<body id="logo" ontextinput="print_something(event)">
 		<img id="rifm_logo" src="logo.tga" onclick="switch_img(self)" />
 		<input type="text" />
 	</body>

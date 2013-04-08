@@ -14,14 +14,14 @@ def configure_ui(width,height):
 		ret = False
 	else:
 		driver.uiHandle = CreateContext("primary_ui_context",Vector2i(width,height))
-		print " Importing standard keymap...",
+		print " Initializing keymap (GLFW -> libRocket)..."
 		from scripts.prefs.keymaps import getKeyMap
 		Drivers.clearKeyMap()
 		for g,r in getKeyMap().iteritems():
 			Drivers.mapKey(g,r)
 		import main_menu
 		main_menu.init(driver.uiHandle)
-		print "Done"
+		print " Finished initalizing keymap."
 		ret = True
 	return ret
 
