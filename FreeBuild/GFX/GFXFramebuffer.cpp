@@ -9,10 +9,11 @@
 #include "GFXFramebuffer.h"
 
 GFX::Framebuffer::~Framebuffer(){
+	//std::cout << "Releasing framebuffer" << std::endl;
 	this->deleteObj();
 }
 
-GFX::Framebuffer::Framebuffer(int w, int h){
+GFX::Framebuffer::Framebuffer(int w, int h) : GLObject(){
 	this->handleResize(w, h);
 }
 
@@ -25,6 +26,7 @@ void GFX::Framebuffer::deleteObj(){
 void GFX::Framebuffer::handleResize(int w, int h){
 	this->w = w;
 	this->h = h;
+	//std::cout << "Resizing framebuffer" << std::endl;
 	if((*name)){
 		this->deleteObj();
 	}

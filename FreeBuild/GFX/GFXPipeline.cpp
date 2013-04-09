@@ -13,6 +13,7 @@
 #include <GL/glfw.h>
 
 #include "GFXBufferManager.h"
+#include "GFXFramebuffer.h"
 
 void GFX::Context::swapBuffers(){	glfwSwapBuffers();	}
 bool GFX::Context::open(){	return glfwGetWindowParam(GLFW_OPENED);	}
@@ -57,6 +58,7 @@ shared_ptr<GFX::Context> GFX::init(){
 		}
 		if(!retcode){
 			glfwSetWindowSizeCallback(&BufferManager::resizeCallback);
+			BufferManager::getManager()->manageObject(shared_ptr<Framebuffer>(new Framebuffer(640,480)));
 		}
 		
 	}

@@ -13,11 +13,10 @@
 #include <glload/gl_all.hpp>
 #include <boost/shared_ptr.hpp>
 
-#endif /* defined(__FreeBuild__GFXGLObject__) */
 
 using namespace boost;
 namespace GFX{
-
+	
 	class GLObject{
 	protected:
 		shared_ptr<GLuint> name;
@@ -37,3 +36,6 @@ namespace GFX{
 	typedef void (GLObject::*BindHook)(GLenum target);
 	typedef void (GLObject::*UnbindHook)();
 };
+
+
+#endif /* defined(__FreeBuild__GFXGLObject__) */

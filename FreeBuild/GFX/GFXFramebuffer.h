@@ -13,7 +13,7 @@
 #include <iostream>
 
 namespace GFX{
-	class Framebuffer : GLObject{
+	class Framebuffer : public GLObject{
 	protected:
 		int w, h;
 	public:
