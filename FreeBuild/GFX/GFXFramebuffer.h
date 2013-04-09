@@ -14,7 +14,16 @@
 
 namespace GFX{
 	class Framebuffer : GLObject{
+	protected:
+		int w, h;
+	public:
+		virtual ~Framebuffer();
+		Framebuffer(int w, int h);
 		
+		virtual void deleteObj();
+		virtual void handleResize(int w, int h);
+		virtual void bind(GLenum target);
+		virtual void unbind();
 	};
 };
 

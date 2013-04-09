@@ -9,7 +9,7 @@
 #include "GFXGLObject.h"
 
 
-GFX::GLObject::GLObject() : name(new GLuint){
+GFX::GLObject::GLObject() : name(new GLuint(0)), bound(false){
 	;
 }
 GFX::GLObject::~GLObject(){
