@@ -58,7 +58,8 @@ shared_ptr<GFX::Context> GFX::init(){
 		}
 		if(!retcode){
 			glfwSetWindowSizeCallback(&BufferManager::resizeCallback);
-			BufferManager::getManager()->manageObject(shared_ptr<Framebuffer>(new Framebuffer(640,480)));
+			shared_ptr<Framebuffer> testfb = shared_ptr<Framebuffer>(new Framebuffer(640,480));
+			BufferManager::getManager()->manageObject(testfb);
 		}
 		
 	}

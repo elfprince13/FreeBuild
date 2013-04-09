@@ -39,9 +39,11 @@ void GFX::Framebuffer::bind(GLenum target){
 	gl::BindFramebuffer(target, *name);
 }
 
-void GFX::Framebuffer::unbind(){
+void GFX::Framebuffer::unbind(shared_ptr<GLObject> rebind){
+	std::cout << "Unbinding!" << std::endl;
 	if(this->bound){
+		std::cout << "  Was actually bound!" << std::endl;
 		this->bound = false;
-		gl::BindFramebuffer(this->target, 0);
+		gl::BindFramebuffer(this->target, rebind.get() ? *(((Framebuffer*)(rebind.get()))->name) : 0);
 	}
 }

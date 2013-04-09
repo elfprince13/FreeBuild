@@ -23,7 +23,7 @@ namespace GFX{
 		virtual void deleteObj();
 		virtual void handleResize(int w, int h);
 		virtual void bind(GLenum target);
-		virtual void unbind();
+		virtual void unbind(shared_ptr<GLObject> rebind=shared_ptr<GLObject>());
 	};
 };
 
