@@ -9,6 +9,13 @@
 #ifndef __FreeBuild__GFXFramebuffer__
 #define __FreeBuild__GFXFramebuffer__
 
+#include "GFXGLObject.h"
 #include <iostream>
+
+namespace GFX{
+	class Framebuffer : GLObject{
+		
+	};
+};
 
 #endif /* defined(__FreeBuild__GFXFramebuffer__) */

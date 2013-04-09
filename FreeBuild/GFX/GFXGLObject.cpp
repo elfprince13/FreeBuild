@@ -7,3 +7,11 @@
 //
 
 #include "GFXGLObject.h"
+
+
+GFX::GLObject::GLObject() : name(new GLuint){
+	;
+}
+GFX::GLObject::~GLObject(){
+	;
+}

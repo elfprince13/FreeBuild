@@ -51,6 +51,12 @@
 		E9C32684170CAB1D0047251E /* libboost_filesystem-mt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E9C32681170CAB1C0047251E /* libboost_filesystem-mt.a */; };
 		E9C32685170CAB1D0047251E /* libboost_python-mt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E9C32682170CAB1D0047251E /* libboost_python-mt.a */; };
 		E9C32686170CAB1D0047251E /* libboost_system-mt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E9C32683170CAB1D0047251E /* libboost_system-mt.a */; };
+		E9E3A75717138143002C91CC /* GFXBufferManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E9E3A75517138143002C91CC /* GFXBufferManager.cpp */; };
+		E9E3A75817138143002C91CC /* GFXBufferManager.h in Headers */ = {isa = PBXBuildFile; fileRef = E9E3A75617138143002C91CC /* GFXBufferManager.h */; };
+		E9E3A75B17138732002C91CC /* GFXGLObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E9E3A75917138732002C91CC /* GFXGLObject.cpp */; };
+		E9E3A75C17138732002C91CC /* GFXGLObject.h in Headers */ = {isa = PBXBuildFile; fileRef = E9E3A75A17138732002C91CC /* GFXGLObject.h */; };
+		E9E3A75F17138F94002C91CC /* GFXFramebuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E9E3A75D17138F94002C91CC /* GFXFramebuffer.cpp */; };
+		E9E3A76017138F94002C91CC /* GFXFramebuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = E9E3A75E17138F94002C91CC /* GFXFramebuffer.h */; };
 		E9F2709C170BBEAD003848DF /* libFreeBuild.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E9F27087170BBBAB003848DF /* libFreeBuild.a */; };
 /* End PBXBuildFile section */
 
@@ -150,6 +156,12 @@
 		E9C32681170CAB1C0047251E /* libboost_filesystem-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_filesystem-mt.a"; path = "/opt/local/lib/libboost_filesystem-mt.a"; sourceTree = "<absolute>"; };
 		E9C32682170CAB1D0047251E /* libboost_python-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_python-mt.a"; path = "/opt/local/lib/libboost_python-mt.a"; sourceTree = "<absolute>"; };
 		E9C32683170CAB1D0047251E /* libboost_system-mt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboost_system-mt.a"; path = "/opt/local/lib/libboost_system-mt.a"; sourceTree = "<absolute>"; };
+		E9E3A75517138143002C91CC /* GFXBufferManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GFXBufferManager.cpp; path = GFX/GFXBufferManager.cpp; sourceTree = "<group>"; };
+		E9E3A75617138143002C91CC /* GFXBufferManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GFXBufferManager.h; path = GFX/GFXBufferManager.h; sourceTree = "<group>"; };
+		E9E3A75917138732002C91CC /* GFXGLObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GFXGLObject.cpp; path = GFX/GFXGLObject.cpp; sourceTree = "<group>"; };
+		E9E3A75A17138732002C91CC /* GFXGLObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GFXGLObject.h; path = GFX/GFXGLObject.h; sourceTree = "<group>"; };
+		E9E3A75D17138F94002C91CC /* GFXFramebuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GFXFramebuffer.cpp; path = GFX/GFXFramebuffer.cpp; sourceTree = "<group>"; };
+		E9E3A75E17138F94002C91CC /* GFXFramebuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GFXFramebuffer.h; path = GFX/GFXFramebuffer.h; sourceTree = "<group>"; };
 		E9F27087170BBBAB003848DF /* libFreeBuild.a */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libFreeBuild.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -316,6 +328,12 @@
 		E9F27070170B71C9003848DF /* GFX */ = {
 			isa = PBXGroup;
 			children = (
+				E9E3A75517138143002C91CC /* GFXBufferManager.cpp */,
+				E9E3A75617138143002C91CC /* GFXBufferManager.h */,
+				E9E3A75D17138F94002C91CC /* GFXFramebuffer.cpp */,
+				E9E3A75E17138F94002C91CC /* GFXFramebuffer.h */,
+				E9E3A75917138732002C91CC /* GFXGLObject.cpp */,
+				E9E3A75A17138732002C91CC /* GFXGLObject.h */,
 				E99E4984170D2E9900A65A30 /* GFXPipeline.cpp */,
 				E99E4985170D2E9900A65A30 /* GFXPipeline.h */,
 			);
@@ -347,6 +365,9 @@
 				E99E4983170D2E6100A65A30 /* GFXDriver.h in Headers */,
 				E99E4987170D2E9900A65A30 /* GFXPipeline.h in Headers */,
 				E99E498B170D2EB700A65A30 /* PyInterpreter.h in Headers */,
+				E9E3A75817138143002C91CC /* GFXBufferManager.h in Headers */,
+				E9E3A75C17138732002C91CC /* GFXGLObject.h in Headers */,
+				E9E3A76017138F94002C91CC /* GFXFramebuffer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -453,6 +474,9 @@
 				E99E4997170D337500A65A30 /* ShellFileInterface.cpp in Sources */,
 				E99E4998170D337500A65A30 /* ShellRenderInterfaceOpenGL.cpp in Sources */,
 				E99E4999170D337500A65A30 /* ShellSystemInterface.cpp in Sources */,
+				E9E3A75717138143002C91CC /* GFXBufferManager.cpp in Sources */,
+				E9E3A75B17138732002C91CC /* GFXGLObject.cpp in Sources */,
+				E9E3A75F17138F94002C91CC /* GFXFramebuffer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

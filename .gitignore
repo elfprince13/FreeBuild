@@ -24,5 +24,7 @@ lib/glfw
 
 *.dir/Users
 
-
 lib/libRocket
+
+*.xcbkptlist
+

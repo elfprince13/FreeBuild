@@ -12,6 +12,8 @@
 #include <glload/gll.hpp>
 #include <GL/glfw.h>
 
+#include "GFXBufferManager.h"
+
 void GFX::Context::swapBuffers(){	glfwSwapBuffers();	}
 bool GFX::Context::open(){	return glfwGetWindowParam(GLFW_OPENED);	}
 
@@ -31,10 +33,11 @@ shared_ptr<GFX::Context> GFX::init(){
 		std::cerr << "Unable to init GLFW" << std::endl;
 	}
     /* Create a windowed mode window and its OpenGL context */
-    else if (!glfwOpenWindow(640, 480, 8, 8, 8, 0, 24, 0, GLFW_WINDOW)){
+    else if (!(glfwOpenWindowHint(GLFW_WINDOW_NO_RESIZE, gl::GL_TRUE),glfwOpenWindow(640, 480, 8, 8, 8, 0, 24, 0, GLFW_WINDOW))){
 		retcode = -1;
 		std::cerr << "Unable to open GLFW window" << std::endl;
 	}
+	glfwSetWindowTitle("FreeBuild Engine Demo");
 	
 	if(glload::LoadFunctions() == glload::LS_LOAD_FAILED){
 		retcode = -1;
@@ -47,6 +50,13 @@ shared_ptr<GFX::Context> GFX::init(){
 		if(!glext_ARB_instanced_arrays){
 			retcode = -1;
 			std::cerr << "No support for instanced vertex attributes";
+		}
+		if(!glext_ARB_framebuffer_object){
+			retcode = -1;
+			std::cerr << "No support for framebuffer objects";
+		}
+		if(!retcode){
+			glfwSetWindowSizeCallback(&BufferManager::resizeCallback);
 		}
 		
 	}
