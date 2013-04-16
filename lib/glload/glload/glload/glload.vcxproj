@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{A543ABCE-9E06-44DA-B2AA-FE1BD8B88D6E}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>glload</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\glload\gll.h" />
+    <ClInclude Include="..\..\include\glload\gll.hpp" />
+    <ClInclude Include="..\..\include\glload\gl_2_1.h" />
+    <ClInclude Include="..\..\include\glload\gl_2_1.hpp" />
+    <ClInclude Include="..\..\include\glload\gl_3_0.h" />
+    <ClInclude Include="..\..\include\glload\gl_3_0.hpp" />
+    <ClInclude Include="..\..\include\glload\gl_3_1.h" />
+    <ClInclude Include="..\..\include\glload\gl_3_1.hpp" />
+    <ClInclude Include="..\..\include\glload\gl_3_1_comp.h" />
+    <ClInclude Include="..\..\include\glload\gl_3_1_comp.hpp" />
+    <ClInclude Include="..\..\include\glload\gl_3_2.h" />
+    <ClInclude Include="..\..\include\glload\gl_3_2.hpp" />
+    <ClInclude Include="..\..\include\glload\gl_3_2_comp.h" />
+    <ClInclude Include="..\..\include\glload\gl_3_2_comp.hpp" />
+    <ClInclude Include="..\..\include\glload\gl_3_3.h" />
+    <ClInclude Include="..\..\include\glload\gl_3_3.hpp" />
+    <ClInclude Include="..\..\include\glload\gl_3_3_comp.h" />
+    <ClInclude Include="..\..\include\glload\gl_3_3_comp.hpp" />
+    <ClInclude Include="..\..\include\glload\gl_4_0.h" />
+    <ClInclude Include="..\..\include\glload\gl_4_0.hpp" />
+    <ClInclude Include="..\..\include\glload\gl_4_0_comp.h" />
+    <ClInclude Include="..\..\include\glload\gl_4_0_comp.hpp" />
+    <ClInclude Include="..\..\include\glload\gl_4_1.h" />
+    <ClInclude Include="..\..\include\glload\gl_4_1.hpp" />
+    <ClInclude Include="..\..\include\glload\gl_4_1_comp.h" />
+    <ClInclude Include="..\..\include\glload\gl_4_1_comp.hpp" />
+    <ClInclude Include="..\..\include\glload\gl_4_2.h" />
+    <ClInclude Include="..\..\include\glload\gl_4_2.hpp" />
+    <ClInclude Include="..\..\include\glload\gl_4_2_comp.h" />
+    <ClInclude Include="..\..\include\glload\gl_4_2_comp.hpp" />
+    <ClInclude Include="..\..\include\glload\gl_4_3.h" />
+    <ClInclude Include="..\..\include\glload\gl_4_3.hpp" />
+    <ClInclude Include="..\..\include\glload\gl_4_3_comp.h" />
+    <ClInclude Include="..\..\include\glload\gl_4_3_comp.hpp" />
+    <ClInclude Include="..\..\include\glload\gl_all.h" />
+    <ClInclude Include="..\..\include\glload\gl_all.hpp" />
+    <ClInclude Include="..\..\include\glload\gl_core.h" />
+    <ClInclude Include="..\..\include\glload\gl_core.hpp" />
+    <ClInclude Include="..\..\include\glload\wgl_exts.h" />
+    <ClInclude Include="..\..\include\glload\_int_gl_1_1.h" />
+    <ClInclude Include="..\..\include\glload\_int_gl_1_1.hpp" />
+    <ClInclude Include="..\..\include\glload\_int_gl_1_1_rem_3_1.h" />
+    <ClInclude Include="..\..\include\glload\_int_gl_1_1_rem_3_1.hpp" />
+    <ClInclude Include="..\..\include\glload\_int_gl_1_2.h" />
+    <ClInclude Include="..\..\include\glload\_int_gl_1_2.hpp" />
+    <ClInclude Include="..\..\include\glload\_int_gl_1_2_rem_3_1.h" />
+    <ClInclude Include="..\..\include\glload\_int_gl_1_2_rem_3_1.hpp" />
+    <ClInclude Include="..\..\include\glload\_int_gl_1_3.h" />
+    <ClInclude Include="..\..\include\glload\_int_gl_1_3.hpp" />
+    <ClInclude Include="..\..\include\glload\_int_gl_1_3_rem_3_1.h" />
+    <ClInclude Include="..\..\include\glload\_int_gl_1_3_rem_3_1.hpp" />
+    <ClInclude Include="..\..\include\glload\_int_gl_1_4.h" />
+    <ClInclude Include="..\..\include\glload\_int_gl_1_4.hpp" />
+    <ClInclude Include="..\..\include\glload\_int_gl_1_4_rem_3_1.h" />
+    <ClInclude Include="..\..\include\glload\_int_gl_1_4_rem_3_1.hpp" />
+    <ClInclude Include="..\..\include\glload\_int_gl_1_5.h" />
+    <ClInclude Include="..\..\include\glload\_int_gl_1_5.hpp" />
+    <ClInclude Include="..\..\include\glload\_int_gl_1_5_rem_3_1.h" />
+    <ClInclude Include="..\..\include\glload\_int_gl_1_5_rem_3_1.hpp" />
+    <ClInclude Include="..\..\include\glload\_int_gl_2_0.h" />
+    <ClInclude Include="..\..\include\glload\_int_gl_2_0.hpp" />
+    <ClInclude Include="..\..\include\glload\_int_gl_2_0_rem_3_1.h" />
+    <ClInclude Include="..\..\include\glload\_int_gl_2_0_rem_3_1.hpp" />
+    <ClInclude Include="..\..\include\glload\_int_gl_2_1.h" />
+    <ClInclude Include="..\..\include\glload\_int_gl_2_1.hpp" />
+    <ClInclude Include="..\..\include\glload\_int_gl_2_1_rem_3_1.h" />
+    <ClInclude Include="..\..\include\glload\_int_gl_2_1_rem_3_1.hpp" />
+    <ClInclude Include="..\..\include\glload\_int_gl_3_0.h" />
+    <ClInclude Include="..\..\include\glload\_int_gl_3_0.hpp" />
+    <ClInclude Include="..\..\include\glload\_int_gl_3_0_rem_3_1.h" />
+    <ClInclude Include="..\..\include\glload\_int_gl_3_0_rem_3_1.hpp" />
+    <ClInclude Include="..\..\include\glload\_int_gl_3_1.h" />
+    <ClInclude Include="..\..\include\glload\_int_gl_3_1.hpp" />
+    <ClInclude Include="..\..\include\glload\_int_gl_3_2.h" />
+    <ClInclude Include="..\..\include\glload\_int_gl_3_2.hpp" />
+    <ClInclude Include="..\..\include\glload\_int_gl_3_3.h" />
+    <ClInclude Include="..\..\include\glload\_int_gl_3_3.hpp" />
+    <ClInclude Include="..\..\include\glload\_int_gl_4_0.h" />
+    <ClInclude Include="..\..\include\glload\_int_gl_4_0.hpp" />
+    <ClInclude Include="..\..\include\glload\_int_gl_4_3.h" />
+    <ClInclude Include="..\..\include\glload\_int_gl_4_3.hpp" />
+    <ClInclude Include="..\..\include\glload\_int_gl_exts.h" />
+    <ClInclude Include="..\..\include\glload\_int_gl_exts.hpp" />
+    <ClInclude Include="..\..\include\glload\_int_gl_type.h" />
+    <ClInclude Include="..\..\source\gll_gl_ext.h" />
+    <ClInclude Include="..\..\source\gll_gl_ext_base.h" />
+    <ClInclude Include="..\..\source\gll_util.h" />
+    <ClInclude Include="..\..\source\wgll_ext.h" />
+    <ClInclude Include="..\..\source\wgll_ext_base.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\source\gll_c.c" />
+    <ClCompile Include="..\..\source\gll_cpp.cpp" />
+    <ClCompile Include="..\..\source\gll_gl_ext.c" />
+    <ClCompile Include="..\..\source\wgll_ext.c" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
