@@ -32,3 +32,21 @@ lib/libRocket
 
 *.xcbkptlist
 
+*.lib
+
+*.tlog
+
+*.obj
+
+*.lastbuildstate
+
+*.idb
+
+*.pdb
+
+*.log
+
+*.ipch
+
+*.opensdf
+

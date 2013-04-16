@@ -7,7 +7,11 @@
 #include <string.h>
 #include "gll_gl_ext.h"
 #include "gll_gl_ext_base.h"
+#ifdef _MSC_VER
+#include "../include/glload/gll.hpp"
+#else
 #include "glload/gll.hpp"
+#endif
 
 #ifdef WIN32
 #undef APIENTRY
@@ -29,7 +33,11 @@
 #include <OpenGL/glext.h>
 #endif
 
+#ifdef _MSC_VER
+#include "../include/glload/gll.h"
+#else
 #include "glload/gll.h"
+#endif
 
 
 namespace glload
