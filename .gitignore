@@ -10,6 +10,10 @@ lib/boost_1_53_0
 
 lib/glfw
 
+lib/glsdk
+
+lib/GnuWin32
+
 *.a
 
 *.dylib
