@@ -10,6 +10,7 @@
 #include "../GFX/GFXPipeline.h"
 #include "PyInterpreter.h"
 #include <Rocket/Core.h>
+#include <Rocket/Controls.h>
 #include "../UI/ShellSystemInterface.h"
 #include "../UI/ShellRenderInterfaceOpenGL.h"
 #include "../UI/ShellFileInterface.h"
@@ -34,6 +35,7 @@ systemInterface(new ShellSystemInterface(this)){
 		Rocket::Core::SetFileInterface(fileInterface.get());
 		if(gfxCtx.get() &&
 		   (rocketOnline = Rocket::Core::Initialise())){
+			Rocket::Controls::Initialise();
 			std::cout << "Success!" << std::endl;
 		} else{ std::cerr << "Initialization failed." << std::endl; }
 	} else{

@@ -1,5 +1,6 @@
 <rml>
 	<head>
+		<link type="text/rcss" href="styles/defaults.rcss"/>
 		<script>
 logos = ["logo.tga","Curves_(Legofied).tga"]
 def switch_img(self):
@@ -29,6 +30,9 @@ def print_something(event):
 	</head>
 	<body id="logo" ontextinput="print_something(event)">
 		<img id="rifm_logo" src="logo.tga" onclick="switch_img(self)" />
+		Test
+		<form>
 		<input type="text" />
+		</form>
 	</body>
 </rml>

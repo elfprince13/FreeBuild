@@ -20,8 +20,12 @@ def configure_ui(width,height):
 		for g,r in getKeyMap().iteritems():
 			Drivers.mapKey(g,r)
 		import main_menu
-		main_menu.init(driver.uiHandle)
 		print " Finished initalizing keymap."
+		print " Initializing default fonts..."
+		from scripts.prefs.fonts import loadDefaultFonts
+		loadDefaultFonts()
+		print " Finished initializing default fonts."
+		main_menu.init(driver.uiHandle)
 		ret = True
 	return ret
 
