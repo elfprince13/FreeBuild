@@ -50,3 +50,18 @@ lib/libRocket
 
 *.opensdf
 
+FreeBuildJ/bin
+
+FreeBuildJ/shared-libs
+
+*.class
+
+*.jar
+
+FreeBuildJ/UI
+
+FreeBuildJ/.cache
+
+ParseTest*
+
+*.tokens

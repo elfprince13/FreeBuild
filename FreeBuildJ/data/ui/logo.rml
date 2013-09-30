@@ -1,0 +1,38 @@
+<rml>
+	<head>
+		<link type="text/rcss" href="styles/defaults.rcss"/>
+		<script>
+logos = ["logo.tga","Curves_(Legofied).tga"]
+def switch_img(self):
+	src = self.GetAttribute("src")
+	if src in logos:
+		self.SetAttribute("src",logos[not logos.index(src)])
+	else:
+		print "O_o"
+def print_something(event):
+	print event.parameters["data"]
+		</script>
+		<style>
+			body
+			{
+				width: 100%;
+				height: 100%;
+				z-index: -1;
+			}
+			
+			#rifm_logo
+			{
+				position: absolute;
+				left: 25px;
+				top: 25px;
+			}
+		</style>
+	</head>
+	<body id="logo" ontextinput="print_something(event)">
+		<img id="rifm_logo" src="logo.tga" onclick="switch_img(self)" />
+		Test
+		<form>
+		<input type="text" />
+		</form>
+	</body>
+</rml>
