@@ -57,7 +57,7 @@ def main(*argv):
 		
 		from net.cemetech.sfgp.ldraw import LDManager
 		LDManager.init()
-		print driver.settings
+		#print driver.settings
 	else:
 		print "Dedicated server requested"
 		print "But no such driver exists"

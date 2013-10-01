@@ -30,9 +30,9 @@ public abstract class AbstractDriver {
 			System.err.println("settings hierarchy broken by non-dictionary type:");
 			System.err.print("\tinspected settings");
 			for(int j = 0; j < i; j++) {
-				System.err.printf("[%s]",hierarchy[j].__repr__().toString());
+				System.err.printf("[%s]",hierarchy[j].__repr__().asString());
 			}
-			System.err.printf(" and found %s instead",curDepth.__repr__().toString());
+			System.err.printf(" and found %s instead",curDepth.__repr__().asString());
 			e.printStackTrace();
 		}
 		
@@ -52,9 +52,9 @@ public abstract class AbstractDriver {
 			System.err.println("settings hierarchy broken by non-dictionary type:");
 			System.err.print("\tinspected settings");
 			for(int j = 0; j < i; j++) {
-				System.err.printf("[%s]",hierarchy[j].__repr__().toString());
+				System.err.printf("[%s]",hierarchy[j].__repr__().asString());
 			}
-			System.err.printf(" and found %s instead",curDepth.__repr__().toString());
+			System.err.printf(" and found %s instead",curDepth.__repr__().asString());
 			e.printStackTrace();
 		}
 		
