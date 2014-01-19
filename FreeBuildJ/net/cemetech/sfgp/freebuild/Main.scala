@@ -10,8 +10,8 @@ object Main {
 	def main(args:Array[String]) = {
 		Console.siezeSystemStreams
 		val ls = new FileLoggingService(ConventionMinder.findLogPath,ConventionMinder.findLogPath);
-		Console.out.subscribe(ls.getOut());
-		Console.err.subscribe(ls.getErr());
+		Console.out.subscribe(ls.getOut);
+		Console.err.subscribe(ls.getErr);
 		
 		var retcode = 0;
 		
