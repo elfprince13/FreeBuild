@@ -19,11 +19,11 @@ object LDManager {
 					Tuple2(Array("LDraw","ScriptPath"), new PyString("")),
 					Tuple2(Array("LDraw","Directory"), new PyList));
 	
-	private var ldDirCache:Array[String] = Array()
+	private var ldDirCache:List[String] = List()
 	
 	def init = {
 		System.out.println("Initializing LDraw Subsystem...")
-		prefInit.foreach(pTuple => Drivers.manager().getMainDriver().initDefaultSetting(pTuple._1.map(new PyString(_)), pTuple._2) )
+		prefInit.foreach(pTuple => Drivers.getMainDriver().initDefaultSetting(pTuple._1.map(new PyString(_)), pTuple._2) )
 		validateDirectories
 		
 	}
@@ -35,14 +35,14 @@ object LDManager {
 	def validateDirectories = {
 		val dirInitPref = prefInit(prefInit.size - 1)
 		val directory_pref:PyList = try {
-			 Drivers.manager().getMainDriver().checkSetting(dirInitPref._1.map(new PyString(_))).asInstanceOf[PyList]
+			 Drivers.getMainDriver().checkSetting(dirInitPref._1.map(new PyString(_))).asInstanceOf[PyList]
 		} catch {
 			case e: ClassCastException =>
 				System.err.println("settings['LDraw']['Directory'] must be a list!")
 				dirInitPref._2.asInstanceOf[PyList]
 		}
 		
-		ldDirCache = directory_pref.getArray.collect({case s : PyString if validateDirectory(s.asString) => s.asString}).flatMap(ppmDirs(_))
+		ldDirCache = directory_pref.getArray.iterator.collect({case s : PyString if validateDirectory(s.asString) => s.asString}).flatMap(ppmDirs(_)).toList
 		if(ldDirCache.size < 1 ){
 			System.err.println("No valid LDraw directories were found")
 		}/* else {
@@ -52,7 +52,7 @@ object LDManager {
 	}
 	
 	def ppmDirs(dirname:String):List[String] = {
-		List(dirname) ++ ppmSuffix.map(dirname + ConventionMinder.fsep + _)
+		dirname :: ppmSuffix.map(dirname + ConventionMinder.fsep + _)
 	}
 	
 	def validateDirectory(dirname:String):Boolean = {

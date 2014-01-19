@@ -6,7 +6,7 @@ path = os.path.abspath(__file__)
 dir_path = os.path.dirname(path)
 __all__=determine_package(dir_path)
 
-export_symbols(Drivers.manager().getMainDriver().settings.get("keymap","%s.default" %(__name__)),
+export_symbols(Drivers.getMainDriver().settings().get("keymap","%s.default" %(__name__)),
 			   globals(),
 			   locals(),
 			   [

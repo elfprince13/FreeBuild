@@ -43,8 +43,11 @@ class Shader(vertShaderFilename:String, fragShaderFilename:String, geoShaderFile
     
   GL20.glLinkProgram(progId)
   checkProgram(GL20.GL_LINK_STATUS)
-  GL20.glValidateProgram(progId)
-  checkProgram(GL20.GL_VALIDATE_STATUS)
+  
+   def validate = {
+	  GL20.glValidateProgram(progId)
+	  checkProgram(GL20.GL_VALIDATE_STATUS)
+  }
   
   
   def compileShader(kind:Int, src:String):Int = {
@@ -77,12 +80,12 @@ class Shader(vertShaderFilename:String, fragShaderFilename:String, geoShaderFile
   def checkProgram(statusFlag:Int) {
     val result = GL20.glGetProgrami(progId, statusFlag);
     if (result != GL11.GL_TRUE) {
-      val loglen = GL20.glGetShaderi(progId, GL20.GL_INFO_LOG_LENGTH);
-	  val error = GL20.glGetShaderInfoLog(progId, loglen);
+      val loglen = GL20.glGetProgrami(progId, GL20.GL_INFO_LOG_LENGTH);
+	  val error = GL20.glGetProgramInfoLog(progId, loglen);
 	  throw new LWJGLException(error);
     }
   }
-  def used() = { ShaderManager.usedNow == this}
+  def used = { ShaderManager.usedNow == this}
   def use() = {
     if(!used){
       GL20.glUseProgram(progId)

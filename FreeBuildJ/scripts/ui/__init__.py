@@ -13,8 +13,7 @@ def configure_ui(width,height):
 	from org.jogamp.glg2d import GLG2DCanvas
 	from org.fit.cssbox.layout import BrowserCanvas
 	from java.awt import Dimension
-	dManager = Drivers.manager()
-	driver = dManager.getMainDriver()
+	driver = Drivers.getMainDriver()
 	if driver == None or width <= 0 or height <= 0:
 		ret = False
 	else:

@@ -33,13 +33,6 @@ class VAO(reqID:Int = 0) {
 	  }
 	}
 	
-	def attach2D(tex:Texture, attachment:Int, target:Int, level:Int) = {
-	  if(bound){ 
-	    GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, attachment, target, tex.id, level)
-	  }
-	  else{ /* do something */ ; }
-	}
-	
 	def toggleAttribArray(index:Int, on:Boolean) = {
 	  if(bound) {
 	    (if(on) {
@@ -47,15 +40,26 @@ class VAO(reqID:Int = 0) {
 	    } else {
 	      GL20.glDisableVertexAttribArray _
 	  	}).asInstanceOf[(Int) => Unit](index)
-	  }
+	  } else{ warnUnbound }
+	}
+	
+	def setAttribDivisor(index:Int, divisor:Int) = {
+		if(bound) {
+			GL33.glVertexAttribDivisor(index, divisor)
+		} else { warnUnbound} 	
 	}
 	
 	def setAttribArrayPointer(index:Int, size:Int, ttype:Int, normalized:Boolean, stride:Int, offset:Long) = {
+		if(bound) {
 			GL20.glVertexAttribPointer(index, size, ttype, normalized, stride, offset)
+		} else { warnUnbound }
 	}
 	
 	def delete = {
 	  if(bound) unbind
 	  GL30.glDeleteVertexArrays(id)
+	}
+	
+	def warnUnbound = {
 	}
 }

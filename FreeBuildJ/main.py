@@ -41,19 +41,18 @@ def main(*argv):
 	print
 	print "Parsing startup arguments"
 	if not argv or "--dedicated" not in argv[1:]:
-		dManager = Drivers.manager()
-		dManager.clearMainDriver()
-		GFXDriver = dManager.getNamedDriver("GFXDriver")
+		Drivers.clearMainDriver()
+		GFXDriver = Drivers.getNamedDriver("GFXDriver")
 		driver = GFXDriver()
 		
 		# Here we should expliclty load a settings file
-		driver.settings["ui_defs"] = "scripts.ui"
-		driver.settings["keymap_name"] = "default"
-		driver.settings["LDraw"] = {
+		driver.settings()["ui_defs"] = "scripts.ui"
+		driver.settings()["keymap_name"] = "default"
+		driver.settings()["LDraw"] = {
 			'ConfigPath' : '/Users/thomas/LDraw/LDConfig.ldr',
 			'Directory' : ['/Users/thomas/LDRAW','/Applications/LSynth']				
 		}
-		dManager.setMainDriver(driver)
+		Drivers.setMainDriver(driver)
 		
 		from net.cemetech.sfgp.ldraw import LDManager
 		LDManager.init()
