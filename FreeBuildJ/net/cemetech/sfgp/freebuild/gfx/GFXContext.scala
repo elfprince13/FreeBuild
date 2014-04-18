@@ -8,7 +8,7 @@ import org.lwjgl.opengl.GL11._
 import scala.util.Sorting
 
 class GFXContext {
-	val renderer = new InferredRenderer(Display.getWidth, Display.getHeight)
+	//val renderer = new InferredRenderer(Display.getWidth, Display.getHeight)
   
   val matrices = new MatrixStack
 	
@@ -21,7 +21,7 @@ class GFXContext {
 	}
 	
 	def cleanup():Unit = {
-		renderer.cleanup
+		//renderer.cleanup
 	  Display.destroy
 	}
 	
@@ -50,7 +50,7 @@ object GFX {
     		}
     		Display.setDisplayMode(askFor)
     		Display.create(new PixelFormat,
-    		    (new ContextAttribs(3, 2)).withProfileCore(true)
+    		    (new ContextAttribs(3, 3)).withProfileCore(true)
     		)
     		Display.setTitle("FreeBuild/J Engine Demo")
     		

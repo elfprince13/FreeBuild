@@ -16,11 +16,11 @@ object Python {
 		//println(initProps)
 		
 		var name:String = "main.py"
-		if (args.length <= 1){
+		if (args.length < 1){
 			args = Array(name)
 		} else {
-			name = args(1)
-			args = args.drop(1)
+			name = args(0)
+			args = args.drop(0)
 		}
 		
     	/*

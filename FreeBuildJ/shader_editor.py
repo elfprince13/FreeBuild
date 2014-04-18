@@ -39,31 +39,23 @@ def export_symbols(module_name,globals,locals,fromlist,level=0):
 def main(*argv):
 	print "//---------------------------------------------"
 	print
-	print "Parsing startup arguments"
-	if not argv or "--dedicated" not in argv[1:]:
-		Drivers.clearMainDriver()
-		GFXDriver = Drivers.getNamedDriver("GFXDriver")
-		driver = GFXDriver()
+	print "Parsing startup arguments for shader editor"
+	Drivers.clearMainDriver()
+	from net.cemetech.sfgp.freebuild.gfx import GFX
 		
-		# Here we should explicitly load a settings file
-		driver.settings()["ui_defs"] = "scripts.ui"
-		driver.settings()["keymap_name"] = "default"
-		driver.settings()["LDraw"] = {
-			'ConfigPath' : '/Users/thomas/LDRAW/LDConfig.ldr',
-			'Directory' : ['/Users/thomas/LDRAW','/Applications/LSynth']				
-		}
-		Drivers.setMainDriver(driver)
-		
-		from net.cemetech.sfgp.ldraw import LDManager
-		LDManager.init()
-		LDManager.parseModel("/Users/thomas/LDRAW/MODELS/car.dat")
-		#print driver.settings
+	gfxCtx = GFX.init()
+	if gfxCtx != None:
+		print "Success!"
 	else:
-		print "Dedicated server requested"
-		print "But no such driver exists"
+		print "Initialization failed."
+
 	print 
 	print "---------------------------------------------//"
 	print
+	
+	if gfxCtx != None:
+		while gfxCtx.open():
+			pass
 
 if __name__ == "__main__":
 	main(*sys.argv)

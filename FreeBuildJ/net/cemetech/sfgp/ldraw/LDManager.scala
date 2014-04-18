@@ -3,6 +3,8 @@ package net.cemetech.sfgp.ldraw
 import org.python.core._
 import net.cemetech.sfgp.freebuild.drivers._
 import net.cemetech.sfgp.freebuild.platform.ConventionMinder
+import net.cemetech.sfgp.ldraw.parser._
+import org.antlr.v4.runtime._
 
 import scala.collection.immutable.List
 import java.io.File
@@ -57,6 +59,16 @@ object LDManager {
 	
 	def validateDirectory(dirname:String):Boolean = {
 		ppmDirs(dirname).foldLeft(true)((a,b) => a && (new File(dirname)).isDirectory())
+	}
+	
+	def parseModel(fname:String) = {
+		val input = new ANTLRFileStream(fname)
+		val lexer = new LDrawLexer(input)
+		val tokens = new CommonTokenStream(lexer)
+		val parser = new LDrawParser(tokens)
+		parser.setBuildParseTree(true)
+		val tree = parser.parsedModel
+		tree.inspect(parser)
 	}
 		
 }

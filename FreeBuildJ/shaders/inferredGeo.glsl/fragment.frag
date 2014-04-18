@@ -1,4 +1,3 @@
-#version 330
 in vec2 hnorm;
 in float dsfID;
 

@@ -44,7 +44,7 @@ class InferredRenderer(width:Int, height:Int) {
 	ndsfPUBO.delete
 	dPUBO.delete
 	
-	private val inferredGeoStage:Shader = new Shader("shaders/inferredGeo.vert","shaders/inferredGeo.frag")
+	private val inferredGeoStage:Shader = new Shader("shaders/inferredGeo.glsl/vertex.vert","shaders/inferredGeo.glsl/fragment.frag")
 	
 	def render(scene:Array[Mesh]) = {
 		gbuffer.bind
