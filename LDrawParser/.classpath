@@ -4,5 +4,6 @@
 	<classpathentry kind="src" path="target/generated-sources/antlr4"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/antlr4"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/ANTLRv4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

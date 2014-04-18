@@ -2,31 +2,22 @@
 <classpath>
 	<classpathentry excluding="shared-libs/glg2d/src/main/java/|shared-libs/glg2d/src/main/java/|shared-libs/SwingBoxLib-0/2/|shared-libs/SwingBoxLib-0.2/|shared-libs/libcrane/" kind="src" path=""/>
 	<classpathentry kind="src" path="shared-libs/glg2d/src/main/java"/>
-	<classpathentry kind="src" path="shared-libs/SwingBoxLib-0.2"/>
 	<classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="shared-libs/lwjgl-2.9.0/jar/lwjgl_util.jar"/>
-	<classpathentry kind="lib" path="shared-libs/lwjgl-2.9.0/jar/lwjgl.jar" sourcepath="/Users/thomas/Downloads/lwjgl-source-2.9.0.zip">
+	<classpathentry kind="lib" path="shared-libs/jython-standalone-2.7-b1.jar"/>
+	<classpathentry kind="lib" path="shared-libs/htmlparser-1.4.jar"/>
+	<classpathentry kind="lib" path="shared-libs/slick-util.jar"/>
+	<classpathentry kind="lib" path="shared-libs/libcrane">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/Users/thomas/FreeBuild/FreeBuildJ/shared-libs/lwjgl-2.9.0/native/macosx"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="FreeBuildJ/shared-libs/libcrane"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="shared-libs/lwjgl-2.9.0/jar/lzma.jar"/>
-	<classpathentry kind="lib" path="shared-libs/jython-standalone-2.7-b1.jar"/>
-	<classpathentry kind="lib" path="shared-libs/CSSBoxLib-4.2/antlr-runtime-3.1.jar"/>
-	<classpathentry kind="lib" path="shared-libs/CSSBoxLib-4.2/CSSBox.jar" sourcepath="/Users/thomas/Downloads/CSSBox-4.2/src"/>
-	<classpathentry kind="lib" path="shared-libs/CSSBoxLib-4.2/jStyleParser_SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="shared-libs/CSSBoxLib-4.2/logback-classic-0.9.9.jar"/>
-	<classpathentry kind="lib" path="shared-libs/CSSBoxLib-4.2/logback-core-0.9.9.jar"/>
-	<classpathentry kind="lib" path="shared-libs/CSSBoxLib-4.2/slf4j-api-1.5.2.jar"/>
-	<classpathentry kind="lib" path="shared-libs/CSSBoxLib-4.2/xercesImpl.jar"/>
-	<classpathentry kind="lib" path="shared-libs/CSSBoxLib-4.2/xml-apis.jar"/>
-	<classpathentry kind="lib" path="shared-libs/htmlparser-1.4.jar"/>
-	<classpathentry kind="lib" path="shared-libs/commons-io-2.4.jar"/>
-	<classpathentry kind="lib" path="shared-libs/slick-util.jar"/>
-	<classpathentry kind="lib" path="shared-libs/antlr4-complete.jar"/>
-	<classpathentry kind="lib" path="shared-libs/jna/jna-4.0.0.jar"/>
-	<classpathentry kind="lib" path="shared-libs/jna/jna-platform-4.0.0.jar"/>
-	<classpathentry kind="lib" path="shared-libs/libcrane"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/GLSLParser"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/LDrawParser"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/ANTLRv4"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jsyntaxpane"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JNA"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/CSSBox"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/LWJGL"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

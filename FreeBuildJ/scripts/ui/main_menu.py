@@ -39,9 +39,9 @@ def init(context,dim):
 	context.setDrawableComponent(browser)
 	
 	imgTest = browser.getImage()
-	from javax.imageio import ImageIO
-	from java.io import File
-	ImageIO.write(imgTest,"png",File("fleepasheep.png"))
+	#from javax.imageio import ImageIO
+	#from java.io import File
+	#ImageIO.write(imgTest,"png",File("fleepasheep.png"))
 	
 	#browser.setSize(200,300)
 	#browser.setLocation(200,150)
