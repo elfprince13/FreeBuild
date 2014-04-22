@@ -33,6 +33,7 @@ def init(context,dim):
 	da.attributesToStyles() #convert the HTML presentation attributes to inline styles
 	da.addStyleSheet(None, CSSNorm.stdStyleSheet(), DOMAnalyzer.Origin.AGENT) #use the standard style sheet
 	da.addStyleSheet(None, CSSNorm.userStyleSheet(), DOMAnalyzer.Origin.AGENT) #use the additional style sheet
+	da.addStyleSheet(None, CSSNorm.formsStyleSheet(), DOMAnalyzer.Origin.AGENT)
 	da.getStyleSheets() #load the author style sheets
 	browser = BrowserCanvas(da.getRoot(),da,dim,JFile("./data/ui").toURI().normalize().toURL())
 	docSource.close()

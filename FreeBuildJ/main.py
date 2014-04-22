@@ -46,18 +46,17 @@ def main(*argv):
 		driver = GFXDriver()
 		
 		# Here we should explicitly load a settings file
-		driver.settings()["ui_defs"] = "scripts.ui"
-		driver.settings()["keymap_name"] = "default"
-		driver.settings()["LDraw"] = {
-			'ConfigPath' : '/Users/thomas/LDRAW/LDConfig.ldr',
-			'Directory' : ['/Users/thomas/LDRAW','/Applications/LSynth']				
-		}
+		import json
+		with open("data/prefs/defaults.json",'r') as defaults:
+			for k,v in json.load(defaults).items(): driver.settings()[k] = v
+		with open("data/prefs/prefs.json",'r') as prefs:
+			for k,v in json.load(prefs).items(): driver.settings()[k] = v
 		Drivers.setMainDriver(driver)
 		
 		from net.cemetech.sfgp.ldraw import LDManager
 		LDManager.init()
-		LDManager.parseModel("/Users/thomas/LDRAW/MODELS/car.dat")
-		#print driver.settings
+		LDManager.parseModel("car.dat")
+		print driver.settings
 	else:
 		print "Dedicated server requested"
 		print "But no such driver exists"

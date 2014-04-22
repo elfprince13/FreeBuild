@@ -65,3 +65,5 @@ FreeBuildJ/.cache
 ParseTest*
 
 *.tokens
+
+prefs.json

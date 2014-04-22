@@ -62,13 +62,18 @@ object LDManager {
 	}
 	
 	def parseModel(fname:String) = {
-		val input = new ANTLRFileStream(fname)
-		val lexer = new LDrawLexer(input)
-		val tokens = new CommonTokenStream(lexer)
-		val parser = new LDrawParser(tokens)
-		parser.setBuildParseTree(true)
-		val tree = parser.parsedModel
-		tree.inspect(parser)
+		val paths = ldDirCache.iterator.flatMap(dir => ppmDirs(dir).map(ppmDir => new File(ppmDir,fname))).dropWhile(!_.canRead())
+		if(paths.hasNext){
+			val input = new ANTLRFileStream(paths.next.getCanonicalPath)
+			val lexer = new LDrawLexer(input)
+			val tokens = new CommonTokenStream(lexer)
+			val parser = new LDrawParser(tokens)
+			parser.setBuildParseTree(true)
+			val tree = parser.parsedModel
+			tree.inspect(parser)
+		} else {
+			System.err.println("Couldn't read model from any model directories: " + fname)
+		}
 	}
 		
 }
