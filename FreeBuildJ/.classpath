@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="shared-libs/glg2d/src/main/java/|shared-libs/glg2d/src/main/java/|shared-libs/SwingBoxLib-0/2/|shared-libs/SwingBoxLib-0.2/|shared-libs/libcrane/" kind="src" path=""/>
-	<classpathentry kind="src" path="shared-libs/glg2d/src/main/java"/>
+	<classpathentry excluding="shared-libs/CSSBoxLib/|shared-libs/GLSLParser/|shared-libs/glg2d/|shared-libs/libcrane/" kind="src" path=""/>
 	<classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="shared-libs/jython-standalone-2.7-b1.jar"/>
@@ -19,5 +18,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JNA"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/CSSBox"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/LWJGL"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/lwjglg2d"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
