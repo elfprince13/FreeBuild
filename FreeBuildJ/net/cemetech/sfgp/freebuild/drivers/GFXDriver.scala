@@ -1,20 +1,15 @@
 package net.cemetech.sfgp.freebuild;
 
-import net.cemetech.sfgp.freebuild.gfx._;
-
-
-import org.lwjgl.LWJGLException;
-import org.lwjgl.opengl._;
-
+import net.cemetech.sfgp.freebuild.gfx._
+import org.lwjgl.LWJGLException
+import org.lwjgl.opengl._
 import org.jogamp.glg2d.GLGraphics2D
 import org.jogamp.glg2d.GLG2DCanvas
-
 import org.fit.cssbox.layout.BrowserCanvas
 import javax.swing.JComponent
-
-import org.python.core._;
-
+import org.python.core._
 import net.cemetech.sfgp.freebuild.drivers.AbstractDriver;
+import org.lwjgl.util.vector.Matrix4f
 
 class GFXDriver extends AbstractDriver {
 	
@@ -79,21 +74,21 @@ class GFXDriver extends AbstractDriver {
 				GL11.glEnable(GL11.GL_BLEND);
 				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 				
-				GL11.glMatrixMode(GL11.GL_PROJECTION);
-				GL11.glLoadIdentity();
-				GL11.glOrtho(0, 640, 480, 0, -1, 1);
+				gfxCtx.projection.push(MatrixUtils.orthoProjection(0, 640, 480, 0, -1, 1))
 				
-				GL11.glMatrixMode(GL11.GL_MODELVIEW);
-				GL11.glLoadIdentity();
+				val vpMat = new Matrix4f()
+				val vars3d = Map[String,Any]("ViewProjection" -> vpMat)
 				
 				while (gfxCtx.open())
 				{
 					GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 					/* Render here */
-					//HANDLE_PY_ERR_NO_RET(renderUI());
-					//uiHandle->Update();
 					
-					uiHandle.paint(uiHandle.getGraphics())
+					// uiHandle.paint(uiHandle.getGraphics())
+					// ^- enable this once we're ready to do the UI stuff
+					
+					Matrix4f.mul(gfxCtx.projection.peek, gfxCtx.view.peek, vpMat)
+					gfxCtx.renderer.render(Array[Mesh](),vars3d)
 					
 					/* Swap front and back buffers and process events */
 					gfxCtx.swapBuffers();

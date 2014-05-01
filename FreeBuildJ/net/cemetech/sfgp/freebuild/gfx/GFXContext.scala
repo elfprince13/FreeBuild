@@ -8,12 +8,15 @@ import org.lwjgl.opengl.GL11._
 import scala.util.Sorting
 
 class GFXContext {
-	//val renderer = new InferredRenderer(Display.getWidth, Display.getHeight)
+	val renderer = new InferredRenderer(Display.getWidth, Display.getHeight)
   
-  val matrices = new MatrixStack
+  val projection = new MatrixStack
+  val view = new MatrixStack
+  val model = new MatrixStack
 	
 	def swapBuffers():Unit = {
 		Display.update
+		Display.sync(60)
 	}
 	
 	def open():Boolean = {
@@ -49,9 +52,12 @@ object GFX {
     		  if (askFor.getBitsPerPixel < mode.getBitsPerPixel) askFor = mode
     		}
     		Display.setDisplayMode(askFor)
+    		// there's a bug here with how LWJGL requests contexts
+    		// this should really be 3,3, but it doesn't return one 
     		Display.create(new PixelFormat,
-    		    (new ContextAttribs(3, 3)).withProfileCore(true)
+    		    (new ContextAttribs(3, 2)).withProfileCore(true)
     		)
+    		Console.println("OpenGL Context Initialized with Properties: \n" + checkGLVersions())
     		Display.setTitle("FreeBuild/J Engine Demo")
     		
     		
@@ -69,4 +75,9 @@ object GFX {
       throw new LWJGLException(prepend +", GL Error: 0x" + Integer.toHexString(err))
     }
   }
+  
+  def checkGLVersions():String = {
+    "GL Version: " + GL11.glGetString(GL11.GL_VERSION) + "\nGLSL Version: " + GL11.glGetString(GL20.GL_SHADING_LANGUAGE_VERSION)
+  }
+  
 }

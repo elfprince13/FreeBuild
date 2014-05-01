@@ -5,12 +5,15 @@ import org.lwjgl.opengl._
 import java.nio._
 import org.lwjgl.BufferUtils
 import org.lwjgl.LWJGLException
+import org.lwjgl.util.vector.Matrix4f
 
 object ShaderManager {
   var usedNow:Shader = null;
 }
 
 class Shader(vertShaderFilename:String, fragShaderFilename:String, geoShaderFilename:String = "") {
+  val f16Buffer = BufferUtils.createFloatBuffer(16);
+  
   val vHandle = Source.fromFile(vertShaderFilename)
   val vSrc = vHandle.getLines mkString "\n"
   vHandle.close
@@ -96,6 +99,18 @@ class Shader(vertShaderFilename:String, fragShaderFilename:String, geoShaderFile
     if(used){
       GL20.glUseProgram(0)
       ShaderManager.usedNow = null
+    }
+  }
+  
+  def setVariables(vars:Map[String,Any]) = {
+    vars.foreach{case (name:String,value:Any) =>
+    	val uni = GL20.glGetUniformLocation(progId, name)
+    	if (uni == -1) throw new LWJGLException(name + " was invalid, or missing from this shader program (" + progId +")")
+    	GFX.checkNoGLErrors("Unable to bind shader variable")
+    	value match {
+    	  case mat:Matrix4f => mat.store(f16Buffer); f16Buffer.flip(); GL20.glUniformMatrix4(uni, false, f16Buffer)
+    	}
+    	
     }
   }
 

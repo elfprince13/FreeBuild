@@ -1,3 +1,4 @@
+#version 330 core
 uniform mat4x4 ViewProjection;
 layout(location = 0) in vec4 vposition;
 layout(location = 1) in mat4x4 txform;

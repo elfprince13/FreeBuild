@@ -46,9 +46,10 @@ class InferredRenderer(width:Int, height:Int) {
 	
 	private val inferredGeoStage:Shader = new Shader("shaders/inferredGeo.glsl/vertex.vert","shaders/inferredGeo.glsl/fragment.frag")
 	
-	def render(scene:Array[Mesh]) = {
+	def render(scene:Array[Mesh],shaderVars:Map[String,Any]) = {
 		gbuffer.bind
 		inferredGeoStage.use
+		inferredGeoStage.setVariables(shaderVars)
 		
 		
 		inferredGeoStage.unuse
