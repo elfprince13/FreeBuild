@@ -53,10 +53,12 @@ def main(*argv):
 			for k,v in json.load(prefs).items(): driver.settings()[k] = v
 		Drivers.setMainDriver(driver)
 		
+		from scripts.gfx import framebuffer_builder
+		
 		from net.cemetech.sfgp.ldraw import LDManager
 		LDManager.init()
 		LDManager.parseModel("car.dat")
-		print driver.settings
+		print driver.settings()
 	else:
 		print "Dedicated server requested"
 		print "But no such driver exists"
