@@ -90,31 +90,30 @@ Setting up your workspace
 	1. ANTLRv4 -> Add your `antlr-runtime` jar from `shared-libs` (or `antlr-complete` if you downloaded that instead)
 	2. CSSBox -> Add the `cssbox-complete.jar` that you either downloaded or built yourself. CSSBox depends on a conflicting version of antlr, so that script repackages dependencies nicely to avoid making a mess. Otherwise you'll likely get an error along the lines of
 
-<pre><code>
-Exception in thread "main" Traceback (most recent call last):
-  File "/Users/thomas/FreeBuild/FreeBuildJ/scripts/ui/__init__.py", line 36, in configure_ui
-    main_menu.init(driver.getUiHandle(),dim)
-  File "/Users/thomas/FreeBuild/FreeBuildJ/scripts/ui/main_menu.py", line 34, in init
-    da.addStyleSheet(None, CSSNorm.stdStyleSheet(), DOMAnalyzer.Origin.AGENT) #use the standard style sheet
-	at cz.vutbr.web.csskit.antlr.CSSLexer.nextToken(CSSLexer.java:313)
-	at org.antlr.runtime.BufferedTokenStream.fetch(BufferedTokenStream.java:143)
-	at org.antlr.runtime.BufferedTokenStream.sync(BufferedTokenStream.java:137)
-	at org.antlr.runtime.CommonTokenStream.setup(CommonTokenStream.java:137)
-	at org.antlr.runtime.CommonTokenStream.LT(CommonTokenStream.java:94)
-	at cz.vutbr.web.csskit.antlr.CSSParser.stylesheet(CSSParser.java:655)
-	at cz.vutbr.web.csskit.antlr.CSSParserFactory$SourceType$2.getAST(CSSParserFactory.java:81)
-	at cz.vutbr.web.csskit.antlr.CSSParserFactory.feedParser(CSSParserFactory.java:375)
-	at cz.vutbr.web.csskit.antlr.CSSParserFactory.createParser(CSSParserFactory.java:342)
-	at cz.vutbr.web.csskit.antlr.CSSParserFactory.parse(CSSParserFactory.java:229)
-	at cz.vutbr.web.csskit.antlr.CSSParserFactory.parse(CSSParserFactory.java:258)
-	at cz.vutbr.web.css.CSSFactory.parse(CSSFactory.java:369)
-	at org.fit.cssbox.css.DOMAnalyzer.addStyleSheet(DOMAnalyzer.java:380)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:606)
-
-java.lang.NoSuchFieldError: java.lang.NoSuchFieldError: EOF_TOKEN</code></pre>
+			Exception in thread "main" Traceback (most recent call last):
+			  File "/Users/thomas/FreeBuild/FreeBuildJ/scripts/ui/__init__.py", line 36, in configure_ui
+			    main_menu.init(driver.getUiHandle(),dim)
+			  File "/Users/thomas/FreeBuild/FreeBuildJ/scripts/ui/main_menu.py", line 34, in init
+			    da.addStyleSheet(None, CSSNorm.stdStyleSheet(), DOMAnalyzer.Origin.AGENT) #use the standard style sheet
+				at cz.vutbr.web.csskit.antlr.CSSLexer.nextToken(CSSLexer.java:313)
+				at org.antlr.runtime.BufferedTokenStream.fetch(BufferedTokenStream.java:143)
+				at org.antlr.runtime.BufferedTokenStream.sync(BufferedTokenStream.java:137)
+				at org.antlr.runtime.CommonTokenStream.setup(CommonTokenStream.java:137)
+				at org.antlr.runtime.CommonTokenStream.LT(CommonTokenStream.java:94)
+				at cz.vutbr.web.csskit.antlr.CSSParser.stylesheet(CSSParser.java:655)
+				at cz.vutbr.web.csskit.antlr.CSSParserFactory$SourceType$2.getAST(CSSParserFactory.java:81)
+				at cz.vutbr.web.csskit.antlr.CSSParserFactory.feedParser(CSSParserFactory.java:375)
+				at cz.vutbr.web.csskit.antlr.CSSParserFactory.createParser(CSSParserFactory.java:342)
+				at cz.vutbr.web.csskit.antlr.CSSParserFactory.parse(CSSParserFactory.java:229)
+				at cz.vutbr.web.csskit.antlr.CSSParserFactory.parse(CSSParserFactory.java:258)
+				at cz.vutbr.web.css.CSSFactory.parse(CSSFactory.java:369)
+				at org.fit.cssbox.css.DOMAnalyzer.addStyleSheet(DOMAnalyzer.java:380)
+				at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+				at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+				at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+				at java.lang.reflect.Method.invoke(Method.java:606)
+			
+			java.lang.NoSuchFieldError: java.lang.NoSuchFieldError: EOF_TOKEN
 
 	3. JNA -> Add your jna jar from `shared-libs`.
 	4. jsyntaxpane -> Add your jsyntaxpane jar from `shared-libs`.
@@ -154,3 +153,4 @@ Sounds, models, textures, and ui related stuff will go in `data` (as do preferen
 
 
 [Back to top](#getting-started-with-freebuild)
+
