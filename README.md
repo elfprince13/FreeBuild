@@ -11,7 +11,7 @@ Getting Started With FreeBuild
 
 Vision
 ------
-Imagine being able to build any Lego creation you can imagine without running out of pieces. Imagine being able to build a mech, or a spaceship, or a tank, and immediately jumping into the pilot's seat for a fight to the death. Imagine building secret bases under the kitchen stove, and towns in the cupboards, and then leveling them, or dashing through the streets of a medieval village playing capture the flag. 
+Imagine being able to build any Lego creation you can imagine without running out of pieces. Imagine being able to build a mech, or a spaceship, or a tank, and immediately jumping into the pilot's seat for a fight to the death. Imagine building secret bases under the kitchen stove, and towns in the cupboards, and then leveling them, or dashing through the streets of a medieval village playing capture the flag.
 
 Anyone should be able to build a world, and anyone should be able to build a game in that world. We want to support both of those things.
 
@@ -83,14 +83,14 @@ Setting up your workspace
 * Open the Eclipse that has Scala IDE/PyDev/AntlrIDE.
 * File -> Import -> General -> Existing Projects into Workspace
 * Browse to select the FreeBuild root directory. Make sure "Search for nested projects is checked", and "Copy projects into workspace" is unchecked. Select the four listed projects: FreeBuildJ, GLSLParser, LDrawParser, and lwjglg2d. Press Finish.
-* Open the Eclipse preferences, go to PyDev, then Interpreters, then click Jython Interpreter. 
+* Open the Eclipse preferences, go to PyDev, then Interpreters, then click Jython Interpreter.
 * Click "New", enter "Jython 2.7 beta" as the interpreter name, and browse to select the standalone jar in `shared-libs`.
 * It will complain that it couldn't find the Python stdlib. Press "Proceed anyways", then select the new interpreter from the list, and switch to the Libraries tab below. Press "New Jar/Zips", and select the standalone jar again. Press Open, Apply, and Ok.
-* In the sidebar, now select Java, Build path, and User Libraries. You'll now add 5 User Libaries. For each, you'll press "New", enter the designated name, make sure "System library" is **not** checked, and press OK. Then press Add JARs, add the JARs directed, and follow any additional steps listed. 
+* In the sidebar, now select Java, Build path, and User Libraries. You'll now add 5 User Libaries. For each, you'll press "New", enter the designated name, make sure "System library" is **not** checked, and press OK. Then press Add JARs, add the JARs directed, and follow any additional steps listed.
 	1. ANTLRv4 -> Add your `antlr-runtime` jar from `shared-libs` (or `antlr-complete` if you downloaded that instead)
-	2. CSSBox -> Add the `cssbox-complete.jar` that you either downloaded or built yourself. CSSBox depends on a conflicting version of antlr, so that script repackages dependencies nicely to avoid making a mess. Otherwise you'll likely get an error along the lines of 
+	2. CSSBox -> Add the `cssbox-complete.jar` that you either downloaded or built yourself. CSSBox depends on a conflicting version of antlr, so that script repackages dependencies nicely to avoid making a mess. Otherwise you'll likely get an error along the lines of
 
-``
+<pre><code>
 Exception in thread "main" Traceback (most recent call last):
   File "/Users/thomas/FreeBuild/FreeBuildJ/scripts/ui/__init__.py", line 36, in configure_ui
     main_menu.init(driver.getUiHandle(),dim)
@@ -114,14 +114,13 @@ Exception in thread "main" Traceback (most recent call last):
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
 	at java.lang.reflect.Method.invoke(Method.java:606)
 
-java.lang.NoSuchFieldError: java.lang.NoSuchFieldError: EOF_TOKEN
-``
+java.lang.NoSuchFieldError: java.lang.NoSuchFieldError: EOF_TOKEN</code></pre>
 
-	3. JNA -> Add your jna jar from `shared-libs`
-	4. jsyntaxpane -> Add your jsyntaxpane jar from `shared-libs.`
+	3. JNA -> Add your jna jar from `shared-libs`.
+	4. jsyntaxpane -> Add your jsyntaxpane jar from `shared-libs`.
 	5. LWJGL -> Add all of your jars from `shared-libs/lwjgl/jar`. Then expand the entry for `lwjgl.jar`, double click on Native library location, and select the correct subfolder of `shared-libs/lwjgl/native/` for your platform.
-* If you get compile-time errors at this stage (before having changed any code yourself), you may wish to refresh each project by right clicking and selecting refresh. If you still get them, come ask here for help. 
-* To run, you should be able to right-click on `net.cemetech.sfgp.freebuild.Main.scala`, and Run or Debug as a Scala application. If you get run-time errors, that's okay, we're still working =) You can also add additional Run + Debug configurations at your leisure, using the Run menu. 
+* If you get compile-time errors at this stage (before having changed any code yourself), you may wish to refresh each project by right clicking and selecting refresh. If you still get them, come ask here for help.
+* To run, you should be able to right-click on `net.cemetech.sfgp.freebuild.Main.scala`, and Run or Debug as a Scala application. If you get run-time errors, that's okay, we're still working =) You can also add additional Run + Debug configurations at your leisure, using the Run menu.
 * Browse through `Main.scala` to understand how the application is launched and what options are available (for example, how to change the main script file at runtime). Browse through libcrane and `net.cemetech.sfgp.freebuild.platform.ConventionMinder.scala` to figure out where log files are being stored.
 
 [Back to top](#getting-started-with-freebuild)
@@ -148,7 +147,7 @@ Eventually we'll need to add other subpackages for at least net-code and physics
 * `scripts.ui` -> contains the code that sets up all of the UI handles used by `GFXDriver`, plus a module defining a representation for key bindings that trigger actions, and another module that sets up our dummy main menu. Any scripts related to user interaction should go here (though possibly eventually with better organization).
 * `scripts.prefs` -> the `__init__.py` for `scripts.prefs` subpackages are a little bit more elaborate. They define symbols that should be exported by that subpackage, and read a global configuration dictionary to decide which module in that package should be chosen to export them from. Right now we only have keybindings (which is more or less a dummy/holdover, from brief flirtation with librocket), and fonts, which just provides a handle to a directory full of fonts that we want to use. The full preferences system isn't set up yet, but between `main.py` and this you should have a good flavor for how it will work.
 
-Eventually, we'll need to add `server` + `client` subpackages, plus probably a `common`. 
+Eventually, we'll need to add `server` + `client` subpackages, plus probably a `common`.
 
 ###data###
 Sounds, models, textures, and ui related stuff will go in `data` (as do preferences). Add directories as needed, in an organized + hierarchical fashion. As with scripts, the top of these hierarchies should probably be related to server/client dichotomies, plus some stuff in common.
