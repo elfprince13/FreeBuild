@@ -90,7 +90,7 @@ Setting up your workspace
 	1. ANTLRv4 -> Add your `antlr-runtime` jar from `shared-libs` (or `antlr-complete` if you downloaded that instead)
 	2. CSSBox -> Add the `cssbox-complete.jar` that you either downloaded or built yourself. CSSBox depends on a conflicting version of antlr, so that script repackages dependencies nicely to avoid making a mess. Otherwise you'll likely get an error along the lines of 
 
-```
+``
 Exception in thread "main" Traceback (most recent call last):
   File "/Users/thomas/FreeBuild/FreeBuildJ/scripts/ui/__init__.py", line 36, in configure_ui
     main_menu.init(driver.getUiHandle(),dim)
@@ -115,7 +115,7 @@ Exception in thread "main" Traceback (most recent call last):
 	at java.lang.reflect.Method.invoke(Method.java:606)
 
 java.lang.NoSuchFieldError: java.lang.NoSuchFieldError: EOF_TOKEN
-```
+``
 
 	3. JNA -> Add your jna jar from `shared-libs`
 	4. jsyntaxpane -> Add your jsyntaxpane jar from `shared-libs.`
@@ -126,7 +126,7 @@ java.lang.NoSuchFieldError: java.lang.NoSuchFieldError: EOF_TOKEN
 
 [Back to top](#getting-started-with-freebuild)
 
-Finding your away around the source tree
+Finding your way around the source tree
 -----------------------------------------
 Within the primary FreeBuildJ directory there are three hierarchies of folders that are important to understand as a developer.
 
