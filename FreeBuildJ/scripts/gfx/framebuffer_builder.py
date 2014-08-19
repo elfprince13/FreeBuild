@@ -63,5 +63,6 @@ def framebuffer_from_description(description, suppress_unbind=False):
         
 def framebuffer_from_json(path):
     with open(path, 'r') as desc_handle:
-        return lambda: framebuffer_from_description(json.load(desc_handle))
+        json_data = json.load(desc_handle)
+        return lambda: framebuffer_from_description(jsondata)
         
