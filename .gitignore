@@ -67,3 +67,5 @@ ParseTest*
 *.tokens
 
 prefs.json
+
+OldVersion/
