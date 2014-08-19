@@ -1,8 +1,10 @@
-<html>
-	<head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
 		<link rel="stylesheet" type="text/css" href="styles/defaults.css"/>
 
-		<style>
+		<style type="text/css">
 			body
 			{
 				width: 100%;
@@ -14,24 +16,43 @@
 			#rifm_logo
 			{
 				position: absolute;
-				left: 25px;
+				left: 200px;
 				top: 25px;
 				border: 5px dotted #ff00ff;
+				border-radius: 15px;
 			}
 			
-			input {
+			input[type=text] {
 				border: 5px dotted #00ff00;
+				border-radius: 10px;
+				width: 12em;
+				height: 0.75em;
+			}
+			
+			input[type=submit] {
+				border: 5px dotted #00ff00;
+				border-radius: 10px;
+				width: auto;
+				height: auto;
+			}
+			
+			.test-span {
+				background-color: #505; border: 2px dotted #00ff00; border-radius: 15px; color: #fff
 			}
 		</style>
 		<title>Test Logo</title>
 	</head>
 	<body id="logo">
 		<img id="rifm_logo" src="logo.png" alt="test logo" />
-		Test
+		<span class="test-span">Test</span>
+		<div>
 		<form action="#" >
-		Name: <input type="text" name="fname"/><br/>
-		Last: <input type="text" name="lname"/><br/>
+		<label for="fname">Name:</label> <input type="text" id="fname" name="fname" /><br/><br/>
+		<label for="lname">Last:</label> <input type="text" id="lname" name="lname" /><br/>
 		<input type="submit" value="Submit"/>
 		</form>
+		</div>
+		
 	</body>
+	
 </html>
