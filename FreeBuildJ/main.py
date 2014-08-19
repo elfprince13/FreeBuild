@@ -59,7 +59,7 @@ def main(*argv):
 		LDManager.init()
 		LDManager.parseModel("car.dat")
 		print driver.settings()
-		framebuffer_builder.framebuffer_from_json("shaders/inferred_pipeline.json")
+		framebuffer_builder.framebuffer_from_json("shaders/inferred_pipeline.json")()
 	else:
 		print "Dedicated server requested"
 		print "But no such driver exists"
