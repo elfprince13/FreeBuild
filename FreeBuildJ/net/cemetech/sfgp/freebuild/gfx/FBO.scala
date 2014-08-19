@@ -1,6 +1,7 @@
 package net.cemetech.sfgp.freebuild.gfx
 
 import org.lwjgl.opengl._
+import org.lwjgl._
 import org.lwjgl.BufferUtils
 import java.nio.IntBuffer;
 
@@ -49,14 +50,14 @@ class FBO(reqID:Int = 0) {
 		framebuffer match {
 			case GL30.GL_FRAMEBUFFER_COMPLETE => Unit
 			case GL30.GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT
-				=> throw new RuntimeException( "FrameBuffer: " + id + ", has caused a GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT exception" )
+				=> throw new LWJGLException( "FrameBuffer: " + id + ", has caused a GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT exception" )
 			case GL30.GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT
-				=> throw new RuntimeException( "FrameBuffer: " + id + ", has caused a GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT exception" )
+				=> throw new LWJGLException( "FrameBuffer: " + id + ", has caused a GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT exception" )
 			case GL30.GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER
-				=> throw new RuntimeException( "FrameBuffer: " + id	+ ", has caused a GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT exception" )
+				=> throw new LWJGLException( "FrameBuffer: " + id	+ ", has caused a GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT exception" )
 			case GL30.GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER
-				=> throw new RuntimeException( "FrameBuffer: " + id	+ ", has caused a GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT exception" )
-			case _ => throw new RuntimeException( "Unexpected reply from glCheckFramebufferStatusEXT: " + framebuffer )
+				=> throw new LWJGLException( "FrameBuffer: " + id	+ ", has caused a GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT exception" )
+			case _ => throw new LWJGLException( "Unexpected reply from glCheckFramebufferStatusEXT: " + framebuffer )
 		}
 	}
 	

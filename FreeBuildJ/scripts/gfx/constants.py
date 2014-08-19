@@ -1,4 +1,4 @@
-from org.lwjgl.opengl import GL11, GL12, GL13, GL21, GL30, GL31, GL33, GL42
+from org.lwjgl.opengl import GL11, GL12, GL13, GL14, GL21, GL30, GL31, GL33, GL42
 
 attachment_points = {name : GL30.__dict__[name].field.getInt(None) for name in 
                      ['GL_DEPTH_ATTACHMENT', 'GL_STENCIL_ATTACHMENT', 'GL_DEPTH_STENCIL_ATTACHMENT']
@@ -40,6 +40,10 @@ internal_formats = {name : globals()['GL%d' % version].__dict__[name].field.getI
                                             ],
                                       13 : ['GL_COMPRESSED_RGB',
                                             'GL_COMPRESSED_RGBA',
+                                            ],
+                                      14 : ['GL_DEPTH_COMPONENT16',
+                                            'GL_DEPTH_COMPONENT24',
+                                            'GL_DEPTH_COMPONENT32',
                                             ],
                                      21 : ['GL_SRGB8',
                                             'GL_SRGB8_ALPHA8',

@@ -2,6 +2,7 @@ import sys
 import os,os.path
 from net.cemetech.sfgp.freebuild.drivers import Drivers
 from java.lang import System
+from org.lwjgl import LWJGLException
 
 
 def is_package_dir(parent,path):
@@ -53,13 +54,13 @@ def main(*argv):
 			for k,v in json.load(prefs).items(): driver.settings()[k] = v
 		Drivers.setMainDriver(driver)
 		
-		from scripts.gfx import framebuffer_builder
-		
 		from net.cemetech.sfgp.ldraw import LDManager
 		LDManager.init()
 		LDManager.parseModel("car.dat")
 		print driver.settings()
-		framebuffer_builder.framebuffer_from_json("shaders/inferred_pipeline.json")()
+		
+		from scripts.gfx import framebuffer_builder
+		framebuffer_builder.exec_test("shaders/framebuffer-test.json")
 	else:
 		print "Dedicated server requested"
 		print "But no such driver exists"
