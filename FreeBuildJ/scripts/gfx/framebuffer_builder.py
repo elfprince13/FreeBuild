@@ -1,4 +1,4 @@
-from org.lwjgl import BufferUtils
+from org.lwjgl import BufferUtils, LWJGLException
 from org.lwjgl.opengl import Display
 from net.cemetech.sfgp.freebuild.gfx import FBO, BufferObject, Texture
 from constants import attachment_points, tex_targets, formats, internal_formats, types
@@ -24,23 +24,44 @@ import json
 
 
 
-def texture_from_description(desc, width, height):
+def texture_from_description(desc, width, height,suppress_unbind=False):
     target = tex_targets[desc.get('target','GL_TEXTURE_2D')]
     format = formats[desc['format']]
     internal_format = internal_formats[desc['internal_format']]
     ttype = formats[desc['type']]
+    # TODO - add support for texture parameters - clamping, filters, etc
     
-def framebuffer_from_description(description):
+    tex = Texture()
+    tex.bind()
+    if target == tex_targets['GL_TEXTURE_2D']:
+        tex.allocate2D(0, internal_format, width, height, 0, format, ttype)
+        if not suppress_unbind: tex.unbind()
+        return tex
+    else:
+        raise LWJGLException("FreeBuild Texture objects only know how to allocate 2D textures")
+    
+def framebuffer_from_description(description, suppress_unbind=False):
     fixed_dims = description.get('fixed_dims', ())
     width = (int(description.get('width', 1) * Display.getWidth())
              if 'width' not in fixed_dims else description['width']) 
     height = (int(description.get('height', 1) * Display.getHeight())
               if 'height' not in fixed_dims else description['height'])
     attachments = {attachment_points[a] : 
-                   texture_from_description(t, width, height) 
+                   # thunk to save state changes
+                   lambda: texture_from_description(t, width, height,suppress_unbind=True)
                    for a, t in description['attachments'].items()}
+    
+    buffer = FBO()
+    buffer.bind()
+    for attachment,texgen in attachments.items():
+        tex = texgen()
+        buffer.attach2D(tex, attachment, 0)
+        tex.unbind()
+    buffer.check()
+    if not suppress_unbind: buffer.unbind()
+    return buffer
         
 def framebuffer_from_json(path):
     with open(path, 'r') as desc_handle:
-        return framebuffer_from_description(json.load(desc_handle))
+        return lambda: framebuffer_from_description(json.load(desc_handle))
         
