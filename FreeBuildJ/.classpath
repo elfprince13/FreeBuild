@@ -13,11 +13,11 @@
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/GLSLParser"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/LDrawParser"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/CSSBox"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/ANTLRv4"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jsyntaxpane"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JNA"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/LWJGL"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/lwjglg2d"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/CSSBox"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
