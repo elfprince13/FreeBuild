@@ -57,7 +57,7 @@ def framebuffer_from_description(description, suppress_unbind=False):
     buffer.bind()
     for attachment, texgen in attachments.items():
         tex = texgen()
-        buffer.attach2D(tex, attachment, 0)
+        buffer.attach2D(tex, attachment, 0, True)
         tex.unbind()
     if not suppress_unbind: buffer.unbind()
     return buffer
