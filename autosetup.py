@@ -7,9 +7,12 @@ from urllib import unquote_plus
 from urlparse import urlparse
 from contextlib import closing
 import zipfile, StringIO
-
+from lxml import etree
 
 arg_sub_expr = re.compile("\$(\d+)")
+
+def repodir(repo_url):
+	return os.path.splitext(os.path.basename(urlparse(repo_url).path))[0]
 
 def fetch(url,save_data=True,save_name=None,expected_ext=".jar"):
 	req = Request(url)
@@ -45,6 +48,10 @@ def arg_sub(args,*subs):
 
 GIT_PATH = "git"
 
+MVN_PROJECT			= "pom.xml"
+MVN_XMLNS_URL		= "http://maven.apache.org/POM/4.0.0"
+MVN_NSMAP			= {'pom' : MVN_XMLNS_URL}
+
 SCALA_ECLIPSE_PATH = "/Applications/scala-eclipse/Eclipse.app/Contents/MacOS/eclipse"
 ECLIPSE_JAVA_HOME = "/Library/Java/JavaVirtualMachines/jdk1.7.0_67.jdk/Contents/Home/jre"
 ECLIPSE_WORKSPACE = "/Users/thomas/Documents/scala-workspace-temp"
@@ -64,13 +71,14 @@ MSP_SUBDIR		= "MultiSplit/src/org"
 
 SHADER_REPO		= "https://github.com/elfprince13/GLSL-Shader-Editor.git"
 CRANE_REPO		= "https://github.com/elfprince13/libcrane.git"
-GLG2D_REPO		= "https://github.com/elfprince13/glg2d"
-CSS_REPO_1		= "https://github.com/radkovo/jStyleParser"
-CSS_REPO_2		= "https://github.com/radkovo/CSSBox"
+GLG2D_REPO		= "https://github.com/elfprince13/glg2d.git"
+CSS_REPO_1		= "https://github.com/radkovo/jStyleParser.git"
+CSS_REPO_2		= "https://github.com/radkovo/CSSBox.git"
 
-INSTALL_ARGS = ["$0","-nosplash","-data","$1","-application org.eclipse.equinox.p2.director","-repository","$2","-installIU","$3"]
-#KEYTOOL_ARGS = ["sudo","$0","-import","-file","$1","-alias","PyDevBrainwy","-keystore","$2"]
-GIT_ARGS = ["$0","clone","$1"]
+INSTALL_ARGS	= ["$0","-nosplash","-data","$1","-application","org.eclipse.equinox.p2.director","-repository","$2","-installIU","$3"]
+#KEYTOOL_ARGS	= ["sudo","$0","-import","-file","$1","-alias","PyDevBrainwy","-keystore","$2"]
+GIT_ARGS		= ["$0","clone","$1"]
+PROJECT_IMPORT_ARGS	= ["$0","-nosplash","-data","$1","-application", "org.eclipse.cdt.managedbuilder.core.headlessbuild","-import","$2"]
 
 PLUGINS_TO_INSTALL = [
 	("http://pydev.org/updates",
@@ -85,28 +93,39 @@ PLUGINS_TO_INSTALL = [
 	 "org.sonatype.m2e.antlr.feature.feature.group")
 ]
 
-#req = Request(PY_DEV_CERT_URL)
-#with closing(urlopen(req)) as response:
-#	fname = os.path.basename(urlparse(PY_DEV_CERT_URL).path)
-#	
-#	cert = response.read()
-#	
-#	with open(fname,'wb') as f:
-#		f.write(cert)
-#code = subprocess.call(arg_sub(KEYTOOL_ARGS, KEYTOOL_PATH,
-#							   fname, os.path.join(ECLIPSE_JAVA_HOME,"lib/security/cacerts")))
-#if code:
-#	print "Warning: Couldn't import key."
-#	print "Y/N? ",
-#	inp = raw_input()
-#	if not inp or inp.lower()[0] != 'y':
-#		sys.exit(1)
-#os.remove(fname)
+FREEBUILD_DIR	= os.getcwd()
+FREEBUILD_SUBPROJECTS	= ["LDrawparser","FreeBuildJ"]
+
+PROJECTS_TO_IMPORT = [
+	os.path.join(ECLIPSE_WORKSPACE,repodir(CSS_REPO_1)),
+	os.path.join(ECLIPSE_WORKSPACE,repodir(CSS_REPO_2)),
+	os.path.join(ECLIPSE_WORKSPACE,repodir(GLG2D_REPO)),
+	os.path.join(ECLIPSE_WORKSPACE,repodir(SHADER_REPO)),
+	os.path.join(ECLIPSE_WORKSPACE,FREEBUILD_DIR),
+	os.path.join(ECLIPSE_WORKSPACE,repodir(GLG2D_REPO)),
+] + [os.path.join(FREEBUILD_DIR,proj_dir) for proj_dir in FREEBUILD_SUBPROJECTS]
+
+req = Request(PY_DEV_CERT_URL)
+with closing(urlopen(req)) as response:
+	fname = os.path.basename(urlparse(PY_DEV_CERT_URL).path)
+	
+	cert = response.read()
+	
+	with open(fname,'wb') as f:
+		f.write(cert)
+code = subprocess.call(arg_sub(KEYTOOL_ARGS, KEYTOOL_PATH,
+							   fname, os.path.join(ECLIPSE_JAVA_HOME,"lib/security/cacerts")))
+if code:
+	print "Warning: Couldn't import key."
+	print "Y/N? ",
+	inp = raw_input()
+	if not inp or inp.lower()[0] != 'y':
+		sys.exit(1)
+os.remove(fname)
 
 print " ".join(arg_sub(INSTALL_ARGS,SCALA_ECLIPSE_PATH,ECLIPSE_WORKSPACE,*[",".join(l) for l in zip(*PLUGINS_TO_INSTALL)]))
-# Super weirdness: if I don't run with shell=True, it knows somehow and goes to GUI mode
-code = subprocess.call(" ".join(arg_sub(INSTALL_ARGS,SCALA_ECLIPSE_PATH,ECLIPSE_WORKSPACE,*[",".join(l) for l in zip(*PLUGINS_TO_INSTALL)])),shell=True)
-code = 0
+code = subprocess.call(arg_sub(INSTALL_ARGS,SCALA_ECLIPSE_PATH,ECLIPSE_WORKSPACE,*[",".join(l) for l in zip(*PLUGINS_TO_INSTALL)]))
+#code = 0
 if code:
 	print "eclipse exited with code",code
 	raise RuntimeError("Couldn't install a plugin(s)!")
@@ -148,7 +167,7 @@ else:
 		code = subprocess.call(arg_sub(GIT_ARGS,GIT_PATH,repo))
 		if code: raise RuntimeError("Couldn't fetch repo")
 		
-	os.chdir("GLSL-Shader-Editor")
+	os.chdir(repodir(SHADER_REPO))
 	if not os.path.isdir("multisplitpane"):
 		os.mkdir("multisplitpane")
 	os.chdir("multisplitpane")
@@ -166,12 +185,41 @@ else:
 	
 	os.chdir(ECLIPSE_WORKSPACE)
 	
-	os.chdir("libcrane")
+	os.chdir(repodir(CRANE_REPO))
 	code = subprocess.call(["make"])
 	if code: raise RuntimeError("Couldn't make libcrane")
 	
 	os.chdir(ECLIPSE_WORKSPACE)
+	os.chdir(repodir(CSS_REPO_1))
+	with open(MVN_PROJECT,'r') as pom_h:
+		pom = etree.fromstring(pom_h.read())
+		version_path = etree.XPath("/pom:project/pom:version",namespaces=MVN_NSMAP)
+		version = version_path(pom)[0].text
+		
+	os.chdir(ECLIPSE_WORKSPACE)
+	os.chdir(repodir(CSS_REPO_2))
+	with open(MVN_PROJECT,'r') as pom_h:
+		pom = etree.fromstring(pom_h.read())
+		dep_version_path = etree.XPath('/pom:project/pom:dependencies/pom:dependency/pom:version[../pom:artifactId/text() = "jstyleparser"]',namespaces=MVN_NSMAP)
+		req_version_tag = dep_version_path(pom)[0]
+		if req_version_tag.text != version:
+			print "Warning, CSSBox requested a different version of jStyleParser than was checked out"
+			print "This is probably just an oversight on the part of the repo maintainers"
+			print "We will attempt to correct the",MVN_PROJECT
+			req_version_tag.text = version
+	with open(MVN_PROJECT,'w') as pom_h:
+		pom_h.write(etree.tostring(pom))
+		
+	os.chdir(ECLIPSE_WORKSPACE)
 	
-	
+	#for project_dir in PROJECTS_TO_IMPORT:
+	#	print " ".join(arg_sub(PROJECT_IMPORT_ARGS,SCALA_ECLIPSE_PATH,ECLIPSE_WORKSPACE,project_dir))
+	#	code = subprocess.call(arg_sub(PROJECT_IMPORT_ARGS,SCALA_ECLIPSE_PATH,ECLIPSE_WORKSPACE,project_dir))
+	#	if code:
+	#			print "eclipse exited with code",code
+	#			raise RuntimeError("Couldn't import project %s!" % project_dir)
+			
+	# need to patch in Jython version and User Libraries
+
 	
 	
