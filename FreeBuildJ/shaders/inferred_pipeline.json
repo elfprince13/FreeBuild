@@ -19,12 +19,27 @@
 				}
 			}
 		},
-		"lighting" : {},
-		"material" : {}
+		"lighting" : {
+			"shader_bundle" : "inferredLighting.glsl",
+			"target" : {
+				"height" : 0.5,
+				"width" : 0.5,
+				"attachments" : {
+					"GL_COLOR_ATTACHMENT0" : {
+						"format" : "GL_RGBA",
+						"internal_format" : "GL_RGBA16",
+						"type" : "GL_SHORT"
+					}
+				}
+			}
+		},
+		"material" : {
+			"shader_bundle" : "inferredMaterial.glsl",
+			"target" : "display"
+		}
 	},
 	"dependencies" : {
-		"geometry" : [
-		],
+		"geometry" : [],
 		"lighting" : [
 			"geometry.target"
 		],

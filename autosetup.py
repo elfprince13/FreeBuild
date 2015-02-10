@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import pexpect, subprocess,re, os.path, os, shutil
+import subprocess,re, os.path, os, shutil
 import sys
 
 from urllib2 import Request, urlopen
@@ -101,27 +101,25 @@ PROJECTS_TO_IMPORT = [
 	os.path.join(ECLIPSE_WORKSPACE,repodir(CSS_REPO_2)),
 	os.path.join(ECLIPSE_WORKSPACE,repodir(GLG2D_REPO)),
 	os.path.join(ECLIPSE_WORKSPACE,repodir(SHADER_REPO)),
-	os.path.join(ECLIPSE_WORKSPACE,FREEBUILD_DIR),
-	os.path.join(ECLIPSE_WORKSPACE,repodir(GLG2D_REPO)),
 ] + [os.path.join(FREEBUILD_DIR,proj_dir) for proj_dir in FREEBUILD_SUBPROJECTS]
 
-req = Request(PY_DEV_CERT_URL)
-with closing(urlopen(req)) as response:
-	fname = os.path.basename(urlparse(PY_DEV_CERT_URL).path)
-	
-	cert = response.read()
-	
-	with open(fname,'wb') as f:
-		f.write(cert)
-code = subprocess.call(arg_sub(KEYTOOL_ARGS, KEYTOOL_PATH,
-							   fname, os.path.join(ECLIPSE_JAVA_HOME,"lib/security/cacerts")))
-if code:
-	print "Warning: Couldn't import key."
-	print "Y/N? ",
-	inp = raw_input()
-	if not inp or inp.lower()[0] != 'y':
-		sys.exit(1)
-os.remove(fname)
+#req = Request(PY_DEV_CERT_URL)
+#with closing(urlopen(req)) as response:
+#	fname = os.path.basename(urlparse(PY_DEV_CERT_URL).path)
+#	
+#	cert = response.read()
+#	
+#	with open(fname,'wb') as f:
+#		f.write(cert)
+#code = subprocess.call(arg_sub(KEYTOOL_ARGS, KEYTOOL_PATH,
+#							   fname, os.path.join(ECLIPSE_JAVA_HOME,"lib/security/cacerts")))
+#if code:
+#	print "Warning: Couldn't import key."
+#	print "Y/N? ",
+#	inp = raw_input()
+#	if not inp or inp.lower()[0] != 'y':
+#		sys.exit(1)
+#os.remove(fname)
 
 print " ".join(arg_sub(INSTALL_ARGS,SCALA_ECLIPSE_PATH,ECLIPSE_WORKSPACE,*[",".join(l) for l in zip(*PLUGINS_TO_INSTALL)]))
 code = subprocess.call(arg_sub(INSTALL_ARGS,SCALA_ECLIPSE_PATH,ECLIPSE_WORKSPACE,*[",".join(l) for l in zip(*PLUGINS_TO_INSTALL)]))
