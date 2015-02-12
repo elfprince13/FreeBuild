@@ -6,6 +6,12 @@ object PipelineManager {
 
 }
 
+class RenderCallback {
+  def pre(shader:Shader):Unit = {}
+  def render(shader:Shader):Unit = {}
+  def post(shader:Shader):Unit = {}
+}
+
 class Dependency() {
 	
 }
