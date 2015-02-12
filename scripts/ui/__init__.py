@@ -9,8 +9,6 @@ def configure_ui(width,height):
 	print "Executing configure_ui(%d,%d)" % (width,height)
 	#from _rocketcore import CreateContext, Vector2i
 	from net.cemetech.sfgp.freebuild.drivers import Drivers
-	from org.jogamp.glg2d import GLGraphics2D
-	from org.jogamp.glg2d import GLG2DCanvas
 	from org.fit.cssbox.layout import BrowserCanvas
 	from java.awt import Dimension
 	driver = Drivers.getMainDriver()
@@ -18,8 +16,8 @@ def configure_ui(width,height):
 		ret = False
 	else:
 		dim = Dimension(width,height)
-		driver.setUiHandle(GLG2DCanvas())
-		driver.getUiHandle().setSize(dim)
+		#driver.setUiHandle()#GLG2DCanvas())
+		#driver.getUiHandle().setSize(dim)
 		#CreateContext("primary_ui_context",Vector2i(width,height))
 		print " Initializing keymap (GLFW -> libRocket)..."
 		from scripts.prefs.keymaps import getKeyMap

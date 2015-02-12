@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="shared-libs/CSSBoxLib/|shared-libs/GLSLParser/|shared-libs/glg2d/|shared-libs/libcrane/" kind="src" path=""/>
+	<classpathentry kind="src" path=""/>
 	<classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="shared-libs/jython-standalone-2.7-b1.jar"/>
-	<classpathentry kind="lib" path="shared-libs/htmlparser-1.4.jar"/>
-	<classpathentry kind="lib" path="shared-libs/slick-util.jar"/>
-	<classpathentry kind="lib" path="shared-libs/libcrane">
-		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="FreeBuildJ/shared-libs/libcrane"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry combineaccessrules="false" kind="src" path="/GLSLParser"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/SlickUtil"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/LDrawParser"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/ANTLRv4"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jsyntaxpane"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JNA"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/LWJGL"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/lwjglg2d"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/CSSBox"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/GLSL-Shader-Editor"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/libcrane">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/Users/thomas/Documents/scala-workspace-temp/libcrane"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Jython 2.7"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/HTMLParserNu"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

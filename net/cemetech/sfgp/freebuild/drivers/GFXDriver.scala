@@ -3,8 +3,6 @@ package net.cemetech.sfgp.freebuild;
 import net.cemetech.sfgp.freebuild.gfx._
 import org.lwjgl.LWJGLException
 import org.lwjgl.opengl._
-import org.jogamp.glg2d.GLGraphics2D
-import org.jogamp.glg2d.GLG2DCanvas
 import org.fit.cssbox.layout.BrowserCanvas
 import javax.swing.JComponent
 import org.python.core._
@@ -15,7 +13,7 @@ class GFXDriver extends AbstractDriver {
 
 	var gfxCtx: GFXContext = null
 	@scala.reflect.BeanProperty
-	var uiHandle: GLG2DCanvas = null
+	var uiHandle = null
 
 	print("Initializing graphics drivers... ")
 	gfxCtx = GFX.init()
@@ -55,10 +53,12 @@ class GFXDriver extends AbstractDriver {
 				ret = -1
 				println("Called configure_ui() but uiHandle was not initialized.")
 			} else {
+			  /*
 				if (uiHandle.getDrawableComponent() == null) {
 					ret = -1
 					println("uiHandle was initialized, but it has no interface to render");
 				}
+				*/
 			}
 		}
 
