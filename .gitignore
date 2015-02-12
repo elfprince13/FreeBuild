@@ -1,71 +1,14 @@
 .DS_Store
 
-*.xcuserstate
-
-lib/Python27
-
-lib/allegro
-
-lib/boost_1_53_0
-
-lib/glfw
-
-lib/glsdk
-
-lib/GnuWin32
-
-*.a
-
-*.dylib
-
-*.bz2
-
-*.tar
-
-*.build
-
-*.o
-
-*.dir/Users
-
-lib/libRocket
-
-*.xcbkptlist
-
-*.lib
-
-*.tlog
-
-*.obj
-
-*.lastbuildstate
-
-*.idb
-
-*.pdb
-
-*.log
-
-*.ipch
-
-*.opensdf
-
-FreeBuildJ/bin
-
-FreeBuildJ/shared-libs
+bin
 
 *.class
 
 *.jar
 
-FreeBuildJ/UI
+UI
 
-FreeBuildJ/.cache
-
-ParseTest*
-
-*.tokens
+.cache
 
 prefs.json
 
-OldVersion/
