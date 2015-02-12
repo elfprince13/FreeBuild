@@ -13,10 +13,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/GLSL-Shader-Editor"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Jython 2.7"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/HTMLParserNu"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/libcrane">
-		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="libcrane"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/libcrane"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
