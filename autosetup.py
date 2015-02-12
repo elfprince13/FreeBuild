@@ -47,23 +47,25 @@ def arg_sub(args,*subs):
 	return [a if not arg_sub_expr.match(a) else subs[int(arg_sub_expr.match(a).group(1))] for a in args]
 
 GIT_PATH = "git"
+SKIP_PLUGINS = True
+SKIP_SHARED = False
 
 MVN_PROJECT			= "pom.xml"
 MVN_XMLNS_URL		= "http://maven.apache.org/POM/4.0.0"
 MVN_NSMAP			= {'pom' : MVN_XMLNS_URL}
 
 SCALA_ECLIPSE_PATH = "/Applications/scala-eclipse/Eclipse.app/Contents/MacOS/eclipse"
-ECLIPSE_JAVA_HOME = "/Library/Java/JavaVirtualMachines/jdk1.7.0_67.jdk/Contents/Home/jre"
+ECLIPSE_JAVA_HOME = "/Library/Java/JavaVirtualMachines/jdk1.7.0_71.jdk/Contents/Home/jre"
 ECLIPSE_WORKSPACE = "/Users/thomas/Documents/scala-workspace-temp"
 #KEYTOOL_PATH = "keytool"
 #PY_DEV_CERT_URL = "http://pydev.org/pydev_certificate.cer"
 ANTLR4_URL 		= "http://www.antlr.org/download/antlr-4.4-complete.jar"
 JSYNTAXPANE_URL	= "https://jsyntaxpane.googlecode.com/files/jsyntaxpane-0.9.4.jar"
-JYTHON_URL		= "http://search.maven.org/remotecontent?filepath=org/python/jython-standalone/2.7-b2/jython-standalone-2.7-b2.jar"
+JYTHON_URL		= "http://search.maven.org/remotecontent?filepath=org/python/jython-standalone/2.7-b3/jython-standalone-2.7-b3.jar"
 JNA_URL			= "https://maven.java.net/content/repositories/releases/net/java/dev/jna/jna/4.1.0/jna-4.1.0.jar"
 VALIDATOR_NU_URL= "http://about.validator.nu/htmlparser/htmlparser-1.4.zip"
 VALIDATOR_NU_BIN= "htmlparser-1.4/htmlparser-1.4.jar"
-LWJGL_URL		= "https://downloads.sourceforge.net/project/java-game-lib/Official%20Releases/LWJGL%202.9.1/lwjgl-2.9.1.zip?r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Fjava-game-lib%2Ffiles%2FOfficial%2520Releases%2FLWJGL%25202.9.1%2F"
+LWJGL_URL		= "http://downloads.sourceforge.net/project/java-game-lib/Official%20Releases/LWJGL%202.9.3/lwjgl-2.9.3.zip"
 SLICK_URL		= "http://slick.ninjacave.com/slick-util.jar"
 MSP_URL			= "https://today.java.net/sites/all/modules/pubdlcnt/pubdlcnt.php?file=/today/2006/03/23/MultiSplit.zip&nid=219663"
 
@@ -121,43 +123,45 @@ PROJECTS_TO_IMPORT = [
 #		sys.exit(1)
 #os.remove(fname)
 
-print " ".join(arg_sub(INSTALL_ARGS,SCALA_ECLIPSE_PATH,ECLIPSE_WORKSPACE,*[",".join(l) for l in zip(*PLUGINS_TO_INSTALL)]))
-code = subprocess.call(arg_sub(INSTALL_ARGS,SCALA_ECLIPSE_PATH,ECLIPSE_WORKSPACE,*[",".join(l) for l in zip(*PLUGINS_TO_INSTALL)]))
-#code = 0
-if code:
-	print "eclipse exited with code",code
-	raise RuntimeError("Couldn't install a plugin(s)!")
-else:
+if __name__ == '__main__':
+	if not SKIP_PLUGINS:
+		print " ".join(arg_sub(INSTALL_ARGS,SCALA_ECLIPSE_PATH,ECLIPSE_WORKSPACE,*[",".join(l) for l in zip(*PLUGINS_TO_INSTALL)]))
+		code = subprocess.call(arg_sub(INSTALL_ARGS,SCALA_ECLIPSE_PATH,ECLIPSE_WORKSPACE,*[",".join(l) for l in zip(*PLUGINS_TO_INSTALL)]))
+		#code = 0
+		if code:
+			print "eclipse exited with code",code
+			raise RuntimeError("Couldn't install a plugin(s)!")
 	print('time for dependencies and stuff')
-	
+		
 	os.chdir("FreeBuildJ")
 	if not os.path.isdir("shared-libs"):
 		os.mkdir("shared-libs")
 	os.chdir("shared-libs")
-	fetch(ANTLR4_URL)
-	fetch(JSYNTAXPANE_URL)
-	fetch(JYTHON_URL)
-	fetch(JNA_URL)
-	with zipfile.ZipFile(StringIO.StringIO(fetch(VALIDATOR_NU_URL,False)),'r') as parser_zip:
-		if VALIDATOR_NU_BIN in parser_zip.namelist():
-			print "Extracting...\t",
+	if not SKIP_SHARED:
+		fetch(ANTLR4_URL)
+		fetch(JSYNTAXPANE_URL)
+		fetch(JYTHON_URL)
+		fetch(JNA_URL)
+		with zipfile.ZipFile(StringIO.StringIO(fetch(VALIDATOR_NU_URL,False)),'r') as parser_zip:
+			if VALIDATOR_NU_BIN in parser_zip.namelist():
+				print "Extracting...\t",
+				sys.stdout.flush()
+				with parser_zip.open(VALIDATOR_NU_BIN,'r') as vn_src:
+					with open(os.path.basename(VALIDATOR_NU_BIN),'wb') as vn_dst:
+						vn_dst.write(vn_src.read())
+				print "done."
+			else:
+				print "Can't find JAR (%s) in archive:" % VALIDATOR_NU_BIN
+				print "\n".join("\t%s" % f for f in sorted(parser_zip.namelist()))
+				
+		with zipfile.ZipFile(StringIO.StringIO(fetch(LWJGL_URL,False,expected_ext=".zip")),'r') as lwjgl_zip:
+			print "Extracting all...\t",
 			sys.stdout.flush()
-			with parser_zip.open(VALIDATOR_NU_BIN,'r') as vn_src:
-				with open(os.path.basename(VALIDATOR_NU_BIN),'wb') as vn_dst:
-					vn_dst.write(vn_src.read())
+			lwjgl_zip.extractall()
 			print "done."
-		else:
-			print "Can't find JAR (%s) in archive:" % VALIDATOR_NU_BIN
-			print "\n".join("\t%s" % f for f in sorted(parser_zip.namelist()))
-			
-	with zipfile.ZipFile(StringIO.StringIO(fetch(LWJGL_URL,False,expected_ext=".zip")),'r') as lwjgl_zip:
-		print "Extracting all...\t",
-		sys.stdout.flush()
-		lwjgl_zip.extractall()
-		print "done."
-	
-	fetch(SLICK_URL)
-	
+		
+		fetch(SLICK_URL)
+		
 	print("Checking out REPOs")
 	os.chdir(ECLIPSE_WORKSPACE)
 	for repo in [SHADER_REPO, CRANE_REPO, GLG2D_REPO, CSS_REPO_1, CSS_REPO_2]:
@@ -218,6 +222,5 @@ else:
 	#			raise RuntimeError("Couldn't import project %s!" % project_dir)
 			
 	# need to patch in Jython version and User Libraries
+	
 
-	
-	
