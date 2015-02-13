@@ -55,11 +55,12 @@ def main(*argv):
 	
 	from net.cemetech.sfgp.glsl.editor import GLSLEditorPane
 	
-	GLSLEditorPane.main(argv)
+	editor_args = (os.getcwd(),)+argv
+	GLSLEditorPane.main(editor_args)
 	
 	if gfxCtx != None:
 		while gfxCtx.open():
 			pass
 
 if __name__ == "__main__":
-	main(*sys.argv)
+	main(*sys.argv[1:])
