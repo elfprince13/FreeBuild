@@ -53,6 +53,10 @@ def main(*argv):
 	print "---------------------------------------------//"
 	print
 	
+	from net.cemetech.sfgp.glsl.editor import GLSLEditorPane
+	
+	GLSLEditorPane.main(argv)
+	
 	if gfxCtx != None:
 		while gfxCtx.open():
 			pass
