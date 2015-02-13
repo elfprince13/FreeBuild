@@ -5,6 +5,7 @@
 	<projects>
 		<project>CSSBox</project>
 		<project>GLSL-Shader-Editor</project>
+		<project>jStyleParser</project>
 		<project>LDrawParser</project>
 		<project>libcrane</project>
 	</projects>
