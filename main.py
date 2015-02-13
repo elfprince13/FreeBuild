@@ -50,8 +50,13 @@ def main(*argv):
 		import json
 		with open("data/prefs/defaults.json",'r') as defaults:
 			for k,v in json.load(defaults).items(): driver.settings()[k] = v
-		with open("data/prefs/prefs.json",'r') as prefs:
-			for k,v in json.load(prefs).items(): driver.settings()[k] = v
+		if os.path.isfile("data/prefs/prefs.json"):
+			with open("data/prefs/prefs.json",'r') as prefs:
+				for k,v in json.load(prefs).items(): driver.settings()[k] = v
+		else:
+			with open("data/prefs/prefs.json",'w') as prefs:
+				json.dump(driver.settings(), prefs)
+							
 		Drivers.setMainDriver(driver)
 		
 		from net.cemetech.sfgp.ldraw import LDManager
