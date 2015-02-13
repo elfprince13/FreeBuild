@@ -24,20 +24,20 @@ trait LoggingService {
 }
 
 class FileLoggingService(msgLoggingPath:String, errLoggingPath:String="") extends LoggingService {
-  @scala.reflect.BeanProperty
+  @scala.beans.BeanProperty
   var warnLevel:Int = 0
-  @scala.reflect.BeanProperty
+  @scala.beans.BeanProperty
   var messageLevel:Int = 0
-  @scala.reflect.BeanProperty
+  @scala.beans.BeanProperty
   var errorLevel:Int = 0
   
   
   	
   	val outLogFile = new File(msgLoggingPath)
-	@scala.reflect.BeanProperty
+	@scala.beans.BeanProperty
 	var out = new PrintStream(outLogFile)
     val errLogFile = if(errLoggingPath == "" || errLoggingPath == msgLoggingPath){ outLogFile } else { new File(errLoggingPath) }
-	@scala.reflect.BeanProperty
+	@scala.beans.BeanProperty
 	var err = if(errLogFile == outLogFile) { out } else { new PrintStream(errLogFile) }
 	
 	def warn(msg:String, level:Int) = {

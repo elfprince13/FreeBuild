@@ -5,7 +5,7 @@ import org.python.core._
 
 abstract class AbstractDriver {
 
-	@scala.reflect.BeanProperty
+	@scala.beans.BeanProperty
 	var settings: PyDictionary = new PyDictionary()
 	protected var console: PythonInterpreter = null
 

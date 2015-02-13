@@ -12,7 +12,7 @@ import org.lwjgl.util.vector.Matrix4f
 class GFXDriver extends AbstractDriver {
 
 	var gfxCtx: GFXContext = null
-	@scala.reflect.BeanProperty
+	@scala.beans.BeanProperty
 	var uiHandle = null
 
 	print("Initializing graphics drivers... ")
