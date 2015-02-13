@@ -42,8 +42,9 @@ def main(*argv):
 	print "Parsing startup arguments for shader editor"
 	Drivers.clearMainDriver()
 	from net.cemetech.sfgp.freebuild.gfx import GFX
+	from org.lwjgl.opengl import Display
 		
-	gfxCtx = GFX.init()
+	gfxCtx = GFX.init("Shader Editor Viz. Frame")
 	if gfxCtx != None:
 		print "Success!"
 	else:
@@ -52,6 +53,8 @@ def main(*argv):
 	print 
 	print "---------------------------------------------//"
 	print
+	
+	Display.releaseContext()
 	
 	from net.cemetech.sfgp.glsl.editor import GLSLEditorPane
 	

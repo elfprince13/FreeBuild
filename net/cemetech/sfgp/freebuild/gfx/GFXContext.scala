@@ -30,7 +30,7 @@ class GFXContext {
 }
 
 object GFX {
-	def init(): GFXContext = {
+	def init(title:String = "FreeBuild/J Engine Demo"): GFXContext = {
 		var retcode: Int = 0
 		try {
 			var modes: Array[DisplayMode] = Display.getAvailableDisplayModes()
@@ -53,7 +53,7 @@ object GFX {
 			Display.create(new PixelFormat,
 				(new ContextAttribs(3, 2)).withProfileCore(true))
 			Console.println("OpenGL Context Initialized with Properties: \n" + checkGLVersions())
-			Display.setTitle("FreeBuild/J Engine Demo")
+			Display.setTitle(title)
 
 		} catch {
 			case e: LWJGLException =>
@@ -67,7 +67,7 @@ object GFX {
 	def checkNoGLErrors(prepend: String) = {
 		val err = GL11.glGetError()
 		if (err != GL11.GL_NO_ERROR) {
-			throw new LWJGLException(prepend + ", GL Error: 0x" + Integer.toHexString(err))
+			throw new LWJGLException(prepend + ", GL Error: 0x" + Integer.toHexString(err) + " (" + Util.translateGLErrorString(err) + ")")
 		}
 	}
 
