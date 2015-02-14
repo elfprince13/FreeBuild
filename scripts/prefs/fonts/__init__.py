@@ -1,6 +1,6 @@
 print "Importing %s..."%(__name__),
 import os.path
-from main import determine_package,export_symbols
+from scripts.util.package_utils import determine_package,export_symbols
 from net.cemetech.sfgp.freebuild.drivers import Drivers
 path = os.path.abspath(__file__)
 dir_path = os.path.dirname(path)

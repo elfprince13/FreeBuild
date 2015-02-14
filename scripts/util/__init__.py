@@ -1,6 +1,6 @@
 print "Importing %s..."%(__name__),
 import os.path
-from main import determine_package
+from package_utils import determine_package
 path = os.path.abspath(__file__)
 dir_path = os.path.dirname(path)
 __all__=determine_package(dir_path)
