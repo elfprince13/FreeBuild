@@ -1,4 +1,4 @@
-from scripts.nuparser import NUDomSource
+from scripts.util.nuparser import NUDomSource
 from org.fit.cssbox.io import DefaultDocumentSource
 
 from org.fit.cssbox.css import DOMAnalyzer, CSSNorm
