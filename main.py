@@ -9,7 +9,7 @@ def main(*argv):
 	print "//---------------------------------------------"
 	print
 	print "Parsing startup arguments"
-	if not argv or "--dedicated" not in argv[1:]:
+	if not argv or "--dedicated" not in argv:
 		Drivers.clearMainDriver()
 		GFXDriver = Drivers.getNamedDriver("GFXDriver")
 		driver = GFXDriver()
@@ -42,4 +42,4 @@ def main(*argv):
 	print
 
 if __name__ == "__main__":
-	main(*sys.argv)
+	main(*sys.argv[1:])
