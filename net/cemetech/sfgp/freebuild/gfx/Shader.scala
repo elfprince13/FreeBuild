@@ -68,13 +68,13 @@ class GLSLProgram {
 	val f16Buffer = BufferUtils.createFloatBuffer(16);
 
 	val progId: Int = GL20.glCreateProgram()
-			var attached:Map[Shader,Boolean] = Map()
+	var attached:Map[Shader,Boolean] = Map()
 
-			def attach(shaders:Map[Shader,Boolean]) = {
+	def attach(shaders:Map[Shader,Boolean]) = {
 		shaders.map{
-		case (shader, shouldOwn) =>
-		GL20.glAttachShader(progId, shader.shaderId)
-		attached = attached + (shader -> shouldOwn)
+			case (shader, shouldOwn) =>
+			GL20.glAttachShader(progId, shader.shaderId)
+			attached = attached + (shader -> shouldOwn)
 		}
 	}
 	def detach(shaders:Set[Shader]) = {
@@ -104,9 +104,9 @@ class GLSLProgram {
 			checkProgram(GL20.GL_VALIDATE_STATUS)
 			true
 		} catch {
-		case e:LWJGLException => 
-		System.err.println(e.getMessage)
-		false
+			case e:LWJGLException => 
+			System.err.println(e.getMessage)
+			false
 		}
 	}
 

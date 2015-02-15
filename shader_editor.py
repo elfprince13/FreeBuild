@@ -21,12 +21,17 @@ def main(*argv):
 	print
 	
 	from scripts.editor import shaderUI
-	shaderUI.init_editor()
+	from java.util.concurrent import TimeUnit
+	compiler_hook = shaderUI.init_editor()
 	
 	
 	if gfxCtx != None:
 		while gfxCtx.open():
-			pass
+			task = compiler_hook.tasks.poll(300,TimeUnit.MILLISECONDS) # This blocks too hard
+			if task != None:
+				print "Got a task"
+				task.run()
+				print "Task done"
 
 if __name__ == "__main__":
 	main(*sys.argv[1:])
