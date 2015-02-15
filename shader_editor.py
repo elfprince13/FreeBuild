@@ -29,9 +29,7 @@ def main(*argv):
 		while gfxCtx.open():
 			task = compiler_hook.tasks.poll(300,TimeUnit.MILLISECONDS) # This blocks too hard
 			if task != None:
-				print "Got a task"
 				task.run()
-				print "Task done"
 
 if __name__ == "__main__":
 	main(*sys.argv[1:])

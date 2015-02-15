@@ -1,6 +1,6 @@
 from net.cemetech.sfgp.glsl.editor import GLSLEditorPane
     
-import os
+import os, os.path
 from java.awt import EventQueue, BorderLayout
 from java.awt.event import ActionEvent, KeyEvent, ActionListener
 from java.lang import Runnable, IllegalStateException
@@ -14,7 +14,7 @@ from net.cemetech.sfgp.freebuild.gfx import GFX, Shader, GLSLProgram, ShaderMana
 
 class NativeCompilerTask(CompilerTaskSpec):
     def __init__(self, copySpec):
-        CompilerTaskSpec.__init__(copySpec.getKind(), copySpec.getSrc())
+        CompilerTaskSpec.__init__(self,copySpec.getKind(), copySpec.getSrc())
     
     def call(self):
         shader = Shader(self.src, self.kind)
@@ -22,7 +22,7 @@ class NativeCompilerTask(CompilerTaskSpec):
     
 class NativeLinkerTask(LinkerTaskSpec):
     def __init__(self, copySpec):
-        CompilerTaskSpec.__init__(copySpec.getShaders())
+        CompilerTaskSpec.__init__(self,copySpec.getShaders())
     
     def call(self):
         prog = GLSLProgram()
@@ -37,10 +37,11 @@ class NativeCompiler(CompilerImpl):
     
     def waitOnTask(self, task):
         fT = FutureTask(task)
-        self.results.put(task,fT)
+        self.tasks.put(fT)
         return fT.get()
     
     def compileShader(self, compileTask):
+        # This leaks! We need some cleanup flag of some kind
         return self.waitOnTask(NativeCompilerTask(compileTask))
     
     def linkProgram(self, linkTask):
@@ -133,6 +134,8 @@ def makeEditorFrame(ldPath, compiler):
     
 def init_editor():
     compiler = NativeCompiler()
-    ldPath = os.getcwd()
+    ldPath = os.path.join(os.getcwd(),"data/shaders")
+    if not os.path.isdir(ldPath):
+        ldPath = os.getcwd()
     makeEditorFrame(ldPath, compiler)
     return compiler
