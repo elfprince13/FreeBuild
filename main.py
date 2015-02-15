@@ -33,7 +33,7 @@ def main(*argv):
 		print driver.settings()
 		
 		from scripts.gfx import framebuffer_builder
-		framebuffer_builder.exec_test("shaders/framebuffer-test.json")
+		framebuffer_builder.exec_test("data/shaders/framebuffer-test.json")
 	else:
 		print "Dedicated server requested"
 		print "But no such driver exists"

@@ -15,5 +15,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/HTMLParserNu"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/libcrane"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/jStyleParser"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Apache Commons IO"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

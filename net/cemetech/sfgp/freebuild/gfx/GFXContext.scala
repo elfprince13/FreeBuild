@@ -70,6 +70,15 @@ object GFX {
 			throw new LWJGLException(prepend + ", GL Error: 0x" + Integer.toHexString(err) + " (" + Util.translateGLErrorString(err) + ")")
 		}
 	}
+	
+	def warnUncheckedErrors(msg:String) = {
+		try{ 		  
+			GFX.checkNoGLErrors(msg) 
+		} catch {
+			case e:LWJGLException =>
+				System.err.println(e.getMessage)
+		}
+	}
 
 	def checkGLVersions(): String = {
 		"GL Version: " + GL11.glGetString(GL11.GL_VERSION) + "\nGLSL Version: " + GL11.glGetString(GL20.GL_SHADING_LANGUAGE_VERSION)

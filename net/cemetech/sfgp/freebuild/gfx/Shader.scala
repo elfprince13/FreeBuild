@@ -1,11 +1,16 @@
 package net.cemetech.sfgp.freebuild.gfx
 
+import java.io.File
+import org.apache.commons.io.FilenameUtils
+import org.apache.commons.io.filefilter.SuffixFileFilter
 import scala.io.Source
 import org.lwjgl.opengl._
 import java.nio._
 import org.lwjgl.BufferUtils
 import org.lwjgl.LWJGLException
 import org.lwjgl.util.vector.Matrix4f
+
+import scala.collection.JavaConverters._
 
 object ShaderManager {
 	var usedNow: GLSLProgram = null;
@@ -17,7 +22,45 @@ object ShaderManager {
 		new Shader(sSrc, kind)
 	}
 	def programFromBundle(bundleName:String):GLSLProgram = {
-		null
+		val bundleFile = new File(bundleName)
+		if(bundleFile.isDirectory){
+			val prog = new GLSLProgram
+					val shaders = bundleFile.listFiles((new SuffixFileFilter(bundleExt2Kinds.keys.map{
+						kExt => s".$kExt"
+					}.toList.asJava).asInstanceOf[java.io.FilenameFilter])).map{
+				file =>
+				shaderFromFile(file.getAbsolutePath, bundleExt2Kinds(FilenameUtils.getExtension(file.getName)))
+			}
+			prog.attach(shaders.map{
+				shader =>
+				(shader -> true)
+			}.toMap)
+			prog.link
+			//prog.validate
+			prog
+		} else {
+			System.err.println("No such shader bundle: " + bundleName)
+			null
+		}
+	}
+	def checkShader(shaderId:Int, statusFlag:Int, errPrefix:String) = {
+		GFX.warnUncheckedErrors("Someone left a dangling error before calling checkShader");
+		val result = GL20.glGetShaderi(shaderId, statusFlag);
+		GFX.checkNoGLErrors("Error retrieving statusFlag")
+		if (result != GL11.GL_TRUE) {
+			val loglen = GL20.glGetShaderi(shaderId, GL20.GL_INFO_LOG_LENGTH);
+			GFX.checkNoGLErrors("Error retrieving info-log-length")
+			val error = GL20.glGetShaderInfoLog(shaderId, loglen)
+			GFX.checkNoGLErrors("Error retrieving info-log")
+			throw new LWJGLException(s"$errPrefix:\n $error")
+		}
+	}
+
+
+	def deleteShader(shaderId:Int) = {
+		if (GL20.glIsShader(shaderId)) {
+			GL20.glDeleteShader(shaderId)
+		}
 	}
 }
 
@@ -25,41 +68,48 @@ class GLSLProgram {
 	val f16Buffer = BufferUtils.createFloatBuffer(16);
 
 	val progId: Int = GL20.glCreateProgram()
-	var attached:Map[Shader,Boolean] = Map()
-	
-	def attach(shaders:Map[Shader,Boolean]) = {
+			var attached:Map[Shader,Boolean] = Map()
+
+			def attach(shaders:Map[Shader,Boolean]) = {
 		shaders.map{
-			case (shader, shouldOwn) =>
-				GL20.glAttachShader(progId, shader.shaderId)
-				attached = attached + (shader -> shouldOwn)
+		case (shader, shouldOwn) =>
+		GL20.glAttachShader(progId, shader.shaderId)
+		attached = attached + (shader -> shouldOwn)
 		}
 	}
 	def detach(shaders:Set[Shader]) = {
 		shaders.map{
 			shader =>
-				if(attached.contains(shader)){
-					GL20.glDetachShader(progId, shader.shaderId)
-					if(attached(shader)){
-						shader.delete
-					}
-					attached = attached - shader
-				} else {
-					throw new LWJGLException("Can't detach a shader that isn't attached here!")
+			if(attached.contains(shader)){
+				GL20.glDetachShader(progId, shader.shaderId)
+				if(attached(shader)){
+					ShaderManager.deleteShader(shader.shaderId)
 				}
+				attached = attached - shader
+			} else {
+				throw new LWJGLException("Can't detach a shader that isn't attached here!")
+			}
 		}
-		
+
 	}
-	
+
 	def link() = {
 		GL20.glLinkProgram(progId)
 		checkProgram(GL20.GL_LINK_STATUS)
 	}
-	
-	def validate = {
+
+	def validate:Boolean = {
 		GL20.glValidateProgram(progId)
-		checkProgram(GL20.GL_VALIDATE_STATUS)
+		try{
+			checkProgram(GL20.GL_VALIDATE_STATUS)
+			true
+		} catch {
+		case e:LWJGLException => 
+		System.err.println(e.getMessage)
+		false
+		}
 	}
-	
+
 	def used = { ShaderManager.usedNow == this }
 	def use() = {
 		if (!used) {
@@ -83,13 +133,13 @@ class GLSLProgram {
 	}
 	def setVariables(vars: Map[String, Any]) = {
 		vars.foreach {
-			case (name: String, value: Any) =>
-				val uni = GL20.glGetUniformLocation(progId, name)
-				if (uni == -1) throw new LWJGLException(name + " was invalid, or missing from this shader program (" + progId + ")")
-				GFX.checkNoGLErrors("Unable to bind shader variable")
-				value match {
-					case mat: Matrix4f => mat.store(f16Buffer); f16Buffer.flip(); GL20.glUniformMatrix4(uni, false, f16Buffer)
-				}
+		case (name: String, value: Any) =>
+		val uni = GL20.glGetUniformLocation(progId, name)
+		if (uni == -1) throw new LWJGLException(name + " was invalid, or missing from this shader program (" + progId + ")")
+		GFX.checkNoGLErrors("Unable to bind shader variable")
+		value match {
+		case mat: Matrix4f => mat.store(f16Buffer); f16Buffer.flip(); GL20.glUniformMatrix4(uni, false, f16Buffer)
+		}
 
 		}
 	}
@@ -98,10 +148,13 @@ class GLSLProgram {
 
 class Shader(val src:String, val kind:Int) {
 	val shaderId = compileShader(kind, src)
-
+	
 	def compileShader(kind: Int, src: String): Int = {
-		val id = GL20.glCreateShader(kind)
+		GFX.warnUncheckedErrors("Someone left a dangling error before calling compileShader");
 
+		val id = GL20.glCreateShader(kind)
+		GFX.checkNoGLErrors("Create shader failed")
+		
 		try{
 			GL20.glShaderSource(id, src)
 			GFX.checkNoGLErrors("Shader source buffering failed")
@@ -109,32 +162,16 @@ class Shader(val src:String, val kind:Int) {
 			GL20.glCompileShader(id);
 			GFX.checkNoGLErrors("Shader compile failed")
 
-			checkShader(GL20.GL_COMPILE_STATUS)
+			ShaderManager.checkShader(id, GL20.GL_COMPILE_STATUS, "Compile failed")
 			id
 		} catch {
 			case e:LWJGLException =>
-				System.err.println(e.getMessage())
-				if (GL20.glIsShader(id)) { // Can't call delete because shaderId isn't set yet!
-					GL20.glDeleteShader(id)
-				}
-				0
+			System.err.println(e.getMessage)
+			System.err.flush
+			ShaderManager.deleteShader(id)
+			0
 		}
 	}
-
-	def checkShader(statusFlag:Int) = {
-		val result = GL20.glGetShaderi(shaderId, statusFlag);
-		if (result != GL11.GL_TRUE) {
-			val loglen = GL20.glGetShaderi(shaderId, GL20.GL_INFO_LOG_LENGTH);
-			val error = GL20.glGetShaderInfoLog(shaderId, loglen)
-			throw new LWJGLException(error);
-		}
-	}
-
-
-	def delete() = {
-		if (GL20.glIsShader(shaderId)) {
-			GL20.glDeleteShader(shaderId)
-		}
-	}
+	
 
 }
