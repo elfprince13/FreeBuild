@@ -8,81 +8,58 @@ import org.lwjgl.LWJGLException
 import org.lwjgl.util.vector.Matrix4f
 
 object ShaderManager {
-	var usedNow: Shader = null;
+	var usedNow: GLSLProgram = null;
+	val bundleExt2Kinds = Map("vert" -> GL20.GL_VERTEX_SHADER, "geom" -> GL32.GL_GEOMETRY_SHADER, "frag" -> GL20.GL_FRAGMENT_SHADER)
+	def shaderFromFile(shaderFilename:String, kind:Int):Shader = {
+		val sHandle = Source.fromFile(shaderFilename)
+		val sSrc = sHandle.getLines mkString "\n"
+		sHandle.close
+		new Shader(sSrc, kind)
+	}
+	def programFromBundle(bundleName:String):GLSLProgram = {
+		null
+	}
 }
 
-class Shader(vertShaderFilename: String, fragShaderFilename: String, geoShaderFilename: String = "") {
+class GLSLProgram {
 	val f16Buffer = BufferUtils.createFloatBuffer(16);
 
-	val vHandle = Source.fromFile(vertShaderFilename)
-	val vSrc = vHandle.getLines mkString "\n"
-	vHandle.close
-
-	val fHandle = Source.fromFile(fragShaderFilename)
-	val fSrc = fHandle.getLines mkString "\n"
-	fHandle.close
-
-	val gHandle = if (geoShaderFilename == "") { null } else { Source.fromFile(geoShaderFilename) }
-	val gSrc = if (gHandle == null) { "" } else { gHandle.getLines mkString "\n" }
-	if (gHandle != null) gHandle.close
-
 	val progId: Int = GL20.glCreateProgram()
-
-	val vertSId = compileShader(GL20.GL_VERTEX_SHADER, vSrc)
-	GL20.glAttachShader(progId, vertSId)
-
-	val geoSId = if (gSrc != "") {
-		val geoSId = compileShader(GL32.GL_GEOMETRY_SHADER, gSrc)
-		GL20.glAttachShader(progId, geoSId)
-		geoSId
-	} else { 0 }
-
-	val fragSId = compileShader(GL20.GL_FRAGMENT_SHADER, fSrc)
-	GL20.glAttachShader(progId, fragSId)
-
-	GL20.glLinkProgram(progId)
-	checkProgram(GL20.GL_LINK_STATUS)
-
+	var attached:Map[Shader,Boolean] = Map()
+	
+	def attach(shaders:Map[Shader,Boolean]) = {
+		shaders.map{
+			case (shader, shouldOwn) =>
+				GL20.glAttachShader(progId, shader.shaderId)
+				attached = attached + (shader -> shouldOwn)
+		}
+	}
+	def detach(shaders:Set[Shader]) = {
+		shaders.map{
+			shader =>
+				if(attached.contains(shader)){
+					GL20.glDetachShader(progId, shader.shaderId)
+					if(attached(shader)){
+						shader.delete
+					}
+					attached = attached - shader
+				} else {
+					throw new LWJGLException("Can't detach a shader that isn't attached here!")
+				}
+		}
+		
+	}
+	
+	def link() = {
+		GL20.glLinkProgram(progId)
+		checkProgram(GL20.GL_LINK_STATUS)
+	}
+	
 	def validate = {
 		GL20.glValidateProgram(progId)
 		checkProgram(GL20.GL_VALIDATE_STATUS)
 	}
-
-	def compileShader(kind: Int, src: String): Int = {
-		val id = GL20.glCreateShader(kind)
-
-		val fullsrc = src.getBytes()
-		val srcBuf = BufferUtils.createByteBuffer(fullsrc.length)
-		srcBuf.clear()
-		srcBuf.put(fullsrc)
-		srcBuf.rewind()
-		GL20.glShaderSource(id, src)
-		GFX.checkNoGLErrors("Shader source buffering failed")
-
-		GL20.glCompileShader(id);
-		GFX.checkNoGLErrors("Shader compile failed")
-
-		checkShader(id)
-		return id;
-	}
-
-	def checkShader(shaderId: Int) = {
-		val result = GL20.glGetShaderi(shaderId, GL20.GL_COMPILE_STATUS);
-		if (result != GL11.GL_TRUE) {
-			val loglen = GL20.glGetShaderi(shaderId, GL20.GL_INFO_LOG_LENGTH);
-			val error = GL20.glGetShaderInfoLog(shaderId, loglen)
-			throw new LWJGLException(error);
-		}
-	}
-
-	def checkProgram(statusFlag: Int) {
-		val result = GL20.glGetProgrami(progId, statusFlag);
-		if (result != GL11.GL_TRUE) {
-			val loglen = GL20.glGetProgrami(progId, GL20.GL_INFO_LOG_LENGTH);
-			val error = GL20.glGetProgramInfoLog(progId, loglen);
-			throw new LWJGLException(error);
-		}
-	}
+	
 	def used = { ShaderManager.usedNow == this }
 	def use() = {
 		if (!used) {
@@ -96,7 +73,14 @@ class Shader(vertShaderFilename: String, fragShaderFilename: String, geoShaderFi
 			ShaderManager.usedNow = null
 		}
 	}
-
+	def checkProgram(statusFlag: Int) {
+		val result = GL20.glGetProgrami(progId, statusFlag);
+		if (result != GL11.GL_TRUE) {
+			val loglen = GL20.glGetProgrami(progId, GL20.GL_INFO_LOG_LENGTH);
+			val error = GL20.glGetProgramInfoLog(progId, loglen);
+			throw new LWJGLException(error);
+		}
+	}
 	def setVariables(vars: Map[String, Any]) = {
 		vars.foreach {
 			case (name: String, value: Any) =>
@@ -110,16 +94,46 @@ class Shader(vertShaderFilename: String, fragShaderFilename: String, geoShaderFi
 		}
 	}
 
+}
+
+class Shader(val src:String, val kind:Int) {
+	val shaderId = compileShader(kind, src)
+
+	def compileShader(kind: Int, src: String): Int = {
+		val id = GL20.glCreateShader(kind)
+
+		try{
+			GL20.glShaderSource(id, src)
+			GFX.checkNoGLErrors("Shader source buffering failed")
+
+			GL20.glCompileShader(id);
+			GFX.checkNoGLErrors("Shader compile failed")
+
+			checkShader(GL20.GL_COMPILE_STATUS)
+			id
+		} catch {
+			case e:LWJGLException =>
+				System.err.println(e.getMessage())
+				if (GL20.glIsShader(id)) { // Can't call delete because shaderId isn't set yet!
+					GL20.glDeleteShader(id)
+				}
+				0
+		}
+	}
+
+	def checkShader(statusFlag:Int) = {
+		val result = GL20.glGetShaderi(shaderId, statusFlag);
+		if (result != GL11.GL_TRUE) {
+			val loglen = GL20.glGetShaderi(shaderId, GL20.GL_INFO_LOG_LENGTH);
+			val error = GL20.glGetShaderInfoLog(shaderId, loglen)
+			throw new LWJGLException(error);
+		}
+	}
+
+
 	def delete() = {
-		GL20.glDeleteProgram(progId);
-		if (GL20.glIsShader(vertSId)) {
-			GL20.glDeleteShader(vertSId)
-		}
-		if (GL20.glIsShader(geoSId)) {
-			GL20.glDeleteShader(geoSId)
-		}
-		if (GL20.glIsShader(fragSId)) {
-			GL20.glDeleteShader(fragSId)
+		if (GL20.glIsShader(shaderId)) {
+			GL20.glDeleteShader(shaderId)
 		}
 	}
 

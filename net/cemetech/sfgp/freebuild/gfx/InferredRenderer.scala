@@ -30,7 +30,7 @@ class InferredRenderer(width:Int, height:Int) {
 
 	GFX.checkNoGLErrors("Error creating textures for inferred rendering:")
 
-	private val inferredGeoStage:Shader = new Shader("shaders/inferredGeo.glsl/vertex.vert","shaders/inferredGeo.glsl/fragment.frag")
+	private val inferredGeoStage:GLSLProgram = ShaderManager.programFromBundle("data/shaders/inferredGeo.glsl")
 	GFX.checkNoGLErrors("Error creating shaders for inferred rendering:")
 
 	def render(scene:Array[Mesh],shaderVars:Map[String,Any]) = {

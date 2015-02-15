@@ -7,16 +7,16 @@ object PipelineManager {
 }
 
 class RenderCallback {
-  def pre(shader:Shader):Unit = {}
-  def render(shader:Shader):Unit = {}
-  def post(shader:Shader):Unit = {}
+  def pre(program:GLSLProgram):Unit = {}
+  def render(program:GLSLProgram):Unit = {}
+  def post(program:GLSLProgram):Unit = {}
 }
 
 class Dependency() {
 	
 }
 
-class Stage(shader:Shader, callback:RenderCallback, target:Option[FBO], dependencies:Map[String,Int]) {
+class Stage(shader:GLSLProgram, callback:RenderCallback, target:Option[FBO], dependencies:Map[String,Int]) {
   def render(stages:Map[String,Stage]):Unit = {
 	  target match {
 	 	  case None => if(FBOManager.boundNow != null ){ FBOManager.boundNow.unbind }
