@@ -7,7 +7,7 @@ from java.lang import Runnable, IllegalStateException
 from javax.swing import JMenu, JMenuBar, JMenuItem, KeyStroke, JSeparator, JFrame, WindowConstants
 from net.cemetech.sfgp.glsl.compile import CompilerImpl, LinkerTaskSpec, CompilerTaskSpec, TaskResult
 
-from java.util.concurrent import LinkedBlockingQueue,FutureTask
+from java.util.concurrent import LinkedBlockingQueue,FutureTask, Callable
 
 from org.lwjgl.opengl import Display
 from net.cemetech.sfgp.freebuild.gfx import GFX, Shader, GLSLProgram, ShaderManager
@@ -33,6 +33,19 @@ class NativeLinkerTask(LinkerTaskSpec):
         # This will require refactoring
         # For now, a dummy test
         return TaskResult(prog.progId(), "")
+    
+class CleanupTask(Callable):
+    def __init__(self, peerCon, result):
+        self.peerCon = peerCon
+        self.result = result
+        
+    def call(self):
+        try:
+            self.peerCon(self.result.resultId).delete()
+            return True
+        except LWJGLException, e:
+            e.printStackTrace()
+            return False
 
 class NativeCompiler(CompilerImpl):
     def __init__(self):
@@ -51,7 +64,7 @@ class NativeCompiler(CompilerImpl):
         return self.waitOnTask(NativeLinkerTask(linkTask))
     
     def cleanResult(self, peerCon, result):
-        peerCon(result.resultId).delete()
+        return self.waitOnTask(CleanupTask(peerCon, result))
         
     def cleanCompileResult(self, result):
         self.cleanResult(Shader, result)
