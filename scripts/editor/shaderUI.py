@@ -26,6 +26,9 @@ class NativeLinkerTask(LinkerTaskSpec):
     
     def call(self):
         prog = GLSLProgram()
+        shaders = {Shader(r.resultId) : False for r in self.shaders}
+        prog.attach(shaders)
+        prog.link()
         # Need to re-construct the inputs as shaders somehow.
         # This will require refactoring
         # For now, a dummy test
@@ -46,6 +49,15 @@ class NativeCompiler(CompilerImpl):
     
     def linkProgram(self, linkTask):
         return self.waitOnTask(NativeLinkerTask(linkTask))
+    
+    def cleanResult(self, peerCon, result):
+        peerCon(result.resultId).delete()
+        
+    def cleanCompileResult(self, result):
+        self.cleanResult(Shader, result)
+        
+    def cleanLinkResult(self, result):
+        self.cleanResult(GLSLProgram, result)
     
     
 def menu_with_accelerator(menuText, accelerator_pair):

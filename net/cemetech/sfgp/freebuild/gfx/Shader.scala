@@ -62,13 +62,41 @@ object ShaderManager {
 			GL20.glDeleteShader(shaderId)
 		}
 	}
+	
+	def compileShader(kind: Int, src: String): Int = {
+		GFX.warnUncheckedErrors("Someone left a dangling error before calling compileShader");
+
+		val id = GL20.glCreateShader(kind)
+		GFX.checkNoGLErrors("Create shader failed")
+		
+		try{
+			GL20.glShaderSource(id, src)
+			GFX.checkNoGLErrors("Shader source buffering failed")
+
+			GL20.glCompileShader(id);
+			GFX.checkNoGLErrors("Shader compile failed")
+
+			ShaderManager.checkShader(id, GL20.GL_COMPILE_STATUS, "Compile failed")
+			id
+		} catch {
+			case e:LWJGLException =>
+			System.err.println(e.getMessage)
+			System.err.flush
+			ShaderManager.deleteShader(id)
+			0
+		}
+	}
 }
 
-class GLSLProgram {
+class GLSLProgram(val progId:Int) {
+	def this() = this(GL20.glCreateProgram())
+	
 	val f16Buffer = BufferUtils.createFloatBuffer(16);
-
-	val progId: Int = GL20.glCreateProgram()
-	var attached:Map[Shader,Boolean] = Map()
+	
+	// We should make this pull attachments dynamically at creation?
+	// That seems scary though because we really want Shader's to be singleton objects.
+	// Food for thought....
+	var attached:Map[Shader,Boolean] = Map()  
 
 	def attach(shaders:Map[Shader,Boolean]) = {
 		shaders.map{
@@ -143,35 +171,17 @@ class GLSLProgram {
 
 		}
 	}
+	
+	def delete() = {
+		if(GL20.glIsProgram(progId)){
+			detach(attached.keySet)
+			GL20.glDeleteProgram(progId)
+		}
+	}
 
 }
 
-class Shader(val src:String, val kind:Int) {
-	val shaderId = compileShader(kind, src)
-	
-	def compileShader(kind: Int, src: String): Int = {
-		GFX.warnUncheckedErrors("Someone left a dangling error before calling compileShader");
-
-		val id = GL20.glCreateShader(kind)
-		GFX.checkNoGLErrors("Create shader failed")
-		
-		try{
-			GL20.glShaderSource(id, src)
-			GFX.checkNoGLErrors("Shader source buffering failed")
-
-			GL20.glCompileShader(id);
-			GFX.checkNoGLErrors("Shader compile failed")
-
-			ShaderManager.checkShader(id, GL20.GL_COMPILE_STATUS, "Compile failed")
-			id
-		} catch {
-			case e:LWJGLException =>
-			System.err.println(e.getMessage)
-			System.err.flush
-			ShaderManager.deleteShader(id)
-			0
-		}
-	}
-	
-
+class Shader(val shaderId:Int) {
+	def this(src:String, kind:Int) = this(ShaderManager.compileShader(kind, src))
+	def delete = ShaderManager.deleteShader(shaderId)
 }
