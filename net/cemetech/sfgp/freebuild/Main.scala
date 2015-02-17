@@ -6,7 +6,7 @@ import net.cemetech.sfgp.freebuild.console._
 
 import java.util.logging.Logger
 
-import org.python.util.PythonInterpreter
+import org.python.util.InteractiveInterpreter
 
 object Main {
 	def main(args:Array[String]) = {
@@ -22,8 +22,9 @@ object Main {
 		var retcode = 0;
 		
 		Drivers.registerNamedDriver("GFXDriver", classOf[GFXDriver]);
+		Drivers.registerNamedDriver("DedicatedDriver", classOf[DedicatedDriver]);
 		
-		val interpreter = net.cemetech.sfgp.freebuild.console.Python.init(args)
+		val interpreter = net.cemetech.sfgp.freebuild.console.Python.init(args,new InteractiveInterpreter(_,_))
 		
 		val md:AbstractDriver = Drivers.getMainDriver
 		

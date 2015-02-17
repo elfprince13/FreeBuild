@@ -1,41 +1,24 @@
 package net.cemetech.sfgp.freebuild.console
 
 
-import org.python.util.PythonInterpreter 
+import org.python.util.PythonInterpreter
+import org.python.util.InteractiveInterpreter
 import org.python.core._
 
 import java.util._
 import java.io.File
 
 object Python {
+	private val defaultName = "main.py"
   
-    def init(in_argv:Array[String]):PythonInterpreter = {
-    	var args:Array[String] = in_argv
-		var initProps:Properties = PySystemState.getBaseProperties
-		initProps = setDefaultPythonPath(initProps)
-		//println(initProps)
+    def init[T <: PythonInterpreter](in_argv:Array[String],TCon:(PyDictionary,PySystemState) => T):T = {
 		
-		var name:String = "main.py"
-		if (args.length < 1){
-			args = Array(name)
+    	val (name:String, args:Array[String]) = if (in_argv.length < 1){
+			(defaultName,Array(defaultName))
 		} else {
-			name = args(0)
-			args = args.drop(0)
+			(in_argv(0),in_argv)
 		}
-		
-    	/*
-    	args.foreach{
-		    arg:String => println("arg: " + arg)
-		
-    	}
-    	// */		
-		PySystemState.initialize(initProps,new Properties,args)
-		
-		var systemState:PySystemState = Py.getSystemState()
-		var interp:PythonInterpreter = new PythonInterpreter(new PyDictionary,systemState)
-		
-		var mainModule:PyObject = __builtin__.__import__("__main__")
-		var mainNameSpace:PyObject = mainModule.__getattr__(new PyString("__dict__"))
+		val interp = clean_init(args,TCon)
 		
 		if((new File(name)).canRead()){
 			interp.execfile(name)
@@ -43,45 +26,31 @@ object Python {
 			println("Warning: Couldn't initialize main script. Check that it exists, and that you have permission to read it.")
 		}
 		
-		//var ui_module:PyObject = __builtin__.__import__("scripts.ui")
-		//interp.exec("import scripts.ui")
 		return interp
     }
   
-    def clean_init(in_argv:Array[String]):PythonInterpreter = {
-    	var args:Array[String] = in_argv
-		var initProps:Properties = PySystemState.getBaseProperties
-		initProps = setDefaultPythonPath(initProps)
-		//println(initProps)
+    def clean_init[T <: PythonInterpreter](in_argv:Array[String],TCon:(PyDictionary,PySystemState) => T):T = {
+    	val initProps:Properties = setDefaultPythonPath(PySystemState.getBaseProperties)
+				
+		PySystemState.initialize(initProps,new Properties,in_argv)
 		
+		val systemState:PySystemState = Py.getSystemState()
+		val interp = TCon(new PyDictionary,systemState)
 		
-    	/*
-    	args.foreach{
-		    arg:String => println("arg: " + arg)
+		val mainModule:PyObject = __builtin__.__import__("__main__")
+		val mainNameSpace:PyObject = mainModule.__getattr__(new PyString("__dict__"))
 		
-    	}
-    	// */		
-		PySystemState.initialize(initProps,new Properties,args)
-		
-		var systemState:PySystemState = Py.getSystemState()
-		var interp:PythonInterpreter = new PythonInterpreter(new PyDictionary,systemState)
-		
-		var mainModule:PyObject = __builtin__.__import__("__main__")
-		var mainNameSpace:PyObject = mainModule.__getattr__(new PyString("__dict__"))
-		
-		//var ui_module:PyObject = __builtin__.__import__("scripts.ui")
-		//interp.exec("import scripts.ui")
 		return interp
     }
 	
 	
 	def setDefaultPythonPath(props:Properties):Properties = {
-		var pythonPathProp:String = props.getProperty("python.path");
+		val pythonPathProp:String = props.getProperty("python.path");
     	
     	props.setProperty("python.path",if (pythonPathProp==null) {
     		System.getProperty("user.dir");
     	} else {
-    		pythonPathProp + java.io.File.pathSeparator + System.getProperty("user.dir") + java.io.File.pathSeparator
+    		s"$pythonPathProp${java.io.File.pathSeparator}${System.getProperty("user.dir")}${java.io.File.pathSeparator}"
     	})
     	return props
 	}
