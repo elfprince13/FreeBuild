@@ -4,6 +4,8 @@ import net.cemetech.sfgp.freebuild.drivers._
 import net.cemetech.sfgp.freebuild.platform._
 import net.cemetech.sfgp.freebuild.console._
 
+import java.util.logging.Logger
+
 import org.python.util.PythonInterpreter
 
 object Main {
@@ -12,6 +14,10 @@ object Main {
 		val ls = new FileLoggingService(ConventionMinder.findLogPath,ConventionMinder.findLogPath);
 		Console.out.subscribe(ls.getOut);
 		Console.err.subscribe(ls.getErr);
+		val primaryLogger = Logger.getLogger("net.cemetech.sfgp.freebuild")
+		primaryLogger.setUseParentHandlers(false)
+		primaryLogger.addHandler(Console.logHandler)
+		
 		
 		var retcode = 0;
 		

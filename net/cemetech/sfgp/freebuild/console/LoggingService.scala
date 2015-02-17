@@ -2,61 +2,81 @@ package net.cemetech.sfgp.freebuild.console
 
 import java.io._
 
+import java.util.logging._
+
+import java.nio.charset.Charset
+
 // This should be more interesting later on
 trait LoggingService {
-	def setWarnLevel(level:Int)
-	def setMessageLevel(level:Int)
-	def setErrorLevel(level:Int)
-
-	def getWarnLevel:Int
-	def getMessageLevel:Int
-	def getErrorLevel:Int
-
-	def warn(msg:String, level:Int)
-	def error(msg:String, level:Int)
-	def message(msg:String, level:Int)
-
-	def setOut(p:PrintStream)
-	def setErr(p:PrintStream)
-
 	def getOut:PrintStream
 	def getErr:PrintStream
-}
-
-abstract class StandardSemanticsLoggingService extends LoggingService {
-	@scala.beans.BeanProperty
-	var warnLevel:Int = 0
-	@scala.beans.BeanProperty
-	var messageLevel:Int = 0
-	@scala.beans.BeanProperty
-	var errorLevel:Int = 0
 	
-	def warn(msg:String, level:Int) = {
-		if (level >= warnLevel) {
-			getErr.print("Warning: ");
-			getErr.println(msg)
-		}
-	}
+	def setLevel(l:Level)
+}
 
-	def error(msg:String, level:Int) = {
-		if (level >= errorLevel) {
-			getErr.print("Error: ");
-			getErr.println(msg)
-		}
+object LSManager extends ErrorManager {
+	override def error(msg:String,ex:Exception, code:Int) = {
+		System.err.println(s"Our logger blew up with code $code: $msg")
+		ex.printStackTrace()
 	}
+        
+}
 
-	def message(msg:String, level:Int) = {
-		if (level >= messageLevel) {
-			getOut.println(msg)
-		}
+class MessageOnlyFormatter extends Formatter {
+	override def format(record:LogRecord):String = {
+		record.getMessage
+	}
+	override def formatMessage(record:LogRecord):String = {
+		record.getMessage
+	}
+	
+	override def getTail(handler:Handler):String = {
+		""	
+	}
+	override def getHead(handler:Handler):String = {
+		""
 	}
 }
 
-class GenericLoggingService(msgLoggingStream:PrintStream, errLoggingStream:PrintStream=null) extends StandardSemanticsLoggingService {
+abstract class StandardSemanticsLoggingService extends Handler with LoggingService {
+	setErrorManager(LSManager)
+	override def close() = {
+		flush
+		getOut.close
+		getErr.close
+	}
+	
+	override def flush() = {
+		getOut.flush
+		getErr.flush
+	}
+	
+	override def publish(record:LogRecord)
+}
+
+class GenericLoggingService(msgLoggingStream:PrintStream, errLoggingStream:PrintStream=null, fmt:Formatter = null) extends StandardSemanticsLoggingService {
+	
+	
 	@scala.beans.BeanProperty
-	var out = msgLoggingStream
+	val out = msgLoggingStream
 	@scala.beans.BeanProperty
-	var err = if(errLoggingStream == null){ out } else { errLoggingStream }
+	val err = if(errLoggingStream == null){ out } else { errLoggingStream }
+	
+	val formatter = if(fmt == null){ new MessageOnlyFormatter } else { fmt }
+	setErrorManager(LSManager)
+	
+	override def publish(record:LogRecord) = {
+		if(isLoggable(record)){
+			if(record.getLevel.intValue <= Level.INFO.intValue){
+				out.println(formatter.format(record))
+			} else {
+				err.println(formatter.format(record))
+			}
+		} else {
+			System.out.println("Couldn't log." + record.getLevel + " not allowed by " + getLevel)
+		}
+	}
+	
 }
 
 class FileLoggingService(msgLoggingPath:String, errLoggingPath:String="") extends {

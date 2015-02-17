@@ -10,6 +10,8 @@ object Console {
   private var retainedErr:PrintStream = null
   private var siezed:Boolean = false
   
+  val logHandler = new GenericLoggingService(new PrintStream(out), new PrintStream(err))
+  
   def siezeSystemStreams = {
     if(!siezed){
       retainedOut = System.out

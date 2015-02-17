@@ -8,9 +8,11 @@ import org.antlr.v4.runtime._
 
 import scala.collection.immutable.List
 import java.io.File
+import java.util.logging.Logger
 
 object LDManager {
-
+	val logger = Logger.getLogger("net.cemetech.sfgp.freebuild.ldraw")
+		
 	val ppmSuffix = List("P", "PARTS", "MODELS")
 
 	val prefInit = List(Tuple2(Array("LDraw", "Debug", "PrintRemarks"), Py.False),
@@ -24,7 +26,7 @@ object LDManager {
 	private var ldDirCache: List[String] = List()
 
 	def init = {
-		System.out.println("Initializing LDraw Subsystem...")
+		logger.info("Initializing LDraw Subsystem...")
 		prefInit.foreach(pTuple => Drivers.getMainDriver().initDefaultSetting(pTuple._1.map(new PyString(_)), pTuple._2))
 		validateDirectories
 
@@ -40,15 +42,15 @@ object LDManager {
 			Drivers.getMainDriver().checkSetting(dirInitPref._1.map(new PyString(_))).asInstanceOf[PyList]
 		} catch {
 			case e: ClassCastException =>
-				System.err.println("settings['LDraw']['Directory'] must be a list!")
+				logger.warning("settings['LDraw']['Directory'] must be a list!")
 				dirInitPref._2.asInstanceOf[PyList]
 		}
 
 		ldDirCache = directory_pref.getArray.iterator.collect({ case s: PyString if validateDirectory(s.asString) => s.asString }).flatMap(ppmDirs(_)).toList
 		if (ldDirCache.size < 1) {
-			System.err.println("No valid LDraw directories were found")
+			logger.warning("No valid LDraw directories were found")
 		} /* else {
-			System.out.println(ldDirCache.foldLeft("")((a,b) => a + " " + b))
+			logger.info(ldDirCache.foldLeft("")((a,b) => a + " " + b))
 		}*/
 
 	}
@@ -72,7 +74,7 @@ object LDManager {
 			val tree = parser.parsedModel
 			tree.inspect(parser)
 		} else {
-			System.err.println("Couldn't read model from any model directories: " + fname)
+			logger.severe("Couldn't read model from any model directories: " + fname)
 		}
 	}
 
