@@ -28,24 +28,25 @@ class GFXDriver extends AbstractDriver {
 
 		println("Attempting to initiate mainloop.")
 
-		var ui_defs_val: PyObject = settings.get(new PyString("ui_defs"), Py.None)
-		var ui_defs_sval: String = ui_defs_val.toString
-		var ui_module: PyObject = Py.None
-		if (ui_defs_val != Py.None) {
-			ui_module = imp.importName(ui_defs_sval, false)
+		val ui_defs_val: PyObject = settings.get(new PyString("ui_defs"), Py.None)
+		val ui_defs_sval: String = ui_defs_val.toString
+		val ui_module: PyObject = if (ui_defs_val != Py.None) {
+			val ui_module = imp.importName(ui_defs_sval, false)
 			if (ui_module == Py.None) {
-				println("settings['ui_defs'] is defined as '" + ui_defs_sval + "', but couldn't be imported.")
+				println(s"settings['ui_defs'] is defined as '$ui_defs_sval', but couldn't be imported.")
 				ret = -1
 			}
+			ui_module
 		} else {
 			println("settings['ui_defs'] is undefined or unable to interpreted as a string.")
 			ret = -1
+			Py.None
 		}
 
 		if (ret == 0) {
 			println("Successfully imported '" + ui_defs_sval + "' to begin UI definition.")
-			var py_conf_f: PyFunction = ui_module.__getattr__(new PyString("configure_ui")).asInstanceOf[PyFunction]
-			var py_conf_val: PyObject = py_conf_f.__call__(new PyInteger(640), new PyInteger(480))
+			val py_conf_f: PyFunction = ui_module.__getattr__(new PyString("configure_ui")).asInstanceOf[PyFunction]
+			val py_conf_val: PyObject = py_conf_f.__call__(new PyInteger(640), new PyInteger(480))
 			if (!(py_conf_val.asInstanceOf[PyBoolean].__nonzero__())) {
 				ret = -1
 				println("Couldn't call configure_ui(), or got a bad result")

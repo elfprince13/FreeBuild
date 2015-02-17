@@ -2,10 +2,11 @@ package net.cemetech.sfgp.freebuild.drivers;
 
 import scala.collection._
 
+
 object Drivers {
 	
 	protected var mainDriver:AbstractDriver = null
-	protected var knownDrivers:Map[String, Class[_ <:  AbstractDriver]] = Map[String, Class[_ <: AbstractDriver]]()
+	protected val knownDrivers:scala.collection.mutable.Map[String, Class[_ <:  AbstractDriver]] = scala.collection.mutable.Map[String, Class[_ <: AbstractDriver]]()
 		
 	def setMainDriver(nd:AbstractDriver):Unit = { mainDriver = nd }
 	def getMainDriver():AbstractDriver = { mainDriver }
@@ -15,13 +16,13 @@ object Drivers {
 	
 	def registerNamedDriver(name:String, newDriver:Class[_ <: AbstractDriver]):Class[_ <: AbstractDriver] = { 
 		val current = getNamedDriver(name)
-		knownDrivers = knownDrivers + (name -> newDriver)
+		knownDrivers += (name -> newDriver)
 		current
 	}
 	
 	def unregisterDriver(name:String) = {
 		val current = getNamedDriver(name)
-		knownDrivers = knownDrivers - name
+		knownDrivers -= name
 		current
 	}
 	

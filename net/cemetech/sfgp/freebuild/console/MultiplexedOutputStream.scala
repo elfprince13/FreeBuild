@@ -1,14 +1,14 @@
 package net.cemetech.sfgp.freebuild.console
 
 import java.io.OutputStream
-import scala.collection.immutable.HashSet
+import scala.collection.mutable.HashSet
 
 class MultiplexedOutputStream extends OutputStream {
-	var outputStreams = new HashSet[OutputStream]
+	val outputStreams = new HashSet[OutputStream]
 	
 	override def close = {
 	  outputStreams.map(_.close)
-	  outputStreams = null
+	  outputStreams.clear
 	}
 	
 	override def flush = {
@@ -28,11 +28,11 @@ class MultiplexedOutputStream extends OutputStream {
 	}
 	
 	def subscribe(o:OutputStream) = {
-	  outputStreams = outputStreams + o
+	  outputStreams += o
 	}
 	
 	def unsubscribe(o:OutputStream) = {
-	  outputStreams = outputStreams - o
+	  outputStreams -= o
 	}
 	
 }
