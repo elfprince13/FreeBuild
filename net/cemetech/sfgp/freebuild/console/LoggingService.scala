@@ -15,9 +15,10 @@ trait LoggingService {
 }
 
 object LSManager extends ErrorManager {
+	var ps = System.err
 	override def error(msg:String,ex:Exception, code:Int) = {
-		System.err.println(s"Our logger blew up with code $code: $msg")
-		ex.printStackTrace()
+		ps.println(s"Our logger blew up with code $code: $msg")
+		ex.printStackTrace(ps)
 	}
         
 }
@@ -54,13 +55,19 @@ abstract class StandardSemanticsLoggingService extends Handler with LoggingServi
 	override def publish(record:LogRecord)
 }
 
-class GenericLoggingService(msgLoggingStream:PrintStream, errLoggingStream:PrintStream=null, fmt:Formatter = null) extends StandardSemanticsLoggingService {
+class GenericLoggingService(msgLoggingStream:OutputStream, errLoggingStream:OutputStream=null, fmt:Formatter = null) extends StandardSemanticsLoggingService {
 	
+	private def ensurePrintStream(stream:OutputStream):PrintStream = {
+		stream match {
+			case ps:PrintStream => ps
+			case _ => new PrintStream(stream)
+		}
+	}
 	
 	@scala.beans.BeanProperty
-	val out = msgLoggingStream
+	val out = ensurePrintStream(msgLoggingStream)
 	@scala.beans.BeanProperty
-	val err = if(errLoggingStream == null){ out } else { errLoggingStream }
+	val err = if(errLoggingStream == null || errLoggingStream == msgLoggingStream){ out } else { ensurePrintStream(errLoggingStream) }
 	
 	val formatter = if(fmt == null){ new MessageOnlyFormatter } else { fmt }
 	setErrorManager(LSManager)
@@ -72,8 +79,6 @@ class GenericLoggingService(msgLoggingStream:PrintStream, errLoggingStream:Print
 			} else {
 				err.println(formatter.format(record))
 			}
-		} else {
-			System.out.println("Couldn't log." + record.getLevel + " not allowed by " + getLevel)
 		}
 	}
 	
@@ -89,9 +94,7 @@ class FileLoggingService(msgLoggingPath:String, errLoggingPath:String="") extend
 class StringLoggingService(separateOutErr:Boolean = false) extends {
 	private val outBAOS = new ByteArrayOutputStream
 	private val errBAOS = if(separateOutErr){ new ByteArrayOutputStream } else { outBAOS }
-	private val outStream = new PrintStream(outBAOS)
-	private val errStream = if(separateOutErr){ new PrintStream(errBAOS) } else { outStream }
-} with GenericLoggingService(outStream, errStream) {
+} with GenericLoggingService(outBAOS, errBAOS) {
 	def getLogString(wantErr:Boolean = true):String = {
 		if(wantErr) {
 			errBAOS.toString()

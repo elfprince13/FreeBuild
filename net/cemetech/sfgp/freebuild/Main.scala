@@ -12,11 +12,9 @@ object Main {
 	def main(args:Array[String]) = {
 		Console.siezeSystemStreams
 		val ls = new FileLoggingService(ConventionMinder.findLogPath,ConventionMinder.findLogPath);
-		Console.out.subscribe(ls.getOut);
-		Console.err.subscribe(ls.getErr);
-		val primaryLogger = Logger.getLogger("net.cemetech.sfgp.freebuild")
-		primaryLogger.setUseParentHandlers(false)
-		primaryLogger.addHandler(Console.logHandler)
+		Console.subscribe(ls.getOut);
+		Console.subscribe(ls.getErr,true);
+		
 		
 		
 		var retcode = 0;

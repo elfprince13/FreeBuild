@@ -10,9 +10,16 @@ import com.sun.jna.NativeLibrary
 
 
 object ConventionMinder {
-  val appHandleStr = "net.cemetech.sfgp.freebuild"
-  val appHandleCStr = appHandleStr + '\0'
+  private val appHandleStr = "net.cemetech.sfgp.freebuild"
+  private val appHandleCStr = appHandleStr + '\0'
   val fsep = File.separator
+  
+  def getSubpackageString(name:String) = {
+	  s"$appHandleStr.$name"
+  }
+  def getPackageString() = {
+	  appHandleStr
+  }
   
   Native.register("crane")
   @native protected def getApplicationLogFile(buf:Pointer, maxl:Int, appName:Pointer):Unit

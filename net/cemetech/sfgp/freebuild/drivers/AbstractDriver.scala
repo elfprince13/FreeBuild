@@ -7,13 +7,15 @@ import org.python.util.PythonInterpreter
 import org.python.core._
 import org.python.util.InteractiveInterpreter
 
+import net.cemetech.sfgp.freebuild.platform.ConventionMinder
+
 abstract class AbstractDriver {
 
 	@scala.beans.BeanProperty
 	var settings: PyDictionary = new PyDictionary()
 	protected var console: InteractiveInterpreter = null
 	
-	val logger = Logger.getLogger("net.cemetech.sfgp.freebuild.drivers")
+	val logger = Logger.getLogger(ConventionMinder.getSubpackageString("drivers"))
 
 	def mainloop(): Int
 
