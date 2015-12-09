@@ -4,6 +4,7 @@
 	<classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/SlickUtil"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GDX Bullet"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/LDrawParser"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/ANTLRv4"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jsyntaxpane"/>
