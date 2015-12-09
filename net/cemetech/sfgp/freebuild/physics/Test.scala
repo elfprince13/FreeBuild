@@ -112,16 +112,18 @@ class PhysTest{
 	}
 
 	def dispose () = {
-		instances.foreach(_.dispose())
+		instances.foreach{i =>
+			dynamicsWorld.removeRigidBody(i.body)
+			i.dispose
+		}
 		instances = List[GameObject]()
-		constructors.values.foreach(_.dispose())
+		constructors.values.foreach(_.dispose)
 		constructors =  Map[String, GameObject.Constructor]()
-		dynamicsWorld.dispose()
-		constraintSolver.dispose()
-		broadphase.dispose()
-		dispatcher.dispose()
-		collisionConfig.dispose()
-		contactListener.dispose()
+		
+		List(dynamicsWorld, constraintSolver, broadphase, dispatcher, collisionConfig, contactListener).foreach{
+			o => Console.println("Disposing",o)
+			o.dispose
+		}
 	}
 }
 
@@ -131,7 +133,7 @@ object Test {
 		val t = new PhysTest
 
 		val start = Platform.currentTime
-		Stream.continually(Platform.currentTime).takeWhile(_ - start <= 2000).foldLeft(start){
+		Stream.continually(Platform.currentTime).takeWhile(_ - start <= 200).foldLeft(start){
 		case(last, now) => t.tick(now - last)
 				Thread.sleep(18)
 				now
