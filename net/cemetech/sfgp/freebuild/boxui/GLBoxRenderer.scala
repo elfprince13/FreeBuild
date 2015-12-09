@@ -78,8 +78,6 @@ class GLBoxRenderer(width:Int, height:Int) extends BoxRenderer {
 		val iboId = GL15.glGenBuffers();
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, iboId);
 		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, iBuffer, GL15.GL_STATIC_DRAW);
-		// Deselect (bind to 0) the VBO
-		//GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
 		
 		GL20.glEnableVertexAttribArray(0)
 		GL20.glEnableVertexAttribArray(1)

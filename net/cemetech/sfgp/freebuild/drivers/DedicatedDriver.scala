@@ -68,9 +68,10 @@ class DedicatedDriver extends AbstractDriver {
 				case exc:PyException =>
 					if(Py.matchException(exc, Py.EOFError)){
 						tc -= 1
-						console.write(s"Received Ctrl-D.\nUse DedicatedDriver.exit() to exit (or press ${tc} more times)\n")
 						if(tc == 0){
 							exitRequest = true
+						} else {
+							console.write(s"Received Ctrl-D.\nUse DedicatedDriver.exit() to exit (or press Ctrl-D ${tc} more times)\n")
 						}	
 					} else {
 						throw exc

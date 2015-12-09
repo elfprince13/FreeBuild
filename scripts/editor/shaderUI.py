@@ -11,10 +11,12 @@ from java.util.concurrent import LinkedBlockingQueue,FutureTask, Callable
 
 from org.lwjgl.opengl import Display
 from net.cemetech.sfgp.freebuild.gfx import GFX, Shader, GLSLProgram, ShaderManager
+from net.cemetech.sfgp.freebuild.console import StringLoggingService
 
 class NativeCompilerTask(CompilerTaskSpec):
     def __init__(self, copySpec):
         CompilerTaskSpec.__init__(self,copySpec.getKind(), copySpec.getSrc())
+        self.logger = StringLoggingService(False)
     
     def call(self):
         shader = Shader(self.src, self.kind)
