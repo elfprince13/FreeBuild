@@ -16,24 +16,26 @@
 // TypeLDrawDir
 //-----------------------------------------------------------------------------
 
-IMPLEMENT_CLASS(LDrawLibraryPathElement, "A 2-tuple of a size_t and a c-string")
+namespace LDRAW {
+	IMPLEMENT_CLASS(LDrawLibraryPathElement, "A 2-tuple of a size_t and a c-string")
 	PROPERTY( pathLen, 1, "Length of the path element.", 0 )
 	PROPERTY( pathStr, 1, "Textual representation of the path element.", 0)
-END_IMPLEMENT_CLASS;
-
-IMPLEMENT_CLASS(LDrawLibraryPath, "A queue of `LDrawLibraryPathElement`s")
+	END_IMPLEMENT_CLASS;
+	
+	IMPLEMENT_CLASS(LDrawLibraryPath, "A queue of `LDrawLibraryPathElement`s")
 	PROPERTY( element, 0, "The actual elements.", 0)
-END_IMPLEMENT_CLASS
-
-
-ConsoleType( ldrawDir, TypeLDrawLibraryPath, LDrawLibraryPath, LDRAW_DIRECTORY_PREFIX )
-
-static size_t sumPathTuple(size_t headSize, const LDrawLibraryPathElement &o2) {
-	return headSize + o2.first;
+	END_IMPLEMENT_CLASS
 }
+
+
+ConsoleType( ldrawDir, TypeLDrawLibraryPath, LDRAW::LDrawLibraryPath, LDRAW_DIRECTORY_PREFIX )
 
 ConsoleGetType( TypeLDrawLibraryPath )
 {
+	using namespace LDRAW;
+	static auto sumPathTuple = [](size_t headSize, const LDrawLibraryPathElement &o2) {
+		return headSize + o2.first;
+	};
 	const LDrawLibraryPath::ElemQueueType& deqRef = ((LDrawLibraryPath*)dptr)->elements;
 	size_t bufSize = std::accumulate(deqRef.cbegin(), deqRef.cend(), deqRef.size(), sumPathTuple);
 	char * returnString = Con::getReturnBuffer(bufSize);
@@ -48,17 +50,18 @@ ConsoleGetType( TypeLDrawLibraryPath )
 	return returnString;
 }
 
-static void addNextPath(LDrawLibraryPath::ElemQueueType& deqRef, char *theStr, char* next){
-	next[0] = '\0';
-	if((next - 1 >= theStr) && (next[-1] == '/')){
-		next[-1] = '\0';
-	}
-	LDrawLibraryPathElement elem(dStrlen(theStr), StringTable->insert(theStr));
-	deqRef.push_back(elem);
-}
-
 ConsoleSetType( TypeLDrawLibraryPath )
 {
+	using namespace LDRAW;
+	static auto addNextPath = [](LDrawLibraryPath::ElemQueueType& deqRef, char *theStr, char* next){
+		next[0] = '\0';
+		if((next - 1 >= theStr) && (next[-1] == '/')){
+			next[-1] = '\0';
+		}
+		LDrawLibraryPathElement elem(dStrlen(theStr), StringTable->insert(theStr));
+		deqRef.push_back(elem);
+	};
+	
 	if(argc == 1)
 	{
 		LDrawLibraryPath::ElemQueueType& deqRef = ((LDrawLibraryPath*)dptr)->elements;

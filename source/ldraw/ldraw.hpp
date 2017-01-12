@@ -24,37 +24,41 @@
 
 #define LDRAW_DIRECTORY_PREFIX "@ldrawDir="
 
-class LDrawLibraryPathElement : public EngineObject {
-	DECLARE_CLASS(LDrawLibraryPathElement, EngineObject);
-	size_t first;
-	StringTableEntry second;
-	LDrawLibraryPathElement(size_t len, const char * str, bool debugValidate = true)
-	: first(len), second(str) {
-		AssertFatal(!debugValidate || (len = dStrlen(str)), "str/len mismatch");
-	}
-	LDrawLibraryPathElement() : first(0), second(NULL) {}
+namespace LDRAW {
+	class LDrawLibraryPathElement : public EngineObject {
+		DECLARE_CLASS(LDrawLibraryPathElement, EngineObject);
+		size_t first;
+		StringTableEntry second;
+		LDrawLibraryPathElement(size_t len, const char * str, bool debugValidate = true)
+		: first(len), second(str) {
+			AssertFatal(!debugValidate || (len = dStrlen(str)), "str/len mismatch");
+		}
+		LDrawLibraryPathElement() : first(0), second(NULL) {}
+		
+		size_t getPathLen() const {	return first; }
+		void setPathLen(size_t len){ first = len; }
+		
+		StringTableEntry getPathStr() const { return second; }
+		void setPathStr(StringTableEntry str) { second = str; }
+	};
 	
-	size_t getPathLen() const {	return first; }
-	void setPathLen(size_t len){ first = len; }
-	
-	StringTableEntry getPathStr() const { return second; }
-	void setPathStr(StringTableEntry str) { second = str; }
-};
-
-class LDrawLibraryPath : public EngineObject {
-	DECLARE_CLASS(LDrawLibraryPath, EngineObject);
-	typedef std::deque<LDrawLibraryPathElement> ElemQueueType;
-	ElemQueueType elements;
-	LDrawLibraryPath() : elements() {}
-	LDrawLibraryPath(ElemQueueType init) : elements(init) {}
-	
-	S32 getElementCount() const { return elements.size(); }
-	LDrawLibraryPathElement getElementElement(S32 i) const { return elements[i]; }
-	void setElementElement(S32 i, LDrawLibraryPathElement elem) { elements[i] = elem; }
-};
+	class LDrawLibraryPath : public EngineObject {
+		DECLARE_CLASS(LDrawLibraryPath, EngineObject);
+		typedef std::deque<LDrawLibraryPathElement> ElemQueueType;
+		ElemQueueType elements;
+		LDrawLibraryPath() : elements() {}
+		LDrawLibraryPath(ElemQueueType init) : elements(init) {}
+		
+		S32 getElementCount() const { return elements.size(); }
+		LDrawLibraryPathElement getElementElement(S32 i) const { return elements[i]; }
+		void setElementElement(S32 i, LDrawLibraryPathElement elem) { elements[i] = elem; }
+	};
+}
 
 // N.B. We don't currently do any escaping, so member paths can't contain ";"
-DefineConsoleType(TypeLDrawLibraryPath, LDrawLibraryPath)
+DefineConsoleType(TypeLDrawLibraryPath, LDRAW::LDrawLibraryPath)
+
+
 
 namespace LDRAW {
 	bool checkLDrawDirectory();
