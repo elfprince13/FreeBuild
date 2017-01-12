@@ -8,30 +8,76 @@
 
 #include "ldraw.hpp"
 #include "console/engineAPI.h"
-#include "console/consoleInternal.h"
-#include "console/ast.h"
+
+#include <numeric>
+#include <algorithm>
 
 //-----------------------------------------------------------------------------
 // TypeLDrawDir
 //-----------------------------------------------------------------------------
-ConsoleType( ldrawDir, TypeLDrawDir, const char*, LDRAW_DIRECTORY_PREFIX )
 
-ConsoleGetType( TypeLDrawDir )
-{
-	return *((const char **)(dptr));
+IMPLEMENT_CLASS(LDrawLibraryPathElement, "A 2-tuple of a size_t and a c-string")
+	PROPERTY( pathLen, 1, "Length of the path element.", 0 )
+	PROPERTY( pathStr, 1, "Textual representation of the path element.", 0)
+END_IMPLEMENT_CLASS;
+
+IMPLEMENT_CLASS(LDrawLibraryPath, "A queue of `LDrawLibraryPathElement`s")
+	PROPERTY( element, 0, "The actual elements.", 0)
+END_IMPLEMENT_CLASS
+
+
+ConsoleType( ldrawDir, TypeLDrawLibraryPath, LDrawLibraryPath, LDRAW_DIRECTORY_PREFIX )
+
+static size_t sumPathTuple(size_t headSize, const LDrawLibraryPathElement &o2) {
+	return headSize + o2.first;
 }
 
-ConsoleSetType( TypeLDrawDir )
+ConsoleGetType( TypeLDrawLibraryPath )
+{
+	const LDrawLibraryPath::ElemQueueType& deqRef = ((LDrawLibraryPath*)dptr)->elements;
+	size_t bufSize = std::accumulate(deqRef.cbegin(), deqRef.cend(), deqRef.size(), sumPathTuple);
+	char * returnString = Con::getReturnBuffer(bufSize);
+	char * dst = returnString;
+	std::for_each(deqRef.cbegin(), deqRef.cend(),
+				  [&](const LDrawLibraryPathElement& elem){
+					  dStrcpy(dst, elem.second);
+					  dst += elem.first;
+					  (dst++)[0] = ';';
+				  });
+	dst[-1] = '\0';
+	return returnString;
+}
+
+static void addNextPath(LDrawLibraryPath::ElemQueueType& deqRef, char *theStr, char* next){
+	next[0] = '\0';
+	if((next - 1 >= theStr) && (next[-1] == '/')){
+		next[-1] = '\0';
+	}
+	LDrawLibraryPathElement elem(dStrlen(theStr), StringTable->insert(theStr));
+	deqRef.push_back(elem);
+}
+
+ConsoleSetType( TypeLDrawLibraryPath )
 {
 	if(argc == 1)
 	{
-		char * FullPath = dStrdup(argv[0]);
-		if( FullPath[ dStrlen( FullPath ) - 1 ] == '/' )
-			FullPath[ dStrlen( FullPath ) - 1 ] = 0x00;
-		*((const char **) dptr) = StringTable->insert(FullPath);
-		dFree(FullPath);
+		LDrawLibraryPath::ElemQueueType& deqRef = ((LDrawLibraryPath*)dptr)->elements;
+		
+		if(deqRef.size() > 0){
+			deqRef.clear();
+		}
+		
+		char *buf = dStrdup(argv[0]); // The args are const, so we have to make a temporary buffer
+		char *next, *theStr = buf;
+		while((next = strchr(theStr, ';')) != nullptr){
+			addNextPath(deqRef, theStr, next);
+			theStr = next+1;
+		}
+		next = theStr + dStrlen(theStr);
+		addNextPath(deqRef, theStr, next);
+		dFree(buf);
 	} else
-		Con::printf("(TypeLDrawDir) Cannot set multiple args to a single string.");
+		Con::printf("(TypeLDrawLibraryPath) Cannot set multiple args to a single string.");
 }
 
 
@@ -51,7 +97,7 @@ MODULE_END;
 
 namespace LDRAW {
 	std::deque<std::string> gLDrawInstallation;
-	std::deque<char*> gLDrawDirectories;
+	LDrawLibraryPath gLDrawDirectories;
 	StringTableEntry primsSTE;
 	StringTableEntry partsSTE;
 	StringTableEntry modelSTE;
@@ -68,8 +114,8 @@ namespace LDRAW {
 		gLDrawInstallation.clear();
 		gLDrawInstallation.resize(0);
 		
-		gLDrawDirectories.clear();
-		gLDrawDirectories.resize(0);
+		gLDrawDirectories.elements.clear();
+		gLDrawDirectories.elements.resize(0);
 		
 		primsSTE = StringTable->insert("P");
 		partsSTE = StringTable->insert("PARTS");
@@ -88,6 +134,7 @@ namespace LDRAW {
 		// and this needs to access anywhere
 		Con::addVariable( "$pref::LDraw::ConfigPath", TypeString, &gLDrawConfigPath);
 		Con::addVariable( "$pref::LDraw::ScriptPath", TypeString, &gLDrawScriptPath);
+		Con::addVariable( "$pref::LDraw::LibraryPath", TypeLDrawLibraryPath, &gLDrawDirectories);
 		
 		
 		/*
@@ -107,87 +154,55 @@ namespace LDRAW {
 	}
 	
 	bool checkLDrawDirectory(){
-		bool tryNext;
-		char * fullPath;
-		char * varNameBuf = new char[512];
-		U32 i = 0;
-		
-		Dictionary::Entry * var;
-		StringTableEntry varName;
 		std::deque<std::string> ppmPaths;
-		
 		Con::printf("Initializing LDraw Subsystem...");
 		ppmPaths.clear();
 		
-		
-		do{
-			tryNext = false;
-			dSprintf(varNameBuf, 512, "$pref::LDraw::Directory%d",i);
-			varName = StringTable->insert(varNameBuf);
-			if(*Con::getVariable(varName) != '\0'){
-				var = gEvalState.globalVars.lookup(varName);
-				AssertFatal(var != NULL, "LDParse::checkLDrawDirectory - We found the variable already, this shouldn't be a problem");
-				if(var->value.type != TypeLDrawDir){
-					dStrcpy(varNameBuf, var->getStringValue());
-					dFree(var->value.sval);
-					var->value.sval = typeValueEmpty;
-					
-					char * dirStore = new char[dStrlen(varNameBuf)+1];
-					gLDrawDirectories.push_back(dirStore);
-					var->value.dataPtr = dirStore;
-					var->value.type = TypeLDrawDir;
-					var->setStringValue(varNameBuf);
-				}
-				tryNext = true;
-				fullPath = dStrdup(Con::getVariable(varName));
-				bool fpL, fpPr, fpPa, fpMd;
-				fpL = fpPr = fpPa = fpMd = false;
-				fpL = Platform::isDirectory( fullPath );
-				if(fpL){
-					fpPr = Platform::isSubDirectory(fullPath, primsSTE);
-					fpPa = Platform::isSubDirectory(fullPath, partsSTE);
-					fpMd = Platform::isSubDirectory(fullPath, modelSTE);
-				}
-				if(	Platform::isDirectory( fullPath ) &&
-				   Platform::isSubDirectory(fullPath, primsSTE) &&
-				   Platform::isSubDirectory(fullPath, partsSTE) &&
-				   Platform::isSubDirectory(fullPath, modelSTE)
-				   ){
-					
-					// construct the full file paths
-					U32 primsLen = dStrlen(fullPath) + 3;
-					U32 partsLen = dStrlen(fullPath) + 7;
-					U32 modelLen = dStrlen(fullPath) + 8;
-					char* primsPath = new char[primsLen];
-					char* partsPath = new char[partsLen];
-					char* modelPath = new char[modelLen];
-					
-					Platform::makeFullPathName(primsSTE, primsPath, primsLen, fullPath);
-					Platform::makeFullPathName(partsSTE, partsPath, partsLen, fullPath);
-					Platform::makeFullPathName(modelSTE, modelPath, modelLen, fullPath);
-					
-					ppmPaths.push_back(std::string(primsPath));
-					ppmPaths.push_back(std::string(partsPath));
-					ppmPaths.push_back(std::string(modelPath));
-					
-					delete [] primsPath;
-					delete [] partsPath;
-					delete [] modelPath;
-				} else{
-					Con::errorf("Did not find an LDraw installation at %s (in %s), so moving on.\nMake sure you have P, PARTS and MODELS subdirectories.", fullPath, varName);
-				}
-				
-				dFree(fullPath);
-			}
-			
-			
-		} while(tryNext && (++i)); // This second test is a sanity check of sorts. I can't imagine when it would happen, but lets make sure it doesn't.
-		
-		delete [] varNameBuf;
-		
+		std::for_each(gLDrawDirectories.elements.begin(), gLDrawDirectories.elements.end(),
+					  [&](const LDrawLibraryPathElement& currentDir){
+						  const char * fullPath = currentDir.second;
+						  size_t fullPathLen = currentDir.first;
+						  
+						  bool fpL, fpPr, fpPa, fpMd;
+						  fpL = fpPr = fpPa = fpMd = false;
+						  fpL = Platform::isDirectory( fullPath );
+						  if(fpL){
+							  fpPr = Platform::isSubDirectory(fullPath, primsSTE);
+							  fpPa = Platform::isSubDirectory(fullPath, partsSTE);
+							  fpMd = Platform::isSubDirectory(fullPath, modelSTE);
+						  }
+						  if(	Platform::isDirectory( fullPath ) &&
+							 Platform::isSubDirectory(fullPath, primsSTE) &&
+							 Platform::isSubDirectory(fullPath, partsSTE) &&
+							 Platform::isSubDirectory(fullPath, modelSTE)
+							 ){
+							  
+							  // construct the full file paths
+							  U32 primsLen = fullPathLen + 3;
+							  U32 partsLen = fullPathLen + 7;
+							  U32 modelLen = fullPathLen + 8;
+							  char* primsPath = new char[primsLen];
+							  char* partsPath = new char[partsLen];
+							  char* modelPath = new char[modelLen];
+							  
+							  Platform::makeFullPathName(primsSTE, primsPath, primsLen, fullPath);
+							  Platform::makeFullPathName(partsSTE, partsPath, partsLen, fullPath);
+							  Platform::makeFullPathName(modelSTE, modelPath, modelLen, fullPath);
+							  
+							  ppmPaths.push_back(std::string(primsPath));
+							  ppmPaths.push_back(std::string(partsPath));
+							  ppmPaths.push_back(std::string(modelPath));
+							  
+							  delete [] primsPath;
+							  delete [] partsPath;
+							  delete [] modelPath;
+						  } else{
+							  Con::errorf("Did not find an LDraw installation at %s (in $pref::LDraw::LibraryPath), so moving on.\nMake sure you have P, PARTS and MODELS subdirectories.", fullPath);
+						  }
+					  });
 		
 		if(!ppmPaths.size()){
-			Con::errorf("Please point the $pref::LDraw::Directory array to at least one valid LDraw installation");
+			Con::errorf("Please point $pref::LDraw::LibraryPath to at least one valid LDraw installation. Multiple directories may be specified as a ';' separated list.");
 			Con::executef("onLDrawDirFailed");
 			gLDrawInstallation.clear();
 			gLDrawInstallation.resize(0);
@@ -199,15 +214,8 @@ namespace LDRAW {
 	}
 	
 	void shutdown(){
-		char* dir;
-		for(std::deque<char*>::const_iterator itr = gLDrawDirectories.begin();
-			itr!=gLDrawDirectories.end();
-			++itr
-			) {
-			dir = *itr;
-			if(dir != NULL) delete [] dir;
-		}
-		
+		gLDrawDirectories.elements.clear();
+		gLDrawInstallation.clear();
 		
 		//LDCacheNode::clearLDCache();
 		
