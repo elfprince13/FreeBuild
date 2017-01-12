@@ -1,0 +1,3 @@
+[submodule "deps/LDParse"]
+	path = deps/LDParse
+	url = git@github.com:elfprince13/LDParse.git

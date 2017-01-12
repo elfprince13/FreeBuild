@@ -31,12 +31,12 @@
 //not only to your game proper, but also to all of your tools.
 
 /// What's the name of your application? Used in a variety of places.
-#define TORQUE_APP_NAME				  "FreeBuild"
+#define TORQUE_APP_NAME            "FreeBuild"
 
 /// What version of the application specific source code is this?
 ///
 /// Version number is major * 1000 + minor * 100 + revision * 10.
-#define TORQUE_APP_VERSION			  1000
+#define TORQUE_APP_VERSION         1000
 
 /// Human readable application version string.
 #define TORQUE_APP_VERSION_STRING  "1.0.0.0"
@@ -51,8 +51,8 @@
 /* #undef TORQUE_DISABLE_VIRTUAL_MOUNT_SYSTEM */
 
 /// Define me if you want to disable looking for the root of a given path
-/// within a zip file.	This means that the zip file name itself must be
-/// the root of the path.	Requires the virtual mount system to be active.
+/// within a zip file.  This means that the zip file name itself must be
+/// the root of the path.  Requires the virtual mount system to be active.
 /* #undef TORQUE_DISABLE_FIND_ROOT_WITHIN_ZIP */
 
 //Uncomment this define if you want to use the alternative zip support where you can 
@@ -68,7 +68,7 @@
 #define TORQUE_TOOLS
 
 /// Define me if you want to enable the profiler.
-///	 See also the TORQUE_SHIPPING block below
+///    See also the TORQUE_SHIPPING block below
 /* #undef TORQUE_ENABLE_PROFILER */
 
 /// Define me to enable debug mode; enables a great number of additional
@@ -142,26 +142,26 @@
 /// It was previously set to 3MB but I've increased it to 32MB due to the
 /// FrameAllocator being used as temporary storage for bitmaps in the D3D9
 /// texture manager.
-#define TORQUE_FRAME_SIZE		32 << 20
+#define TORQUE_FRAME_SIZE     32 << 20
 
 // Finally, we define some dependent #defines. This enables some subsidiary
 // functionality to get automatically turned on in certain configurations.
 
 #ifdef TORQUE_DEBUG
 
-	#define TORQUE_GATHER_METRICS 0
-	#define TORQUE_ENABLE_PROFILE_PATH
-	#ifndef TORQUE_DEBUG_GUARD
-		#define TORQUE_DEBUG_GUARD
-	#endif
-	#ifndef TORQUE_NET_STATS
-		#define TORQUE_NET_STATS
-	#endif
+   #define TORQUE_GATHER_METRICS 0
+   #define TORQUE_ENABLE_PROFILE_PATH
+   #ifndef TORQUE_DEBUG_GUARD
+      #define TORQUE_DEBUG_GUARD
+   #endif
+   #ifndef TORQUE_NET_STATS
+      #define TORQUE_NET_STATS
+   #endif
 
-	// Enables the C++ assert macros AssertFatal, AssertWarn, etc.
-	#ifndef TORQUE_ENABLE_ASSERTS
-	#define TORQUE_ENABLE_ASSERTS
-	#endif
+   // Enables the C++ assert macros AssertFatal, AssertWarn, etc.
+   #ifndef TORQUE_ENABLE_ASSERTS
+   #define TORQUE_ENABLE_ASSERTS
+   #endif
 
 #endif
 
@@ -171,26 +171,26 @@
 
 #ifdef TORQUE_SHIPPING
 
-	 // TORQUE_SHIPPING flags here.
+    // TORQUE_SHIPPING flags here.
 
 #else
 
-	// Enable the profiler by default, if we're not doing a shipping build.
-	#define TORQUE_ENABLE_PROFILER
+   // Enable the profiler by default, if we're not doing a shipping build.
+   #define TORQUE_ENABLE_PROFILER
 
-	// Enable the TorqueScript assert() instruction if not shipping.
-	#define TORQUE_ENABLE_SCRIPTASSERTS
+   // Enable the TorqueScript assert() instruction if not shipping.
+   #define TORQUE_ENABLE_SCRIPTASSERTS
 
-	// We also enable GFX debug events for use in Pix and other graphics
-	// debugging tools.
-	#define TORQUE_ENABLE_GFXDEBUGEVENTS
+   // We also enable GFX debug events for use in Pix and other graphics
+   // debugging tools.
+   #define TORQUE_ENABLE_GFXDEBUGEVENTS
 
 #endif
 
 #ifdef TORQUE_TOOLS
-#	define TORQUE_INSTANCE_EXCLUSION	  "TorqueToolsTest"
+#  define TORQUE_INSTANCE_EXCLUSION   "TorqueToolsTest"
 #else
-#	define TORQUE_INSTANCE_EXCLUSION	  "TorqueTest"
+#  define TORQUE_INSTANCE_EXCLUSION   "TorqueTest"
 #endif
 
 // Someday, it might make sense to do some pragma magic here so we error
@@ -198,11 +198,11 @@
 
 // The Xbox360 has it's own profiling tools, the Torque Profiler should not be used
 #ifdef TORQUE_OS_XENON
-#	ifdef TORQUE_ENABLE_PROFILER
-#		undef TORQUE_ENABLE_PROFILER
-#	endif
+#  ifdef TORQUE_ENABLE_PROFILER
+#     undef TORQUE_ENABLE_PROFILER
+#  endif
 #
-#	ifdef TORQUE_ENABLE_PROFILE_PATH
-#		undef TORQUE_ENABLE_PROFILE_PATH
+#  ifdef TORQUE_ENABLE_PROFILE_PATH
+#     undef TORQUE_ENABLE_PROFILE_PATH
 #endif
 #endif
