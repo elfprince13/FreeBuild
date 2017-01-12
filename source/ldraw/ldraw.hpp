@@ -10,6 +10,7 @@
 #define ldraw_hpp
 
 #include "console/console.h"
+#include "core/color.h"
 
 #ifndef _CONSOLE_BASE_TYPE_H_
 #include "console/consoleTypes.h"

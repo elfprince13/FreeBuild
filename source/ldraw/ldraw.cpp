@@ -34,6 +34,21 @@ ConsoleSetType( TypeLDrawDir )
 		Con::printf("(TypeLDrawDir) Cannot set multiple args to a single string.");
 }
 
+
+MODULE_BEGIN( LDRAW )
+
+MODULE_INIT
+{
+	LDRAW::initConsole();
+}
+
+MODULE_SHUTDOWN
+{
+	LDRAW::shutdown();
+}
+
+MODULE_END;
+
 namespace LDRAW {
 	std::deque<std::string> gLDrawInstallation;
 	std::deque<char*> gLDrawDirectories;
@@ -200,3 +215,41 @@ namespace LDRAW {
 	
 	
 }
+
+ConsoleFunctionGroupBegin(LDrawFuncs, "These are things from LDraw.cpp");
+
+DefineConsoleFunction(initLDraw, bool, (), , "() Initializes the LDraw system, and checks for a valid LDraw directory")
+{
+	return LDRAW::checkLDrawDirectory(); // && LDParse::loadColorTable();
+}
+
+DefineConsoleFunction(findLDrawFile, const char *, (const char * fname, const char * sfname),(""), "(filename) looks for a file"){
+	Vector<StringTableEntry> tsubfiles(5);
+	StringTableEntry ste = StringTable->insert(fname);
+	
+	StringTableEntry ste2 = StringTable->insert(sfname);
+	if(ste2 != StringTable->EmptyString()) {
+		tsubfiles.push_back(ste2);
+	}
+	/*
+	Vector<LDFileData*> dummy;
+	dummy.clear();
+	
+	LDFileSearchInfo * sInfo = LDParse::findLDrawFile(ste,dummy);
+	const char * ret = sInfo->path;
+	delete sInfo;
+	return ret;
+	//*/
+	return "";
+}
+
+DefineConsoleFunction(parseLDrawFile, S32, (const char * fname), , "(filename)"){
+	return -1;//LDRAW::initParse(fname);
+}
+
+DefineConsoleFunction(setLDrawColour, void, (S32 index, ColorI colorArg), , "(index, {color: r,g,b[,a]})"){
+	return;
+	//LDRAW::setColour(colorArg, i);
+}
+
+ConsoleFunctionGroupEnd(LDrawFuncs);
