@@ -7,3 +7,4 @@ console.log
 game/shaders/procedural
 *.exe
 *.app
+*.uft
