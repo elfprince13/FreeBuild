@@ -25,15 +25,15 @@
 #define LDRAW_DIRECTORY_PREFIX "@ldrawDir="
 
 namespace LDRAW {
-	class LDrawLibraryPathElement : public EngineObject {
-		DECLARE_CLASS(LDrawLibraryPathElement, EngineObject);
+	class LibraryPathElement : public EngineObject {
+		DECLARE_CLASS(LibraryPathElement, EngineObject);
 		size_t first;
 		StringTableEntry second;
-		LDrawLibraryPathElement(size_t len, const char * str, bool debugValidate = true)
+		LibraryPathElement(size_t len, const char * str, bool debugValidate = true)
 		: first(len), second(str) {
 			AssertFatal(!debugValidate || (len = dStrlen(str)), "str/len mismatch");
 		}
-		LDrawLibraryPathElement() : first(0), second(NULL) {}
+		LibraryPathElement() : first(0), second(NULL) {}
 		
 		size_t getPathLen() const {	return first; }
 		void setPathLen(size_t len){ first = len; }
@@ -42,21 +42,21 @@ namespace LDRAW {
 		void setPathStr(StringTableEntry str) { second = str; }
 	};
 	
-	class LDrawLibraryPath : public EngineObject {
-		DECLARE_CLASS(LDrawLibraryPath, EngineObject);
-		typedef std::deque<LDrawLibraryPathElement> ElemQueueType;
+	class LibraryPath : public EngineObject {
+		DECLARE_CLASS(LibraryPath, EngineObject);
+		typedef std::deque<LibraryPathElement> ElemQueueType;
 		ElemQueueType elements;
-		LDrawLibraryPath() : elements() {}
-		LDrawLibraryPath(ElemQueueType init) : elements(init) {}
+		LibraryPath() : elements() {}
+		LibraryPath(ElemQueueType init) : elements(init) {}
 		
 		S32 getElementCount() const { return elements.size(); }
-		LDrawLibraryPathElement getElementElement(S32 i) const { return elements[i]; }
-		void setElementElement(S32 i, LDrawLibraryPathElement elem) { elements[i] = elem; }
+		LibraryPathElement getElementElement(S32 i) const { return elements[i]; }
+		void setElementElement(S32 i, LibraryPathElement elem) { elements[i] = elem; }
 	};
 }
 
 // N.B. We don't currently do any escaping, so member paths can't contain ";"
-DefineConsoleType(TypeLDrawLibraryPath, LDRAW::LDrawLibraryPath)
+DefineConsoleType(TypeLDrawLibraryPath, LDRAW::LibraryPath)
 
 
 
@@ -73,7 +73,7 @@ namespace LDRAW {
 	extern StringTableEntry gLDrawConfigPath;
 	extern StringTableEntry gLDrawScriptPath;
 	extern std::deque<std::string> gLDrawInstallation;
-	extern LDrawLibraryPath gLDrawDirectories;
+	extern LibraryPath gLDrawDirectories;
 	void initConsole();
 	void shutdown();
 }

@@ -17,31 +17,31 @@
 //-----------------------------------------------------------------------------
 
 namespace LDRAW {
-	IMPLEMENT_CLASS(LDrawLibraryPathElement, "A 2-tuple of a size_t and a c-string")
+	IMPLEMENT_CLASS(LibraryPathElement, "A 2-tuple of a size_t and a c-string")
 	PROPERTY( pathLen, 1, "Length of the path element.", 0 )
 	PROPERTY( pathStr, 1, "Textual representation of the path element.", 0)
 	END_IMPLEMENT_CLASS;
 	
-	IMPLEMENT_CLASS(LDrawLibraryPath, "A queue of `LDrawLibraryPathElement`s")
+	IMPLEMENT_CLASS(LibraryPath, "A queue of `LDrawLibraryPathElement`s")
 	PROPERTY( element, 0, "The actual elements.", 0)
 	END_IMPLEMENT_CLASS
 }
 
 
-ConsoleType( ldrawDir, TypeLDrawLibraryPath, LDRAW::LDrawLibraryPath, LDRAW_DIRECTORY_PREFIX )
+ConsoleType( ldrawDir, TypeLDrawLibraryPath, LDRAW::LibraryPath, LDRAW_DIRECTORY_PREFIX )
 
 ConsoleGetType( TypeLDrawLibraryPath )
 {
 	using namespace LDRAW;
-	static auto sumPathTuple = [](size_t headSize, const LDrawLibraryPathElement &o2) {
+	static auto sumPathTuple = [](size_t headSize, const LibraryPathElement &o2) {
 		return headSize + o2.first;
 	};
-	const LDrawLibraryPath::ElemQueueType& deqRef = ((LDrawLibraryPath*)dptr)->elements;
+	const LibraryPath::ElemQueueType& deqRef = ((LibraryPath*)dptr)->elements;
 	size_t bufSize = std::accumulate(deqRef.cbegin(), deqRef.cend(), deqRef.size(), sumPathTuple);
 	char * returnString = Con::getReturnBuffer(bufSize);
 	char * dst = returnString;
 	std::for_each(deqRef.cbegin(), deqRef.cend(),
-				  [&](const LDrawLibraryPathElement& elem){
+				  [&](const LibraryPathElement& elem){
 					  dStrcpy(dst, elem.second);
 					  dst += elem.first;
 					  (dst++)[0] = ';';
@@ -53,18 +53,18 @@ ConsoleGetType( TypeLDrawLibraryPath )
 ConsoleSetType( TypeLDrawLibraryPath )
 {
 	using namespace LDRAW;
-	static auto addNextPath = [](LDrawLibraryPath::ElemQueueType& deqRef, char *theStr, char* next){
+	static auto addNextPath = [](LibraryPath::ElemQueueType& deqRef, char *theStr, char* next){
 		next[0] = '\0';
 		if((next - 1 >= theStr) && (next[-1] == '/')){
 			next[-1] = '\0';
 		}
-		LDrawLibraryPathElement elem(dStrlen(theStr), StringTable->insert(theStr));
+		LibraryPathElement elem(dStrlen(theStr), StringTable->insert(theStr));
 		deqRef.push_back(elem);
 	};
 	
 	if(argc == 1)
 	{
-		LDrawLibraryPath::ElemQueueType& deqRef = ((LDrawLibraryPath*)dptr)->elements;
+		LibraryPath::ElemQueueType& deqRef = ((LibraryPath*)dptr)->elements;
 		
 		if(deqRef.size() > 0){
 			deqRef.clear();
@@ -100,7 +100,7 @@ MODULE_END;
 
 namespace LDRAW {
 	std::deque<std::string> gLDrawInstallation;
-	LDrawLibraryPath gLDrawDirectories;
+	LibraryPath gLDrawDirectories;
 	StringTableEntry primsSTE;
 	StringTableEntry partsSTE;
 	StringTableEntry modelSTE;
@@ -162,7 +162,7 @@ namespace LDRAW {
 		ppmPaths.clear();
 		
 		std::for_each(gLDrawDirectories.elements.begin(), gLDrawDirectories.elements.end(),
-					  [&](const LDrawLibraryPathElement& currentDir){
+					  [&](const LibraryPathElement& currentDir){
 						  const char * fullPath = currentDir.second;
 						  size_t fullPathLen = currentDir.first;
 						  
