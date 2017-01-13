@@ -8,3 +8,4 @@ game/shaders/procedural
 *.exe
 *.app
 *.uft
+game/parsetest
