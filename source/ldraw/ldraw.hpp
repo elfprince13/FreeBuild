@@ -12,6 +12,8 @@
 #include "console/console.h"
 #include "core/color.h"
 
+#include <LDParse/Model.hpp>
+
 #ifndef _CONSOLE_BASE_TYPE_H_
 #include "console/consoleTypes.h"
 #endif
@@ -21,6 +23,8 @@
 #include <string>
 #include <deque>
 #include <tuple>
+#include <vector>
+#include <memory>
 
 #define LDRAW_DIRECTORY_PREFIX "@ldrawDir="
 
@@ -53,6 +57,14 @@ namespace LDRAW {
 		LibraryPathElement getElementElement(S32 i) const { return elements[i]; }
 		void setElementElement(S32 i, LibraryPathElement elem) { elements[i] = elem; }
 	};
+	
+	using FileData = LDParse::Model;
+	struct FileSearchInfo {
+		StringTableEntry name;
+		StringTableEntry path;
+		bool subFile;
+		const FileData& file;
+	};
 }
 
 // N.B. We don't currently do any escaping, so member paths can't contain ";"
@@ -74,6 +86,9 @@ namespace LDRAW {
 	extern StringTableEntry gLDrawScriptPath;
 	extern std::deque<std::string> gLDrawInstallation;
 	extern LibraryPath gLDrawDirectories;
+	
+	std::unique_ptr<const FileSearchInfo> findLDrawFile(const char *filename,  const std::vector<const FileData*>& subfileSearchStack);
+	
 	void initConsole();
 	void shutdown();
 }

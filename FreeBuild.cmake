@@ -1,2 +1,8 @@
-add_subdirectory(${TORQUE_APP_DIR}/deps/LDParse ${CMAKE_CURRENT_BINARY_DIR}/LDParse
+add_subdirectory(${TORQUE_APP_DIR}/deps/LDParse ${CMAKE_CURRENT_BINARY_DIR}/LDParse)
 addLib(LDParse)
+foreach(include_dir ${LDPARSE_INCLUDE_DIR})
+	addInclude(${include_dir})
+#	MESSAGE(INFO " INCLUDING FOR LDPARSE " ${include_dir})
+endforeach(include_dir)
+#get_property(REAL_INCLUDED_DIRS TARGET ${PROJECT_NAME} PROPERTY INCLUDE_DIRECTORIES )
+#MESSAGE(INFO " INCLUDED SO FAR: " ${REAL_INCLUDED_DIRS})

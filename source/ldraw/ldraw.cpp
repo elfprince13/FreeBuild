@@ -8,9 +8,11 @@
 
 #include "ldraw.hpp"
 #include "console/engineAPI.h"
+#include <LDParse/Cache.hpp>
 
 #include <numeric>
 #include <algorithm>
+#include <boost/optional.hpp>
 
 //-----------------------------------------------------------------------------
 // TypeLDrawDir
@@ -111,6 +113,77 @@ namespace LDRAW {
 	bool gLDrawRGBOnly;
 	StringTableEntry gLDrawConfigPath;
 	StringTableEntry gLDrawScriptPath;
+	
+	using LDCacheNode = LDParse::Cache::CacheNode<const FileData>;
+	LDCacheNode* gLDrawCacheRoot = LDCacheNode::makeRoot();
+	
+	std::unique_ptr<const FileSearchInfo> findLDrawFile(const char * filename, const std::vector<const FileData*> &subfileSearchStack)
+	{
+		
+		
+		U32 i;
+		U32 cacheDepth = gLDrawPrintCacheTree ? 0 : -1;
+		StringTableEntry file = StringTable->insert(filename);
+		
+		LDCacheNode * cacheRoot = gLDrawCacheRoot;
+		boost::optional<const FileData&> cachedFile = boost::none;
+		std::unique_ptr<FileSearchInfo> ret = nullptr;
+		
+		U32 ldis = gLDrawInstallation.size();
+		if(ldis % 3) {
+			Con::errorf("findLDrawFile called before any entries in $pref::LDraw::LibraryPath were validated. Please call checkLDrawDirectory()");
+			
+		} else if(!subfileSearchStack.empty()) {
+			auto foundPred = [&](const FileData* subFileSearchItem){
+				std::shared_ptr<const LDCacheNode> subFileList = subFileSearchItem->getSubFileCache();
+				// Did we get passed some sub-files?
+				// And can we find what we're looking for among them?
+				return (subFileList != nullptr) && ((cachedFile = subFileList->find(file,cacheDepth)) != boost::none);
+			};
+			auto maybeFound = std::find_if(subfileSearchStack.cbegin(), subfileSearchStack.cend(), foundPred);
+			
+			if(maybeFound != subfileSearchStack.cend()) {
+				ret = std::unique_ptr<FileSearchInfo>(new FileSearchInfo({file,
+					StringTable->insert((*cachedFile).getPath().c_str()),
+					true, *cachedFile}));
+			}
+		}
+		
+		// FIXME: THIS LOGIC NEEDS TO BE CLEANED UP, IT'S DEFINITELY WRONG, BUT EVERYTHING COMPILES SO COOL TO COMMIT AND SAVE PROGRESS.
+		if(ret == nullptr){
+			if((cacheRoot != nullptr) &&
+			   ((cachedFile = cacheRoot->find(file,cacheDepth)) != boost::none)) {
+				ret = std::unique_ptr<FileSearchInfo>(new FileSearchInfo({file,
+				StringTable->insert((*cachedFile).getPath().c_str()),
+				false, *cachedFile}));
+			} else {
+				
+				//Assumes a beginning->end traversal to ensure proper precedence.
+				
+				StringTableEntry path;
+				char pReturn[1024];
+				
+				for(std::deque<std::string>::const_iterator itr = gLDrawInstallation.begin();
+					itr!=gLDrawInstallation.end();
+					++itr
+					) {
+					path = StringTable->insert(itr->c_str());
+					Platform::makeFullPathName(file, pReturn, 1024, path);
+					if(Platform::isFile(pReturn) && !Platform::isDirectory(pReturn)){
+						ret->name = file;
+						ret->path = StringTable->insert(pReturn);
+						break;
+					}
+				}
+				
+				
+			}
+		}
+		
+		
+		if(ret->name == NULL) Con::warnf("File '%s' not found in LDraw directories",file);
+		return std::move(ret);
+	}
 
 	
 	void initConsole(){
