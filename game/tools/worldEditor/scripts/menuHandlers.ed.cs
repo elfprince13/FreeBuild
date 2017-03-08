@@ -555,7 +555,7 @@ function EditorExplodePrefab()
    EditorTree.buildVisibleTree( true );
 }
 
-function makeSelectedAMesh()
+function bakeSelectedToMesh()
 {
 
    %dlg = new SaveFileDialog()
@@ -582,7 +582,7 @@ function makeSelectedAMesh()
    if ( !%ret )
       return;
    
-   EWorldEditor.makeSelectionAMesh( %saveFile );    
+   EWorldEditor.bakeSelectionToMesh( %saveFile );    
    
    EditorTree.buildVisibleTree( true );  
 }

@@ -39,8 +39,8 @@
          isDecoy = "0";
    };
    new GuiControl() {
-      position = "359 157";
-      extent = "306 454";
+      position = "359 171";
+      extent = "306 425";
       minExtent = "8 2";
       horizSizing = "center";
       vertSizing = "center";
@@ -58,7 +58,7 @@
          groupNum = "-1";
          buttonType = "PushButton";
          useMouseEvents = "1";
-         position = "9 18";
+         position = "9 26";
          extent = "219 75";
          minExtent = "8 8";
          horizSizing = "relative";
@@ -74,31 +74,11 @@
          canSaveDynamicFields = "0";
       };
       new GuiButtonCtrl() {
-         text = "Join";
-         groupNum = "-1";
-         buttonType = "PushButton";
-         useMouseEvents = "0";
-         position = "9 90";
-         extent = "289 75";
-         minExtent = "8 8";
-         horizSizing = "relative";
-         vertSizing = "bottom";
-         profile = "GuiMenuButtonProfile";
-         visible = "1";
-         active = "1";
-         command = "Canvas.pushDialog(JoinServerDlg);";
-         tooltipProfile = "GuiToolTipProfile";
-         hovertime = "1000";
-         isContainer = "0";
-         canSave = "1";
-         canSaveDynamicFields = "0";
-      };
-      new GuiButtonCtrl() {
          text = "Options";
          groupNum = "-1";
          buttonType = "PushButton";
          useMouseEvents = "0";
-         position = "9 162";
+         position = "9 104";
          extent = "289 75";
          minExtent = "8 8";
          horizSizing = "relative";
@@ -118,7 +98,7 @@
          groupNum = "-1";
          buttonType = "PushButton";
          useMouseEvents = "0";
-         position = "9 234";
+         position = "9 182";
          extent = "289 75";
          minExtent = "8 8";
          horizSizing = "relative";
@@ -126,7 +106,7 @@
          profile = "GuiMenuButtonProfile";
          visible = "1";
          active = "1";
-         command = "GuiEdit();";
+         command = "toggleGuiEditor(1);";
          tooltipProfile = "GuiToolTipProfile";
          tooltip = "The GUI Editor is accessible in-game by pressing F10";
          hovertime = "1000";
@@ -140,7 +120,7 @@
          groupNum = "-1";
          buttonType = "PushButton";
          useMouseEvents = "0";
-         position = "9 306";
+         position = "9 260";
          extent = "289 75";
          minExtent = "8 8";
          horizSizing = "relative";
@@ -162,7 +142,7 @@
          groupNum = "-1";
          buttonType = "PushButton";
          useMouseEvents = "0";
-         position = "9 378";
+         position = "9 338";
          extent = "289 75";
          minExtent = "8 8";
          horizSizing = "relative";
@@ -183,7 +163,7 @@
          groupNum = "-1";
          buttonType = "PushButton";
          useMouseEvents = "0";
-         position = "215 18";
+         position = "215 26";
          extent = "83 75";
          minExtent = "8 2";
          horizSizing = "right";

@@ -62,7 +62,7 @@ function initClient()
 
    // These should be game specific GuiProfiles.  Custom profiles are saved out
    // from the Gui Editor.  Either of these may override any that already exist.
-   exec("art/gui/defaultGameProfiles.cs");
+   exec("art/gui/gameProfiles.cs");
    exec("art/gui/customProfiles.cs"); 
    
    // The common module provides basic client functionality
@@ -71,16 +71,11 @@ function initClient()
    // Use our prefs to configure our Canvas/Window
    configureCanvas();
 
-   // Load up the Game GUIs
+   // Load up the Game GUI
    exec("art/gui/playGui.gui");
-   exec("art/gui/chatHud.gui");
-   exec("art/gui/playerList.gui");
-   exec("art/gui/hudlessGui.gui");
 
    // Load up the shell GUIs
    exec("art/gui/mainMenuGui.gui");
-   exec("art/gui/joinServerDlg.gui");
-   exec("art/gui/endGameGui.gui");
    exec("art/gui/StartupGui.gui");
    exec("art/gui/chooseLevelDlg.gui");
    exec("art/gui/loadingGui.gui");
@@ -88,9 +83,6 @@ function initClient()
    exec("art/gui/remapDlg.gui");
    
    // Gui scripts
-   exec("./playerList.cs");
-   exec("./chatHud.cs");
-   exec("./messageHud.cs");
    exec("scripts/gui/playGui.cs");
    exec("scripts/gui/startupGui.cs");
    exec("scripts/gui/chooseLevelDlg.cs");
@@ -98,13 +90,8 @@ function initClient()
    exec("scripts/gui/optionsDlg.cs");
 
    // Client scripts
-   exec("./client.cs");
-   exec("./game.cs");
    exec("./missionDownload.cs");
    exec("./serverConnection.cs");
-
-   // Load useful Materials
-   exec("./shaders.cs");
 
    // Default player key bindings
    exec("./default.bind.cs");
@@ -182,19 +169,12 @@ function loadMainMenu()
    }
 }
 
-function loadLoadingGui(%displayText)
+function loadLoadingGui()
 {
    Canvas.setContent("LoadingGui");
    LoadingProgress.setValue(1);
 
-   if (%displayText !$= "")
-   {
-      LoadingProgressTxt.setValue(%displayText);
-   }
-   else
-   {
-      LoadingProgressTxt.setValue("WAITING FOR SERVER");
-   }
+   LoadingProgressTxt.setValue("WAITING FOR SERVER");
 
    Canvas.repaint();
 }

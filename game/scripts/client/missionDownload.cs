@@ -178,12 +178,6 @@ addMessageCallback( 'MsgLoadFailed', handleLoadFailedMessage );
 
 function handleLoadInfoMessage( %msgType, %msgString, %mapName ) 
 {
-   // Make sure the LoadingGUI is displayed
-   if (Canvas.getContent() != LoadingGui.getId())
-   {
-      loadLoadingGui("LOADING MISSION FILE");
-   }
-   
 	// Clear all of the loading info lines:
 	for( %line = 0; %line < LoadingGui.qLineCount; %line++ )
 		LoadingGui.qLine[%line] = "";

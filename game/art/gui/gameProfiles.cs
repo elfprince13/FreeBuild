@@ -20,6 +20,6 @@
 // IN THE SOFTWARE.
 //-----------------------------------------------------------------------------
 
-// This is the default save location for any Decal datablocks created in the
-// Decal Editor (this script is executed from onServerCreated())
-
+//-----------------------------------------------------------------------------
+// Game specific profiles are located here
+//-----------------------------------------------------------------------------

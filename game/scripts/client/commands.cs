@@ -20,6 +20,12 @@
 // IN THE SOFTWARE.
 //-----------------------------------------------------------------------------
 
-// This is the default save location for any Decal datablocks created in the
-// Decal Editor (this script is executed from onServerCreated())
+//----------------------------------------------------------------------------
+// Game start / end events sent from the server
+//----------------------------------------------------------------------------
 
+function clientCmdGameEnd(%seq)
+{
+   // Stop local activity... the game will be destroyed on the server
+   sfxStopAll();
+}
